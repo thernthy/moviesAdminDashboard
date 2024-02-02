@@ -6,14 +6,177 @@
 @endpush
 @section('content')
 <div class="container-fuild">
-    <div class="row move-category">
-        <ul>
-            <li>
-                <img src="" alt="">
-                <h4>Movei title</h4>
-            </li>
-        </ul>
+    <div class="container-movie-wrap"> 
+            <div class="card"> 
+                <a href="">
+                    <div class="img">
+                        <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
+                    </div>
+                    <h4 class="card-title">영화 제목</h4> 
+                </a>
+            </div> 
+            <div class="card"> 
+                <a href="">
+                    <div class="img">
+                        <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
+                    </div>
+                    <h4 class="card-title">영화 제목</h4> 
+                </a>
+            </div> 
+            <div class="card"> 
+                <a href="">
+                    <div class="img">
+                        <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
+                    </div>
+                    <h4 class="card-title">영화 제목</h4> 
+                </a>
+            </div> 
+            <div class="card"> 
+                <a href="">
+                    <div class="img">
+                        <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
+                    </div>
+                    <h4 class="card-title">영화 제목</h4> 
+                </a>
+            </div> 
+            <div class="card"> 
+                <a href="">
+                    <div class="img">
+                        <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
+                    </div>
+                    <h4 class="card-title">영화 제목</h4> 
+                </a>
+            </div> 
+            <div class="card"> 
+                <a href="">
+                    <div class="img">
+                        <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
+                    </div>
+                    <h4 class="card-title">영화 제목</h4> 
+                </a>
+            </div> 
+            <div class="card"> 
+                <a href="">
+                    <div class="img">
+                        <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
+                    </div>
+                    <h4 class="card-title">영화 제목</h4> 
+                </a>
+            </div> 
+            <div class="card"> 
+                <a href="">
+                    <div class="img">
+                        <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
+                    </div>
+                    <h4 class="card-title">영화 제목</h4> 
+                </a>
+            </div> 
+            <div class="card"> 
+                <a href="">
+                    <div class="img">
+                        <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
+                    </div>
+                    <h4 class="card-title">영화 제목</h4> 
+                </a>
+            </div> 
+            <div class="card"> 
+                <a href="">
+                    <div class="img">
+                        <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
+                    </div>
+                    <h4 class="card-title">영화 제목</h4> 
+                </a>
+            </div> 
+            <div class="card"> 
+                <a href="">
+                    <div class="img">
+                        <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
+                    </div>
+                    <h4 class="card-title">영화 제목</h4> 
+                </a>
+            </div> 
+            <div class="card"> 
+                <a href="">
+                    <div class="img">
+                        <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
+                    </div>
+                    <h4 class="card-title">영화 제목</h4> 
+                </a>
+            </div> 
+            <div class="card"> 
+                <a href="">
+                    <div class="img">
+                        <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
+                    </div>
+                    <h4 class="card-title">영화 제목</h4> 
+                </a>
+            </div> 
+            <div class="card"> 
+                <a href="">
+                    <div class="img">
+                        <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
+                    </div>
+                    <h4 class="card-title">영화 제목</h4> 
+                </a>
+            </div> 
+            <div class="card"> 
+                <a href="">
+                    <div class="img">
+                        <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
+                    </div>
+                    <h4 class="card-title">영화 제목</h4> 
+                </a>
+            </div> 
+            <div class="card"> 
+                <a href="">
+                    <div class="img">
+                        <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
+                    </div>
+                    <h4 class="card-title">영화 제목</h4> 
+                </a>
+            </div> 
+            <div class="card"> 
+                <a href="">
+                    <div class="img">
+                        <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
+                    </div>
+                    <h4 class="card-title">영화 제목</h4> 
+                </a>
+            </div> 
+            <div class="card"> 
+                <a href="">
+                    <div class="img">
+                        <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
+                    </div>
+                    <h4 class="card-title">영화 제목</h4> 
+                </a>
+            </div> 
+            <div class="card"> 
+                <a href="">
+                    <div class="img">
+                        <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
+                    </div>
+                    <h4 class="card-title">영화 제목</h4> 
+                </a>
+            </div> 
+            <div class="card"> 
+                <a href="">
+                    <div class="img">
+                        <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
+                    </div>
+                    <h4 class="card-title">영화 제목</h4> 
+                </a>
+            </div> 
+            <div class="card"> 
+                <a href="">
+                    <div class="img">
+                        <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
+                    </div>
+                    <h4 class="card-title">영화 제목</h4> 
+                </a>
+            </div> 
     </div>
+
 </div>
 @endsection
 
