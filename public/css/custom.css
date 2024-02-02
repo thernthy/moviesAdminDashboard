@@ -160,6 +160,9 @@ h1 {
 .nav>li>a{
   padding: 15px 0;
 }
+.navbar-inverse .navbar-nav>.menu_active a{
+  color: purple;
+}
 .nav li.search_bar{
   padding-left: 100px;
   transform: translateX(40px);

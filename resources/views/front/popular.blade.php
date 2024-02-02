@@ -6,6 +6,7 @@
 @endpush
 @section('content')
 <div class="container-fuild">
+    <div class="row"><h2 class="title_page">최신/인기</h2></div>
     <div class="container-movie-wrap"> 
             <div class="card"> 
                 <a href="">

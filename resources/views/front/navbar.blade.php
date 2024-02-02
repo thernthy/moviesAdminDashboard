@@ -10,18 +10,38 @@
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav nav-justified">
-                    <li class="{{request()->is('/')?'active':''}}"><a href="{{url('/')}}">Logo</a></li>
-                    <li class="{{ request()->is('/') ? 'active' : '' }}">
+                    <li class="{{request()->is('/')?'menu_active':''}}"><a href="{{url('/')}}">Logo</a></li>
+                    <li class="{{ request()->is('video/category/popularity') ? 'menu_active' : '' }}">
                         <a href="{{ url('/video/category/popularity') }}">최신/인기</a>
                     </li>
-                    <li class="{{request()->is('/')?'':''}}"><a href="{{url('/')}}">한국 드라마</a></li>
-                    <li class="{{request()->is('/')?'':''}}"><a href="{{url('/')}}">TV/엔터테인먼트</a></li>
-                    <li class="{{request()->is('/')?'':''}}"><a href="{{url('/')}}">영화</a></li>
-                    <li class="{{request()->is('/')?'':''}}"><a href="{{url('/')}}">외국 드라마</a></li>
-                    <li class="{{request()->is('/')?'':''}}"><a href="{{url('/')}}">만화 영화</a></li>
-                    <li class="{{request()->is('/')?'':''}}"><a href="{{url('/')}}">발표</a></li>
-                    <li class="{{request()->is('/')?'':''}}"><a href="{{url('/')}}">업로드 문의</a></li>
-                    <li class="{{request()->is('/')?'':''}}"><a href="{{url('/')}}">계열사</a></li>
+                    <li class="{{ request()->is('video/category/korea-Drama') ? 'menu_active' : '' }}">
+                        <a href="{{ url('/video/category/korea-Drama') }}">한국 드라마</a>
+                    </li>
+                    <li class="{{ request()->is('video/category/tv') ? 'menu_active' : '' }}">
+                        <a href="{{ url('/video/category/tv') }}">TV/엔터테인먼트</a>
+                    </li>
+                    <li class="{{ request()->is('video/category/movie') ? 'menu_active' : '' }}">
+                        <a href="{{ url('/video/category/movie') }}">영화</a>
+                    </li>
+                    <li class="{{ request()->is('video/category/foreign_drama') ? 'menu_active' : '' }}">
+                        <a href="{{ url('/video/category/foreign_drama') }}">외국 드라마</a>
+                    </li>
+                    <li class="{{ request()->is('video/category/anime_documentary') ? 'menu_active' : '' }}">
+                        <a href="{{ url('/video/category/anime_documentary') }}">일본 만화 영화</a>
+                    </li>
+                    <li class="{{ request()->is('notice/notice_list') ? 'menu_active' : '' }}">
+                        <a href="{{ url('notice/notice_list') }}">알아채다</a>
+                    </li>
+                    <li class="{{ request()->is('/board/board/free_list') ? 'menu_active' : '' }}">
+                        <a href="{{ url('/board/board/free_list') }}">판자</a>
+                    </li>
+                    <li class="{{ request()->is('/board/board/free_list') ? 'menu_active' : '' }}">
+                        <a href="{{ url('/board/board/free_list') }}">판자</a>
+                    </li>
+                    <li>
+                        <a href="#">제휴업체<i class="fa-solid fa-circle-chevron-down"></i></a>
+                        
+                    </li>
                     <li class="{{request()->is('/')?'':''}} search_bar">
                         <i class="fa-solid fa-magnifying-glass" id="search_btn"></i>
                     </li>
