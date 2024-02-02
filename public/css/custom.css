@@ -187,11 +187,20 @@ h1 {
   z-index: 1000;
   left: 0;
   top: 0;
+  display: none;
   transition: all 2s;
   width: 100%;
 }
 .dropdown-mn .dropdow-wraper.active{
+  display: block;
   top: 5rem;
+  animation: slideDown 2s;
+}
+.dropdown-mn i{
+ transition: all .5s;
+}
+.dropdown-mn i.active{
+ transform: rotate(180deg);
 }
 .dropdown-mn .dropdow-wraper ul{
   display: flex;
@@ -342,6 +351,16 @@ section {
   to {
       opacity: 0;
       transform: translateY(-50%);
+  }
+}
+@keyframes slideDown{
+  from {
+      opacity: 0;
+      transform: translateY(3rem);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
   }
 }
 

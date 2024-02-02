@@ -122,7 +122,8 @@
         </script>
     @endif
     <script>
-    const dropdoWraperOne = document.querySelector('#dropdow-wraper1*a')
+    const dropdoWraperOne = document.querySelector('#dropdow-wraper1 a')
+    const dropDowIcon = document.querySelector('.fa-solid.fa-circle-chevron-down')
     const dropdowwraper = document.querySelector('.dropdow-wraper')
     const searchWraper = document.querySelector('#search-wrap');
     const searchBtn = document.getElementById('search_btn');
@@ -142,13 +143,19 @@
             searchWraper.classList.remove('active');
             document.body.style.overflow = ''; // Enable scrolling
         }
+        if (!dropdowwraper.contains(event.target) && event.target !== dropdoWraperOne) {
+            dropdowwraper.classList.remove('active');
+            dropDowIcon.classList.remove('active')
+        }
     });
     dropdoWraperOne.addEventListener('click', function(){
-        dropdowwraper.classList.toggle('active');
-        if (dropdowwraper.classList.contains('active')) {
-            dropdowwraper.classList.remove('active') // Disable scrolling
-        } else {
-            dropdowwraper.classList.add('active') // Disable scrolling
+        console.log(dropDowIcon)
+        if(dropdowwraper.classList.contains('active') && dropDowIcon.classList.contains('active')){
+            dropdowwraper.classList.remove('active')
+            dropDowIcon.classList.remove('active')
+        }else{
+            dropdowwraper.classList.add('active')
+            dropDowIcon.classList.add('active')
         }
     });
     </script>
