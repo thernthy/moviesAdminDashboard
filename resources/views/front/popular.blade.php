@@ -3,9 +3,15 @@
 @push('styles') 
 <link rel="stylesheet" href="{{ asset('css/home.css') }}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
+<style>
+   #nav {
+        background-color: #1D1D1D !important; 
+        transition: all .5s;
+    }
+</style>
 @endpush
 @section('content')
-<div class="container-fuild">
+<div class="container-fuild" id="relative_page">
     <div class="row"><h2 class="title_page">최신/인기</h2></div>
     <div class="container-movie-wrap"> 
             <div class="card"> 

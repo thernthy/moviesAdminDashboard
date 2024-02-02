@@ -1,6 +1,6 @@
 
     <div class="navbar navbar-custom navbar-inverse navbar-static-top " id="nav">
-        <div class="container-fluid">
+        <div class="container-fluid wrap">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
@@ -38,9 +38,18 @@
                     <li class="{{ request()->is('/board/board/free_list') ? 'menu_active' : '' }}">
                         <a href="{{ url('/board/board/free_list') }}">판자</a>
                     </li>
-                    <li>
+                    <li class="dropdown-mn" id="dropdow-wraper1">
                         <a href="#">제휴업체<i class="fa-solid fa-circle-chevron-down"></i></a>
-                        
+                        <div class="dropdow-wraper wrap" style="background: #1D1D1D;">
+                            <ul>
+                                <li><a href="">Menu one</a></li>
+                                <li><a href="">Menu one</a></li>
+                                <li><a href="">Menu one</a></li>
+                                <li><a href="">Menu one</a></li>
+                                <li><a href="">Menu one</a></li>
+                                <li><a href="">Menu one</a></li>
+                            </ul>
+                        </div>
                     </li>
                     <li class="{{request()->is('/')?'':''}} search_bar">
                         <i class="fa-solid fa-magnifying-glass" id="search_btn"></i>
@@ -100,7 +109,21 @@
     </div>
     <!--/.navbar -->
     @push('scripts')
+    @if(request()->is('/'))
+        <script>
+            window.addEventListener('scroll', function() {
+                var nav = document.getElementById('nav');
+                if (window.scrollY >= 80) {
+                    nav.classList.add('nav-scroll');
+                } else {
+                    nav.classList.remove('nav-scroll');
+                }
+            });
+        </script>
+    @endif
     <script>
+    const dropdoWraperOne = document.querySelector('#dropdow-wraper1*a')
+    const dropdowwraper = document.querySelector('.dropdow-wraper')
     const searchWraper = document.querySelector('#search-wrap');
     const searchBtn = document.getElementById('search_btn');
     // Toggle active class when search button is clicked
@@ -118,6 +141,14 @@
         if (!searchWraper.contains(event.target) && event.target !== searchBtn) {
             searchWraper.classList.remove('active');
             document.body.style.overflow = ''; // Enable scrolling
+        }
+    });
+    dropdoWraperOne.addEventListener('click', function(){
+        dropdowwraper.classList.toggle('active');
+        if (dropdowwraper.classList.contains('active')) {
+            dropdowwraper.classList.remove('active') // Disable scrolling
+        } else {
+            dropdowwraper.classList.add('active') // Disable scrolling
         }
     });
     </script>

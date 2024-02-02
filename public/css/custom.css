@@ -121,11 +121,14 @@ h1 {
 
 #nav {
   width: 100%;
-  position:static;
-  top:-32px;
+  position:fixed;
   background:transparent;
 }
-
+.nav-scroll {
+  background-color: #1D1D1D !important; /* Change background color when scrolled */
+  /* Add any other styles you need for the scrolled state */
+  transition: all .5s;
+}
 #nav.affix {
    position: fixed;
    top: 0;
@@ -167,10 +170,38 @@ h1 {
   padding-left: 100px;
   transform: translateX(40px);
 }
+.dropdown-mn a > i{
+  font-size: 1.3rem;
+  margin: 0 3px;
+}
 .search_bar i{
   font-size: 1.3rem;
   color: white;
   cursor: pointer;
+}
+.dropdown-mn .dropdow-wraper{
+  position: fixed;
+  height: fit-content;
+  padding-top: 10px;
+  border-radius: 0px 0px 8px 8px;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  transition: all 2s;
+  width: 100%;
+}
+.dropdown-mn .dropdow-wraper.active{
+  top: 5rem;
+}
+.dropdown-mn .dropdow-wraper ul{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+.dropdown-mn .dropdow-wraper li{
+  margin: 0 10px;
+  padding: 10px;
 }
 .search-bar-wrap{
   width: 30%;
@@ -319,9 +350,16 @@ section {
     padding:0 30px;
   }
 }
-@media (min-width:1200px) {
+@media (min-width:1500px) {
   .wrap{
     padding:0 70px;
   }
+}
+
+/* 
+=======================Relative page margin top
+*/
+#relative_page{
+  padding-top: 5rem;
 }
 
