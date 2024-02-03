@@ -8,6 +8,9 @@
         background-color: #1D1D1D !important; 
         transition: all .5s;
     }
+    .dropdow-wraper.wrap{
+        background-color: #1D1D1D !important;
+    }
 </style>
 @endpush
 @section('content')
@@ -15,7 +18,7 @@
     <div class="row"><h2 class="title_page">최신/인기</h2></div>
     <div class="container-movie-wrap"> 
             <div class="card"> 
-                <a href="">
+                <a href="{{ url('video/category/categoryName/part/movieTile') }}">
                     <div class="img">
                         <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
                     </div>

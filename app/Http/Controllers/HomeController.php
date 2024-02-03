@@ -39,7 +39,10 @@ class HomeController extends Controller
 
         return view('front.popular');
     }
-
+    public function videoWach($CategoryName, $part, $movieTile){
+        $data['accessPoint']  = [$CategoryName, $part, $movieTile];
+        return view('front.waching-vtr', compact('data'));
+    }
 
     
   
