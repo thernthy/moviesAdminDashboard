@@ -1,0 +1,190 @@
+
+
+/*  ================================================= 
+
+      this is for waching page layout desing ================== */
+
+/* ================================================= */
+
+.title_page {
+    margin-bottom: 20px; 
+}
+.video_part_list .list-group{
+    width:100%;
+    margin:0 !important;
+    height: 60vh;
+    overflow-y: auto;
+    transition:all 2s;
+}
+.list-group::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #12161F;
+}
+
+.list-group::-webkit-scrollbar
+{
+    width: 6px;
+    background-color: #2F3542;
+}
+
+
+.list-group::-webkit-scrollbar-thumb
+{
+    background-color: #2F3542;
+}
+.card {
+    width:100%;
+    background:transpearent;
+    box-shadow:none;
+}
+.card.video_part_list{
+
+}
+.video-option-wraper{
+    border-bottom: 1px solid #838383;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.video-option-wraper button{
+    border:none;
+    border-radius:5px 5px 0px 0px;
+    padding:10px;
+    background:#434343;
+    font-size:1.3rem;
+    font-weight:500;
+    color:#DBDBDB;
+}
+.video-option-wraper button:last-child{
+   margin-left: 5px;
+}
+.video-option-wraper button.active{
+  background:#A1A1A1A1;
+}
+.video_part_list .list-group-item{
+    border:none;
+    background-color:transparent;
+    transition:all .5s;
+    cursor: pointer;
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+}
+.list-group-item h5{
+    margin-left:10px;
+}
+.list-group-item.active{
+    border:none;
+    background-color:#838383;
+}
+.video_part_list .list-group-item .video-cover{
+    padding:40px 0;
+    width: 30%;
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    border-left:1px solid white;
+    transform: scale(1);
+}
+.list-group-item:hover{
+    background-color:#838383;
+}
+.list-group-item.active:hover{
+    background-color:#838383;
+}
+/* this is video recomeded section style */
+.recomeded_video .list-group {
+    margin: 0 auto; 
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: space-between;
+    gap: 20px 0; 
+}
+.recomeded_video  .list-group-item{
+    width: calc(33.33% - 5px); 
+    box-shadow: none; 
+    overflow: hidden; 
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+    transform-origin: right center; 
+    transform: scaleX(1.2);
+}
+.recomeded_video  .list-group-item .video-cover{
+  width:100%;
+  padding:130px 0;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
+.list-group-item  h6, h5{
+    font-weight:500;
+    color:#fff;
+}
+.recomeded_video .card-body.active {
+    opacity: 0; 
+    animation: loadingPage 1s forwards;
+}
+
+.video_part_list .card-body.active {
+    opacity: 0; 
+    animation: loadingPage 1s forwards; 
+}
+.recomeded_video .card-body.unactive{
+    display: none;
+}
+.video_part_list .card-body.unactive{
+    display: none;
+}
+
+@keyframes loadingPage {
+    0%{
+        opacity: 0;
+    }
+    50%{
+        opacity: .6;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+.row.movie-info-wraper{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+.row.movie-info-wraper>div{
+    width:100%;
+}
+
+.row.movie-info-wraper>div>h4{
+    color:#fff;
+    font-weight:500;
+
+}
+.row.movei-apersot ul{
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.row.movei-apersot ul .movei-upersot-item{
+   padding: 5px 15px;
+   color:#fff;
+   border-radius: 5px;
+   background-color: #B88FF5;
+   margin: 5px 10px;
+}
+.row.movei-apersot ul .movei-upersot-item a{
+   font-weight: 400;
+   color:#fff;
+   text-decoration: none;
+}
+.row.movei-cover-wraper .col-sm-9>h6{
+    color: #888F96;
+    font-size: 1.5rem;
+    line-height: 2;
+}
+.row.movei-cover-wraper h6 span{
+    margin-left: 20%;
+}
