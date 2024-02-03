@@ -161,7 +161,7 @@ h1 {
 	}
 }
 .nav>li>a{
-  padding: 15px 0;
+  padding: 10px 10px;
 }
 .navbar-inverse .navbar-nav>.menu_active a{
   color: purple;
@@ -310,7 +310,9 @@ section {
   padding: 5px;
 
 }
-
+.nav-justified>li{
+  width: fit-content;
+}
 
 @keyframes slideUp {
   from {
