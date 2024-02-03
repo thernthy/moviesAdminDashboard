@@ -1,16 +1,13 @@
 
     <div class="navbar navbar-custom navbar-inverse navbar-static-top " id="nav">
-        <div class="container-fluid wrap">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+        <div class="container-fluid wrap navbar-wraper">
+            <div class="tools-wrap logo-wrap">
+                <ul>
+                    <li class="{{request()->is('/')?'menu_active':''}}"><a href="{{url('/')}}">Logo</a></li>    
+                </ul>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav nav-justified">
-                    <li class="{{request()->is('/')?'menu_active':''}}"><a href="{{url('/')}}">Logo</a></li>
                     <li class="{{ request()->is('video/category/popularity') ? 'menu_active' : '' }}">
                         <a href="{{ url('/video/category/popularity') }}">최신/인기</a>
                     </li>
@@ -40,7 +37,7 @@
                     </li>
                     <li class="dropdown-mn" id="dropdow-wraper1">
                         <a href="#">제휴업체<i class="fa-solid fa-circle-chevron-down"></i></a>
-                        <div class="dropdow-wraper wrap" style="background: #1D1D1D;">
+                        <div class="dropdow-wraper wrap">
                             <ul>
                                 <li><a href="">Menu one</a></li>
                                 <li><a href="">Menu one</a></li>
@@ -51,11 +48,6 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="{{request()->is('/')?'':''}} search_bar">
-                        <i class="fa-solid fa-magnifying-glass" id="search_btn"></i>
-                    </li>
-                    <li class="{{request()->is('/')?'':''}}"><a href="{{url('/')}}"><img src="{{ asset('img/user_profile.png') }}" alt="" width="50px" height="50px"></a></li>
-
                     @if(!Auth::user())
                     <!--<li>
                         <a href="{{url('login')}}">Login</a>
@@ -96,6 +88,21 @@
                     </li>
                     @endif
                 </ul>
+            </div>
+            <div class="tools-wrap user_tools">
+                <ul class="nav navbar-nav nav-justified" >
+                    <li class="{{request()->is('/')?'':''}} search_bar">
+                            <i class="fa-solid fa-magnifying-glass" id="search_btn"></i>
+                        </li>
+                    <li class="{{request()->is('/')?'':''}}"><a href="{{url('/')}}"><img src="{{ asset('img/user_profile.png') }}" alt="" width="50px" height="50px"></a></li>
+                </ul>
+                <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
             </div>
             <!--/.nav-collapse -->
         </div>

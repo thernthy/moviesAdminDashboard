@@ -7,6 +7,7 @@ body {
   -webkit-font-smoothing: antialiased;
   font: normal 14px arial,sans-serif;
   background: #13161F;
+  transition: all 2s ease-in-out;
 }
 
 body::-webkit-scrollbar-track
@@ -124,11 +125,29 @@ h1 {
   position:fixed;
   background:transparent;
 }
+#nav .navbar-wraper{
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .nav-scroll {
   background-color: #1D1D1D !important; /* Change background color when scrolled */
   /* Add any other styles you need for the scrolled state */
   transition: all .5s;
 }
+.dropdow-wraper.wrap{
+  /* background-color: #0000005e; */
+}
+.dropdow-wraper.wrap ul li a{
+  color: white;
+  text-decoration: none;
+}
+.nav-scroll .dropdow-wraper.wrap{
+  background-color: #1D1D1D !important;
+}
+
 #nav.affix {
    position: fixed;
    top: 0;
@@ -168,7 +187,6 @@ h1 {
 }
 .nav li.search_bar{
   padding-left: 100px;
-  transform: translateX(40px);
 }
 .dropdown-mn a > i{
   font-size: 1.3rem;
@@ -235,7 +253,7 @@ h1 {
   animation: slide_down .5s;
 }
 .sh-inpu-wrap input{
-  width: 80%;
+  width: 95%;
   padding: 10px 5px;
   border: none;
   outline: none;
@@ -365,7 +383,11 @@ section {
       transform: translateY(0);
   }
 }
-
+@media (min-width:1300px) {
+  .tools-wrap.user_tools{
+    transform: translateX(50%);
+  }
+}
 @media (min-width:1080px) {
   .wrap{
     padding:0 30px;
@@ -376,6 +398,30 @@ section {
     padding:0 70px;
   }
 }
+@media (min-width:1600px) {
+  .tools-wrap.logo-wrap{
+    transform: translateX(-50%);
+  }
+  .collapse.navbar-collapse{
+    transform: translateX(-10%);
+  
+  }
+  .dropdown-mn .dropdow-wraper.active{
+    top: 2.5rem;
+  }
+  .wrap{
+    padding:0 10%;
+  }
+  .card .img { 
+      height: 350px;
+  } 
+}
+@media (max-width:1599px) {
+  .card .img { 
+      height: 300px;
+  } 
+}
+
 
 /* 
 =======================Relative page margin top
