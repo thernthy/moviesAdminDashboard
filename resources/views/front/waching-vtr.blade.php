@@ -2,6 +2,7 @@
 
 @push('styles') 
 <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+<link rel="stylesheet" href="{{ asset('css/relativepage.css') }}">
 <style>
         #nav {
                 background-color: #1D1D1D !important; 
@@ -9,136 +10,8 @@
         }
         .dropdow-wraper.wrap{
             background-color: #1D1D1D !important;
-        }
-        .title_page {
-            margin-bottom: 20px; /* Add margin to the bottom of the title */
-        }
-        .video_part_list .list-group{
-            width:100%;
-            margin:0 !important;
-            height: 60vh;
-            overflow-y: auto;
-            transition:all 2s;
-        }
-        .list-group::-webkit-scrollbar-track
-        {
-            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-            background-color: #12161F;
-        }
-
-        .list-group::-webkit-scrollbar
-        {
-            width: 6px;
-            background-color: #2F3542;
-        }
-
-
-        .list-group::-webkit-scrollbar-thumb
-        {
-            background-color: #2F3542;
-        }
-        .card {
-            width:100%;
-            background:transpearent;
-            box-shadow:none;
-        }
-        .card.video_part_list{
-
-        }
-        .video-option-wraper button{
-            border:none;
-            border-radius:5px 5px 0px 0px;
-            padding:10px;
-            background:#434343;
-            font-size:1.3rem;
-            font-weight:500;
-            color:#DBDBDB;
-        }
-        .video-option-wraper button.active{
-          background:#A1A1A1A1;
-        }
-        .list-group-item{
-            border:none;
-            background-color:transparent;
-            transition:all .5s;
-            cursor: pointer;
-            display:flex;
-            align-items:center;
-            justify-content:flex-start;
-        }
-        .list-group-item h5{
-            margin-left:10px;
-        }
-        .list-group-item.active{
-            border:none;
-            background-color:#838383;
-        }
-        .video_part_list .list-group-item .video-cover{
-            padding:40px 0;
-            width: 30%;
-            background-size:cover;
-            background-position:center;
-            background-repeat:no-repeat;
-            border-left:1px solid white;
-            transform: scale(1);
-        }
-        .list-group-item:hover{
-            background-color:#838383;
-        }
-        .list-group-item.active:hover{
-            background-color:#838383;
-        }
-        /* this is video recomeded section style */
-        .recomeded_video .list-group {
-            margin: 0 auto; 
-            display: flex; 
-            flex-wrap: wrap; 
-            justify-content: space-between;
-            gap: 20px 0; 
-        }
-        .recomeded_video  .list-group-item{
-            width: calc(33.33% - 5px); /* 7 cards per row */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-            overflow: hidden; 
-            border: 0;
-            border-radius: 0;
-            background-color: transparent;
-        }
-        .recomeded_video  .list-group-item .video-cover{
-          width:100%;
-          height:250px;
-          background-size:cover;
-          background-position:center;
-          background-repeat:no-repeat;
-          transform: scale(1.5);
-        }
-        .recomeded_video .card-body.active {
-            opacity: 0; 
-            animation: loadingPage 1s forwards;
-        }
-
-        .video_part_list .card-body.active {
-            opacity: 0; 
-            animation: loadingPage 1s forwards; 
-        }
-        .recomeded_video .card-body.unactive{
-            display: none;
-        }
-        .video_part_list .card-body.unactive{
-            display: none;
-        }
-
-        @keyframes loadingPage {
-            0%{
-                opacity: 0;
-            }
-            50%{
-                opacity: .6;
-            }
-            100%{
-                opacity: 1;
-            }
-        }
+    }
+        
 </style>
 @endpush
 @section('content')
@@ -152,6 +25,55 @@
             <div class="col-md-8">
                 <iframe width="100%" height="315" src="https://youtu.be/--S3rccz9X0?si=hjiYJlvlUyGXz6HP" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen> 
                 </iframe>
+                <div class="row movie-info-wraper">
+                   <div>
+                    <h4 class="text-left">
+                        이전 영상 보기
+                    </h4>
+                   </div>
+                   <div>
+                    <h4 class="text-right">
+                        조회수 : 60,518
+                    </h4>
+                   </div>
+                </div>
+                <div class="row movei-apersot">
+                    <ul>
+                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
+                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
+                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
+                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
+                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
+                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
+                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
+                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
+                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
+                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
+                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
+                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
+                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
+                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
+                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
+                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
+                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
+                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
+                    </ul>
+                </div>
+                <div class="row movei-cover-wraper">
+                    <div class="col-sm-3">
+                        <img src="{{asset('img/movei/mv (4).jpg')}}" alt="w-100" class="w-100">
+                    </div>
+                    <div class="col-sm-9 text-left">
+                        <h6>
+                            콜롬비아 메데인을 떠나 마이애미 마약 제국의 '대모'로 우뚝 선 그녀. 그리셀다 블랑코의 여정을 다룬 실화 바탕의 픽션 드라마. 
+                        </h6>
+                        <h6>
+                            <b>출연:<b> <span>소피아 베르가라,알베르토 게라,크리스티안 타판</span> <br>
+                            <b>감독:<b> <span>소피아 베르가라,알베르토 게라,크리스티안 타판</span> 
+                        </h6>
+
+                    </div>
+                </div>
             </div>
             <div class="col-md-4">
                 <div class="row">
@@ -162,7 +84,7 @@
                     <div class="card video_part_list">
                         <div class="card-body active">
                             <ul class="list-group">
-                                <li class="list-group-item">
+                                <li class="list-group-item active">
                                     <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
                                     <h5>이전 영상 보기</h5>
                                 </li>
@@ -192,48 +114,63 @@
                             <ul class="list-group">
                                 <li class="list-group-item">
                                     <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
+                                    <h6>이전 영상 보기</h6>
                                 </li>
                                 <li class="list-group-item ">
                                     <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
+                                    <h6>이전 영상 보기</h6>
                                 </li>
                                 <li class="list-group-item ">
                                     <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
+                                    <h6>이전 영상 보기</h6>
                                 </li>
                                 <li class="list-group-item ">
                                     <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
+                                    <h6>이전 영상 보기</h6>
                                 </li>
                                 <li class="list-group-item ">
                                     <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
+                                    <h6>이전 영상 보기</h6>
                                 </li>
                                 <li class="list-group-item ">
                                     <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
+                                    <h6>이전 영상 보기</h6>
                                 </li>
                                 <li class="list-group-item ">
                                     <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
+                                    <h6>이전 영상 보기</h6>
                                 </li>
                                 <li class="list-group-item ">
                                     <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
+                                    <h6>이전 영상 보기</h6>
                                 </li>
                                 <li class="list-group-item ">
                                     <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
+                                    <h6>이전 영상 보기</h6>
                                 </li>
                                 <li class="list-group-item ">
                                     <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
+                                    <h6>이전 영상 보기</h6>
                                 </li>
                                 <li class="list-group-item ">
                                     <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
+                                    <h6>이전 영상 보기</h6>
                                 </li>
                                 <li class="list-group-item ">
                                     <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
+                                    <h6>이전 영상 보기</h6>
                                 </li>
                                 <li class="list-group-item ">
                                     <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
+                                    <h6>이전 영상 보기</h6>
                                 </li>
                                 <li class="list-group-item ">
                                     <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
+                                    <h6>이전 영상 보기</h6>
                                 </li>
                                 <li class="list-group-item ">
                                     <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
+                                    <h6>이전 영상 보기</h6>
                                 </li>
                             </ul>
                         </div>

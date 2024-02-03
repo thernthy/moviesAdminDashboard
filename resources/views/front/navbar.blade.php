@@ -94,7 +94,7 @@
                     <li class="{{request()->is('/')?'':''}} search_bar">
                             <i class="fa-solid fa-magnifying-glass" id="search_btn"></i>
                         </li>
-                    <li class="{{request()->is('/')?'':''}}"><a href="{{url('/')}}"><img src="{{ asset('img/user_profile.png') }}" alt="" width="50px" height="50px"></a></li>
+                    <li class="{{request()->is('/login')?'':''}}"><a href="{{url('/login')}}"><img src="{{ asset('img/user_profile.png') }}" alt="" width="50px" height="50px"></a></li>
                 </ul>
                 <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
