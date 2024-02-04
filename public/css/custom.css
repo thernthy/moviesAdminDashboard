@@ -31,16 +31,6 @@ body::-webkit-scrollbar-thumb
   margin-right:0px;
 }
 
-/* Wrapper for page content to push down footer */
-#wrap {
-  min-height: 100%;
-  height: auto !important;
-  height: 100%;
-  /* Negative indent footer by its height */
-  margin: 0 auto -60px;
-  /* Pad bottom by footer height */
-  padding: 0 0 60px;
-}
 
 /* Set the fixed height of the footer here */
 #footer {
@@ -55,12 +45,6 @@ body::-webkit-scrollbar-thumb
 /* Custom page CSS
 -------------------------------------------------- */
 
-#wrap > .container {
-  padding: 60px 15px 0;
-}
-.container .credit {
-  margin: 20px 0;
-}
 
 
 #footer a {
@@ -390,12 +374,12 @@ section {
 }
 @media (min-width:1080px) {
   .wrap{
-    padding:0 30px;
+    padding:0 .5%;
   }
 }
 @media (min-width:1500px) {
   .wrap{
-    padding:0 70px;
+    padding:0 2%;
   }
 }
 @media (min-width:1600px) {
