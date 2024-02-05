@@ -471,9 +471,6 @@ section {
     transform: translateX(-10%);
   
   }
-  .dropdown-mn .dropdow-wraper.active{
-    top: 2.5rem;
-  }
   .wrap{
     padding:0 3%;
   }
