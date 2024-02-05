@@ -114,6 +114,7 @@ h1 {
   flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
+  padding: 10px 0;
 }
 
 .nav-scroll {
@@ -142,13 +143,18 @@ h1 {
 #footer > .container {
   
 }
-
 @media (min-width: 767px) {
   .navbar-nav.nav-justified > li{
       float:none;
   }
 }
 
+.tools-wrap.user_tools >
+.nav.navbar-nav.nav-justified{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
   
 /* customize nav style */
 .navbar-custom {
@@ -156,8 +162,86 @@ h1 {
   font-weight:700;
   border-width:0;
 }
+.navbar-header{
+  z-index: 1000;
+}
 
-
+.navbar-header .navTrigger{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.navbar-header
+.navTrigger > i{
+  padding: 2px 15px;
+  background-color: red;
+  margin-bottom: 5px;
+  transition: all .5s ease-in-out;
+}
+.navbar-header
+.navTrigger.active i:first-child{
+  transform: rotate(135deg) translateX(1px);
+}
+.navbar-header
+.navTrigger.active i:last-child{
+  transform: rotate(44deg) translateY(-6px) translateX(-6px);
+}
+.navTrigger.active i:nth-child(2){
+  display: none;
+}
+@media (min-width:1150px){
+  .navbar-header
+  .navTrigger.unactive{
+    display: none;
+  }
+  .dropdown-mn .dropdow-wraper{
+    position: fixed;
+  }
+}
+@media (max-width:1150px){
+  .navbar-menue-wraper{
+    position: fixed;
+    top: 0;
+    transition: all .5s ease-in-out;
+    padding-top: 5rem;
+    height: 100vh;
+    width: 40%;
+    right: -1000px;
+    background: #1d1d1d;
+  }
+  .navbar-menue-wraper.active{
+    right: 0;
+  }
+  .navbar-menue-wraper > ul{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   margin: 10px;
+  }
+  .dropdown-mn .dropdow-wraper ul{
+    flex-direction: column;
+  }
+  .tools-wrap.user_tools{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 40%;
+    padding: 0 20px;
+  }
+  .tools-wrap.logo-wrap{
+    width: 60%;
+    padding: 0 20px;
+  }
+}
+@media (max-width:550px){
+  .tools-wrap.user_tools{
+    width: 50%;
+  }
+  .tools-wrap.logo-wrap{
+    width: 50%;
+  }
+}
 @media (max-width: 768px) {
 	header {
 		height: 95px;
@@ -169,9 +253,7 @@ h1 {
 .navbar-inverse .navbar-nav>.menu_active a{
   color: purple;
 }
-.nav li.search_bar{
-  padding-left: 100px;
-}
+
 .dropdown-mn a > i{
   font-size: 1.3rem;
   margin: 0 3px;
@@ -182,7 +264,6 @@ h1 {
   cursor: pointer;
 }
 .dropdown-mn .dropdow-wraper{
-  position: fixed;
   height: fit-content;
   padding-top: 10px;
   border-radius: 0px 0px 8px 8px;

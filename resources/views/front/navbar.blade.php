@@ -6,7 +6,7 @@
                     <li class="{{request()->is('/')?'menu_active':''}}"><a href="{{url('/')}}">Logo</a></li>    
                 </ul>
             </div>
-            <div class="collapse navbar-collapse">
+            <div class="navbar-menue-wraper">
                 <ul class="nav navbar-nav nav-justified">
                     <li class="{{ request()->is('video/category/popularity') ? 'menu_active' : '' }}">
                         <a href="{{ url('/video/category/popularity') }}">최신/인기</a>
@@ -52,28 +52,33 @@
             </div>
             <div class="tools-wrap user_tools">
                 <ul class="nav navbar-nav nav-justified" >
-                    <li class="{{request()->is('/')?'':''}} search_bar">
+                        <li class="{{request()->is('/')?'':''}} search_bar">
                             <i class="fa-solid fa-magnifying-glass" id="search_btn"></i>
-                    </li>
-                    @if(!$session->get('admin_name'))
-                    <li class="{{request()->is('/login')?'':''}}"><a href="{{url('/login')}}"><img src="{{ asset('img/user_profile.png') }}" alt="" width="50px" height="50px"></a></li>
-                    @else
-                        <li>
-                            <div class="user_profile">
-                                <span></span>
-                                <img src="{{ asset('img/001 (2).png')}}" alt="">
-                            </div>
                         </li>
-                    @endif
+                        @if(session()->has('admin_name'))
+                            <li>
+                                <div class="user_profile">
+                                    <span></span>
+                                    <a href="{{ url('pr') }}"><img src="{{ asset('img/001 (2).png')}}" alt=""></a>
+                                </div>
+                            </li>
+                        @else
+                            <li class="{{request()->is('/login')?'':''}}"><a href="{{url('/login')}}"><img src="{{ asset('img/user_profile.png') }}" 
+                            alt="" width="50px" height="50px"></a>
+                            </li>
+                        @endif
                 </ul>
-                <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+                <div class="navbar-header"> 
+                <span class="navTrigger unactive"> 
+                    <i></i> 
+
+                    <i></i> 
+
+                    <i></i> 
+                </span>
+                </div>
             </div>
-            </div>
+
             <!--/.nav-collapse -->
         </div>
         <!--/.container -->
@@ -99,6 +104,12 @@
         </script>
     @endif
     <script>
+    const menueWraper = document.querySelector('.navbar-menue-wraper')
+    const showingMueBtn = document.querySelector('.navTrigger')
+        showingMueBtn.addEventListener('click', function() {
+        showingMueBtn.classList.toggle('active')
+        menueWraper.classList.toggle('active')
+    })
     const dropdoWraperOne = document.querySelector('#dropdow-wraper1 a')
     const dropDowIcon = document.querySelector('.fa-solid.fa-circle-chevron-down')
     const dropdowwraper = document.querySelector('.dropdow-wraper')

@@ -354,3 +354,12 @@
 .checkbox-container input[type="checkbox"]:checked + .custom-checkbox .checkmark {
     display: block;
 }
+
+
+.row > .user-tools ul li{
+  padding: 10px 5px;
+}
+.row .user-tools ul li > i{
+  font-size: 2rem;
+  transform: translateX(-20px);
+}
