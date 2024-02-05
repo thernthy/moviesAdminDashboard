@@ -1,6 +1,21 @@
 @extends('front.layout')
 @push('styles') 
 <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+<style>
+    body{
+        overflow: hidden;
+    }
+    #nav {
+        background-color: #1D1D1D !important; 
+        transition: all .5s;
+    }
+    .dropdow-wraper.wrap{
+        background-color: #1D1D1D !important;
+    }
+    .wrap{
+        padding-left:0;
+    }
+</style>
 @endpush
 @section('content')
 <div class="container-fuild" id="relative_page">
@@ -9,7 +24,7 @@
     <div class="row">
         <div class="col-sm-3 user-tools">
             <ul>
-                <li><i class="fa-solid fa-circle-chevron-left"></i></li>
+                <li><i id="backButton" class="fa-solid fa-circle-chevron-left"></i></li>
                 <li><a href="#">user_menu</a></li>
                 <li><a href="#">user_menu</a></li>
                 <li><a href="#">user_menu</a></li>
@@ -82,6 +97,11 @@
 @endsection
 
 @push('scripts')
-    <script>
-    </script>
+<script>
+    // Add event listener to the button
+    document.getElementById('backButton').addEventListener('click', function() {
+        // Redirect back
+        window.history.back();
+    });
+</script>
 @endpush
