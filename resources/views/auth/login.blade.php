@@ -1,110 +1,174 @@
+@extends('front.layout')
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>Login</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="{{asset('login_component/images/icons/favicon.ico')}}"/>
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{{asset('login_component/vendor/bootstrap/css/bootstrap.min.css')}}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{{asset('login_component/fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{{asset('login_component/fonts/Linearicons-Free-v1.0.0/icon-font.min.css')}}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{{asset('login_component/vendor/animate/animate.css')}}">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="{{asset('login_component/vendor/css-hamburgers/hamburgers.min.css')}}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{{asset('login_component/vendor/animsition/css/animsition.min.css')}}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{{asset('login_component/vendor/select2/select2.min.css')}}">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="{{ asset('login_component/vendor/daterangepicker/daterangepicker.css')}}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{{asset('login_component/css/util.css')}}">
-	<link rel="stylesheet" type="text/css" href="{{asset('login_component/css/main.css')}}">
-<!--===============================================================================================-->
-</head>
-<body>
-	<div class="limiter">
-		<div class="container-login100" style="background-image:  linear-gradient(rgba(0, 0, 0, 0.5),
-                       rgba(0, 0, 0, 0.5)), url({{asset('img/zerow_logo_white.png')}});">
-			<div class="wrap-login100">
-				<div class="login100-form-title" style="background-image: url({{asset('login_component/images/bg-01.jpg')}});">
-					<span class="login100-form-title-1">
-                     {{ __('Login') }}
-					</span>
-                       @error('email')
-                            <span class="focus-input100 text-center text-danger" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                        @error('Password')
-                            <span class="focus-input100" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
+@push('styles') 
+<link rel="stylesheet" href="{{ asset('css/home.css') }}">
+<style>
+	body{
+		overflow: hidden;
+	}
+   #nav {
+        background-color: #1D1D1D !important; 
+        transition: all .5s;
+    }
+    .dropdow-wraper.wrap{
+        background-color: #1D1D1D !important;
+    }
+	.container.login-wraper{
+		display:flex;
+		align-items:center;
+		justify-content:center;
+	}
+	.container.login-wraper .row{
+		width: 50%;
+	}
+	.container.login-wraper .login-logo {
+		padding-bottom: 5rem;
+	}
+	.container.login-wraper .login-logo > h1{
+		text-align:center;
+		color:#fff;
+	}
+	.container.login-wraper form > .form-control{
+		 display:flex;
+		 background:none;
+		 height:fit-content;
+		 border:none;
+	}
+	
+	.container.login-wraper form > .input-ifo{
+		 flex-direction:column;
+	}
+	.container.login-wraper form .form-control > label{
+		 color:#fff;
+		 font-weight:500;
+	}
+	.container.login-wraper form .form-control > input{
+		 padding:10px;
+		 outline:none;
+		 border:0;
+		 border-radius:5px;
+		 font-weight:700;
+	}
+    .form-control.optionbtn{
+	    flex-direction:row;
+		align-items:center;
+		justify-content:space-between;
+	}
+    .form-control.optionbtn > button{
+	    width:40%;
+		padding: 10px;
+		border-radius:6px;
+		border:none;
+		outline:none;
+		color:#fff;
+		font-weight:700;
+	}
+    .form-control.optionbtn > button:first-child{
+	    background:#4c1475;
+	}
+    .form-control.optionbtn > button:last-child{
+	    background:#000;
+	}
+    .form-control.optionbtn > button{
+	    width:40%;
+		padding: 10px;
+		border-radius:6px;
+		border:none;
+		outline:none;
+		color:#fff;
+		font-weight:700;
+	}
+    .form-control.optionbtn > button a{
+		color:#fff;
+		font-weight:700;
+	}
+
+    /* Style for the checkbox container */
+    .checkbox-container {
+        display: inline-block;
+        position: relative;
+        cursor: pointer;
+        margin-right: 10px; /* Adjust as needed */
+    }
+
+    /* Hide the actual checkbox */
+    .checkbox-container input[type="checkbox"] {
+        display: none;
+    }
+
+    /* Style for the custom checkbox */
+    .custom-checkbox {
+        width: 20px; /* Adjust the size of the checkbox */
+        height:20px; /* Adjust the size of the checkbox */
+        border-radius: 50%; /* Make it circular */
+        background-color: #535353; /* Default background color */
+        display: inline-block;
+        vertical-align: middle;
+		position: relative;
+    }
+
+    /* Style for the checkmark icon */
+    .checkmark {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white; /* Color of the checkmark */
+    }
+
+    /* Style for the label */
+    .checkbox-container label {
+        vertical-align: middle;
+        cursor: pointer;
+    }
+
+    /* When the checkbox is checked, change the background color */
+    .checkbox-container input[type="checkbox"]:checked + .custom-checkbox {
+        background-color: #4C1475;
+    }
+
+    /* Show the checkmark icon when the checkbox is checked */
+    .checkbox-container input[type="checkbox"]:checked + .custom-checkbox .checkmark {
+        display: block;
+    }
+</style>
+@endpush
+@section('content')
+<div class="container login-wraper" style="height:100vh;">
+	<div class="row">
+		<div class="login-logo">
+			<h1>Login</h1>
+		</div>
+		<div class="form-wraper">
+			<form action="">
+				<div class="form-control input-ifo">
+					<label for="user-id">Id</label>
+					<input type="text" name="user-id" id="user-id">
 				</div>
-
-				<form method="POST" action="{{ route('login') }}" class="login100-form validate-form">
-                @csrf
-					<div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
-						<span class="label-input100">{{ __('E-Mail Address') }}</span>
-						<input  type="email" class="input100 @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Email">
-                        <span class="focus-input100"></span>
+				<div class="form-control input-ifo">
+					<label for="password">Id</label>
+					<input type="password" name="password" id="password">
+				</div>
+				<div class="form-control input-ifo">
+					<div class="checkbox-container">
+						<label for="outologin">
+							<input type="checkbox" id="outologin">
+							<div class="custom-checkbox">
+								<span class="checkmark">&#10003;</span>
+							</div>
+							Auto Login
+						</label>
 					</div>
-
-					<div class="wrap-input100 validate-input m-b-18" data-validate = "Password is required">
-						<span class="label-input100">{{ __('Password') }}</span>
-						<input  id="password" type="password" class="input100 @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-                        <span class="focus-input100"></span>
-					</div>
-
-					<div class="flex-sb-m w-full p-b-30">
-						<div class="contact100-form-checkbox">
-							<input class="input-checkbox100"  type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-							<label class="label-checkbox100" for="remember">
-                                {{ __('Remember Me') }}
-							</label>
-						</div>
-
-						<div>
-                            @if (Route::has('password.request'))
-                                        <a class="txt1" href="{{ route('password.request') }}">
-                                            {{ __('Forgot Your Password?') }}
-                                        </a>
-                             @endif
-						</div>
-					</div>
-
-					<div class="container-login100-form-btn">
-						<button class="login100-form-btn" type="submit">
-                            {{ __('Login') }}
-						</button>
-					</div>
-
-				</form>
-			</div>
+				</div>
+				<div class="form-control optionbtn">
+				   <button>Login</button>
+				    <button><a href="#member">Join the membership</a></button>
+				</div>
+			</form>
 		</div>
 	</div>
-<!--===============================================================================================-->
-	<script src="{{asset('login_component/vendor/jquery/jquery-3.2.1.min.js')}}"></script>
-<!--===============================================================================================-->
-	<script src="{{asset('login_component/vendor/animsition/js/animsition.min.js')}}"></script>
-<!--===============================================================================================-->
-	<script src="{{asset('login_component/vendor/bootstrap/js/popper.js')}}"></script>
-	<script src="{{asset('login_component/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
-<!--===============================================================================================-->
-	<script src="{{asset('login_component/vendor/select2/select2.min.js')}}"></script>
-<!--===============================================================================================-->
-	<script src="{{asset('login_component/vendor/daterangepicker/moment.min.js')}}"></script>
-	<script src="{{asset('login_component/vendor/daterangepicker/daterangepicker.js' )}}"></script>
-	<script src="{{asset('login_component/vendor/countdowntime/countdowntime.js')}}"></script>
-	<script src="{{ asset('login_component/js/main.js')}}"></script>
-</body>
-</html>
-
-
+</div>
+@endsection
+@push('scripts')
+@endpush
