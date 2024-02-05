@@ -22,10 +22,18 @@
 			<h1>Login</h1>
 		</div>
 		<div class="form-wraper">
-			<form action="">
+			<form action="{{ route('postLogin') }}" method="POST">
+				@csrf
+				<div class="form-control input-ifo">
+					@if ( Session::get('message') != '' ) 
+                            <span class="focus-input100 text-center text-danger" role="alert"> 
+                                <strong>{{ Session::get('message') }}</strong> 
+                            </span> 
+                    @endif
+				</div>
 				<div class="form-control input-ifo">
 					<label for="user-id">Id</label>
-					<input type="text" name="user-id" id="user-id">
+					<input type="text" name="email" id="user-id">
 				</div>
 				<div class="form-control input-ifo">
 					<label for="password">Id</label>

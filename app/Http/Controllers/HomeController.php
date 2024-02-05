@@ -12,7 +12,7 @@ use App\OrderItem;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Input\Input;
 use Illuminate\Support\Facades\App;
-
+use Illuminate\Support\Facades\Session;
 class HomeController extends Controller
 {
     /**
@@ -31,17 +31,18 @@ class HomeController extends Controller
      */
     public function index()
     {
-
-        return view('front.home');
+        $session = Session();
+        return view('front.home', compact('session'));
     }
     public function PageCategory($category)
     {
-
-        return view('front.popular');
+        $session = Session();
+        return view('front.popular', compact('session'));
     }
     public function videoWach($CategoryName, $part, $movieTile){
+        $session = Session();
         $data['accessPoint']  = [$CategoryName, $part, $movieTile];
-        return view('front.waching-vtr', compact('data'));
+        return view('front.waching-vtr', compact('data', 'session')); 
     }
 
     

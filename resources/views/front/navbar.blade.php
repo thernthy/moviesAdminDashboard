@@ -48,53 +48,23 @@
                             </ul>
                         </div>
                     </li>
-                    @if(!Auth::user())
-                    <!--<li>
-                        <a href="{{url('login')}}">Login</a>
-                    </li>
-                    <li>
-                        <a href="{{ url('register')}}">register</a>
-                    </li>-->
-                    @else
-                    <li>
-                        <div class="user_profile">
-                            <span></span>
-                            <img src="{{ asset('img/user_avertar.jpg')}}" alt="">
-                        </div>
-                    </li>
-                    <li>
-                        <form action="{{route('logout')}}" method="post">
-                            @csrf
-                            <button type="submit">Log Out</button>
-                        </form>
-                    </li>
-                    <li>
-                        <a href="{{url('view/cart')}}"
-                        style="position: relative;"
-                        >
-                        <i class="fa-solid fa-cart-arrow-down"
-                        style="font-size: 1.5rem;"
-                        >
-                        </i>
-                        <span
-                        style="
-                        position: absolute; 
-                        top:5px; 
-                        right:25px; 
-                        color:<?php if($totalCartItems!=0){echo'red';}else{echo'green';}?>;
-                        "
-                        >{{$totalCartItems}}</span>
-                    </a>
-                    </li>
-                    @endif
                 </ul>
             </div>
             <div class="tools-wrap user_tools">
                 <ul class="nav navbar-nav nav-justified" >
                     <li class="{{request()->is('/')?'':''}} search_bar">
                             <i class="fa-solid fa-magnifying-glass" id="search_btn"></i>
-                        </li>
+                    </li>
+                    @if(!$session->get('admin_name'))
                     <li class="{{request()->is('/login')?'':''}}"><a href="{{url('/login')}}"><img src="{{ asset('img/user_profile.png') }}" alt="" width="50px" height="50px"></a></li>
+                    @else
+                        <li>
+                            <div class="user_profile">
+                                <span></span>
+                                <img src="{{ asset('img/001 (2).png')}}" alt="">
+                            </div>
+                        </li>
+                    @endif
                 </ul>
                 <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">

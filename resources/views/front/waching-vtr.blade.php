@@ -11,7 +11,18 @@
         .dropdow-wraper.wrap{
             background-color: #1D1D1D !important;
     }
-        
+
+    @media (min-width:800px){
+        .row .col-md-8 > iframe {
+            height: 500px;
+        }
+    } 
+    @media (max-width:800px){
+        .row .col-md-8 > iframe {
+         height: 350px;
+        }
+    } 
+
 </style>
 @endpush
 @section('content')
@@ -23,8 +34,10 @@
         </div>
         <div class="row">
             <div class="col-md-8">
-                <iframe width="100%" height="315" src="https://youtu.be/--S3rccz9X0?si=hjiYJlvlUyGXz6HP" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen> 
-                </iframe>
+                <iframe width="100%" class="face" src="https://www.youtube.com/embed/O6c9hkgn-tY?autoplay=1&mute=1&enablejsapi=1"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
                 <div class="row movie-info-wraper">
                    <div>
                     <h4 class="text-left">
