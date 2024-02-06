@@ -13,6 +13,7 @@
     .dropdow-wraper.wrap{
         background-color: #1D1D1D !important;
     }
+
 </style>
 @endpush
 @section('content')
@@ -36,8 +37,11 @@
 					<input type="text" name="email" id="user-id">
 				</div>
 				<div class="form-control input-ifo">
-					<label for="password">Id</label>
-					<input type="password" name="password" id="password">
+					<label for="password">Password</label>
+					<div class="password-input-wraper">
+						<input type="password" name="password" id="password">
+						<i Onclick="passwordHandle()" class="fa-regular fa-eye-slash passwordhandling"></i>
+					</div>
 				</div>
 				<div class="form-control input-ifo">
 					<div class="checkbox-container">
@@ -60,4 +64,16 @@
 </div>
 @endsection
 @push('scripts')
+<script>
+	function passwordHandle() {  
+		let passInputField = document.getElementById('password');
+        let passwordhandling =  document.querySelector('.passwordhandling')
+		passInputField.type = passInputField.type === "password" ? "text" : "password";
+		if(passwordhandling.classList.contains('fa-eye-slash')){
+			passwordhandling.classList.replace('fa-eye-slash','fa-eye')
+		}else{
+			passwordhandling.classList.replace('fa-eye','fa-eye-slash')
+		}
+	 }
+</script>
 @endpush

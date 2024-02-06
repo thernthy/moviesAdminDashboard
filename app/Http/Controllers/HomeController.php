@@ -45,6 +45,5 @@ class HomeController extends Controller
         return view('front.waching-vtr', compact('data', 'session')); 
     }
 
-    
   
 }

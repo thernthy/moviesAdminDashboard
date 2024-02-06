@@ -710,12 +710,13 @@
                 </div>
             </div>
         </div>
+
 </section>
 @endsection
 
 @push('scripts')
    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-    <script>
+    <script type="text/javascript">
     var swiper = new Swiper(".mySwiper", {
       slidesPerView: 8,
       spaceBetween:5,
@@ -728,6 +729,8 @@
       },
 
     });
+
     </script>
+    
     
 @endpush

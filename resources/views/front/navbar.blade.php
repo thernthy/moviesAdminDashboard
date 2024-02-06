@@ -59,7 +59,7 @@
                             <li>
                                 <div class="user_profile">
                                     <span></span>
-                                    <a href="{{ url('pr') }}"><img src="{{ asset('img/001 (2).png')}}" alt=""></a>
+                                    <a href="{{ url('user', session()->get('admin_name')) }}"><img src="{{ asset('img/001 (2).png')}}" alt=""></a>
                                 </div>
                             </li>
                         @else
