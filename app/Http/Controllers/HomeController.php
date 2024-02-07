@@ -44,6 +44,19 @@ class HomeController extends Controller
         $data['accessPoint']  = [$CategoryName, $part, $movieTile];
         return view('front.waching-vtr', compact('data', 'session')); 
     }
-
   
+
+    public function requstEdite($username, Request $request) {
+        $userName = $request->input('user-name');
+        $email = $request->input('email');
+        $profile = $request->input('profile');
+        $userPassword = $request->input('userpassword');
+        $data['userInfo'] = DB::table('cms_users')
+        ->select()
+        ->where('name', $username)
+        ->first();
+        return response()->json(["Success" => "Success Updated", "data" => $data]);
+        //return response()->json(["Errors" => "Something wrong"]);
+    }
+    
 }

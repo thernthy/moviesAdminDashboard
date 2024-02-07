@@ -33,7 +33,13 @@
                                 <div class="img">
                                     <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
                                 </div>
-                                <h4 class="card-title">영화 제목</h4> 
+                                <div style="display:flex; align-items:center; justify-content:space-between;">
+                                    <h4 class="card-title">영화 제목</h4> 
+                                    <lord-icon src="https://cdn.lordicon.com/xyboiuok.json" trigger="hover" 
+                                        style="width: 25px;height: 25px;background: #fff;border-radius: 50%;"
+                                        >
+                                    </lord-icon>
+                                </div>
                             </a>
                         </div> 
                         <div class="card"> 

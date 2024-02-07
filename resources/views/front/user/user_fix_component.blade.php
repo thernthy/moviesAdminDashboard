@@ -13,10 +13,11 @@
     </div>
     <div class="user-tools">
         <ul>
-                <li><i id="backButton" class="fa-solid fa-circle-chevron-left"></i>
+                <li>
+                    <i id="backButton" class="fa-solid fa-circle-chevron-left"></i>
                 </li>
                 <li class="{{(request()->route()->named('user.dashboard'))? 'active' : ''}}">
-                    <a href="{{url('user', session()->get('admin_name'))}}"><i class="fa-regular fa-address-card"></i>About You</a>
+                    <a href="{{ route('user.dashboard', ['username' => session()->get('admin_name')]) }}"><i class="fa-regular fa-address-card"></i>About You</a>
                 </li>
                 
                 <li class="{{(request()->route()->named('user.history'))? 'active' : ''}}">
@@ -24,7 +25,11 @@
                     <i class="fa-solid fa-clock-rotate-left"></i>History
                     </a>
                 </li>
-                <li><a href="#"><i class="fa-regular fa-clock"></i>Watch Later</a></li>
+                <li class="{{(request()->route()->named('user.watchlater'))? 'active' : ''}}">
+                    <a href="{{ route('user.watchlater', ['username' => session()->get('admin_name')]) }}">
+                    <i class="fa-regular fa-clock"></i>
+                    Watch Later</a>
+                </li>
                 <li class="{{(request()->route()->named('user.favorite'))? 'active' : ''}}">
                     <a href="{{ route('user.favorite', ['username' => session()->get('admin_name')]) }}">
                     <i class="fa-regular fa-heart"></i>Favorite</a>

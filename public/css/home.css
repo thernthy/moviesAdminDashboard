@@ -487,3 +487,183 @@
         background-color: #1D1D1D !important;
     }
 }
+
+/* user history && saving list VTR
+================================================ */
+
+.video-list-wraper{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    margin: 15px 0;
+}
+.video-list-wraper > .video-cover-pic{
+    padding: 128px 207px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: opacity .5s;
+}
+.video-list-wraper > .video-cover-pic:hover{
+    opacity: .9;
+}
+.video-cover-content{
+    padding: 10px;
+}
+.video-cover-content h6, h4{
+    line-height:2.1;
+    color:gray;
+}
+@media (max-width:750px){
+    .video-list-wraper > .video-cover-pic{
+        padding: 81px 130px;
+    }
+    .video-list-wraper{
+        align-items:center;
+    }
+}
+@media (max-width:680px){
+    .user-tools{
+        transform: translateY(-30%);
+    }
+
+    .user-tools ul > li{
+        width:40%;
+        padding:10px 0;
+        display: flex;
+        align-items:flex-start;
+        justify-content:space-between;
+    }
+    .user-tools ul li a > i{
+        padding:0 5px;
+    }
+    .user-tools ul li > i{
+        transform: translateX(-8px);
+    }
+}
+@media (max-width:550px){
+    .video-list-wraper{
+        flex-direction: column;
+        align-items:center;
+        justify-content:center;
+    }
+    .video-list-wraper > .video-cover-pic {
+            padding: 112px 173px;
+    }
+    .video-cover-content{
+        text-align:center;
+        padding: 0 60px;
+    }
+}
+
+/* this user index page disign style
+================================================ */
+.user-info-form-wraper{
+    height: 100vh;
+    width: 100%;
+
+ }
+ .edite-btn{
+     width: 30px;
+     height: 30px;
+     border-radius:50%;
+     background:#fff;
+     display: flex;
+     align-items:center;
+     justify-content:center;
+     margin-bottom:2rem;
+     transition: all .5s;
+     cursor: pointer;
+ }
+ .edite-btn > i {
+     color: purple;
+     transition: all .5s;
+     
+ }
+ .edite-btn:hover{
+  background-color: #373940;
+ }
+ .edite-btn:hover > i{
+  color:#fff;
+ }
+ .form > .form-control {
+     display:flex;
+     padding:20px 0;
+     padding-right: 10px;
+     flex-direction: row;
+     align-items:center;
+     justify-content: space-between;
+ }
+ .form > .form-control h5 {
+    font-weight: 800;
+    text-transform: capitalize;
+ }
+ .form .form-control h5 > i {
+   font-size: 1.5rem;
+   padding-right: 10px;
+   color: rgba(51, 158, 51, 0.877);
+ }
+ .form > .form-control h5.active{
+    display: block;
+ }
+ .form > .form-control h5.unactive{
+   display: none;   
+ }
+ .form .form-control > input {
+     width: 80%;
+     background: transparent;
+     padding: 6px;
+     outline:none;
+     border:none;
+     border-radius: 5px;
+     font-weight: 700;
+     display: none;
+ }
+ .form .form-control .tool-btn-wraper{
+     justify-content: space-between;
+     align-items:center;
+     display: none;
+ }
+ .form .form-control .tool-btn-wraper.active{
+     animation: slideUpTools 0.3s step-start forwards;
+     display: flex;
+ }
+ .form .form-control > input.active{
+    display: block;
+ }
+ .form .form-control  .tool-btn-wraper > button{
+     background:transparent;
+     outline:none;
+     border:none;
+ }
+ .form .form-control  .tool-btn-wraper button > i{
+     transition: opacity .5s;
+ }
+ .form .form-control  .tool-btn-wraper button.cofirm-btn > i{
+     color: green;
+ }
+ .form .form-control  .tool-btn-wraper button.cancel-btn > i{
+     color: red;
+ }
+ .form .form-control  .tool-btn-wraper button.cofirm-btn:hover > i{
+     opacity: .5;
+ }
+ .form .form-control  .tool-btn-wraper button.cancel-btn:hover > i{
+     opacity: .5;
+ }
+@keyframes slidUptools {
+ 0%{
+     opacity: .2.5;
+ }
+ 25%{
+     opacity: .5;
+ }
+ 50%{
+     opacity: .5.2;
+ }
+ 100%{
+     opacity: 1;
+ }
+}
