@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\Session;
 //======     Public route         ==================
 
 //=================================================
-
-
 Route::get('/', 'HomeController@index');
 Route::get('/video/category/{categoryName}', 'HomeController@PageCategory');
 Route::get('video/category/{categoryName}/{part}/{movieTile}', 'HomeController@videoWach');
@@ -24,8 +22,6 @@ Route::get('video/category/{categoryName}/{part}/{movieTile}', 'HomeController@v
 //======     User route         ==================
 
 //=================================================
-
-
 Route::middleware(['auth.user'])->group(function () {
     Route::prefix('/user/{username}')->group(function () { 
         Route::get('/', function ($username) {
@@ -47,11 +43,24 @@ Route::middleware(['auth.user'])->group(function () {
             $session = Session();
             return view('front/user/history')->with(['username' => $username, 'session' => $session]);
         })->name('user.history'); 
-        Route::post('/requstEdite', 'HomeController@requstEdite')->name('user.requstEdite'); 
+        Route::post('/requstEdite/{user_id}', 'HomeController@requstEdite')->name('user.requstEdite'); 
     });
 });
 
+//==============================================
 
+//======     Accessing router          ==================
+
+//=================================================
+Route::middleware(['auth.guest'])->group(function () {
+    Route::get('/login', function () {
+        return view('Auth/login');
+    })->name('login');
+    Route::get('/register', function() {
+        return view('Auth/register');
+    })->name('register');
+});
+Route::post('/registerPost', 'HomeController@registerPost')->name('registerPost');
 
 //==============================================
 

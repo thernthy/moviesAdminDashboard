@@ -56,7 +56,7 @@
 				</div>
 				<div class="form-control optionbtn">
 				   <button>Login</button>
-				    <button><a href="#member">Join the membership</a></button>
+				    <button><a href="{{route('register')}}">Join the membership</a></button>
 				</div>
 			</form>
 		</div>

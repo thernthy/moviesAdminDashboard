@@ -5,8 +5,7 @@
                     <input type="file" name="user-cover" id="cover_picker" hidden>
                 </div>
              <div class="user-profile-pic">
-                <div class="profile-wraper" 
-                    style="background-image:url('{{asset('img/movei/mv (1).jpg')}}')"></div>
+                 <div class="profile-wraper" style="background-image:url('{{ asset(session()->get('admin_photo')) }}')"></div>
                     <h2>user name</h2>
              </div>
         </div>      
