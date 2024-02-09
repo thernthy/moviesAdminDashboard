@@ -38,7 +38,7 @@
                     <div class="form">
                         <div class="form-control">
                             <h5 class="active"><i class="fa-regular fa-address-book"></i><span class="user_name">{{$session->get('admin_name')}}</span></h5>
-                            <input type="text" name="user-name" id="user-name">
+                            <input type="text" name="user-name" id="user-name" value="{{$session->get('admin_name')}}">
                             <div class="tool-btn-wraper">
                                 <button class="cofirm-btn" onclick="updateName({{$session->get('admin_id')}})"> <i class="fa-solid fa-check"></i> </button> 
                                 <button class="cancel-btn"><i class="fa-solid fa-xmark"></i></button> 
@@ -46,7 +46,7 @@
                         </div>
                         <div class="form-control">
                             <h5 class="active"><i class="fa-solid fa-envelope-circle-check"></i><span class="user_email">{{$session->get('admin_email')}}</span></h5>
-                            <input type="email" name="user-email" id="user-email"> 
+                            <input type="email" name="user-email" id="user-email" value="{{$session->get('admin_email')}}" > 
                             <div class="tool-btn-wraper">
                                 <button class="cofirm-btn" onclick="UpdateEmail({{$session->get('admin_id')}})"> <i class="fa-solid fa-check"></i> </button> 
                                 <button class="cancel-btn"><i class="fa-solid fa-xmark"></i></button> 
@@ -338,6 +338,7 @@ function updateUserInterFaceHandle(userData){
             var backgrouUrl = `url('{{asset('${userIfon.photo}')}}')`;
             document.querySelector('.user_name').innerHTML = userIfon.name
             document.querySelector('.user_email').innerHTML = userIfon.email
+            document.querySelector('.user_name_face').innerHTML = userIfon.name
             document.querySelector('.profile-wraper').style.backgroundImage = backgrouUrl;
   }
        

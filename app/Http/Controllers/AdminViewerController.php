@@ -4,54 +4,45 @@
 	use Request;
 	use DB;
 	use CRUDBooster;
-	use Str;
 
-	class AdminCountriesController extends \crocodicstudio\crudbooster\controllers\CBController {
+	class AdminViewerController extends \crocodicstudio\crudbooster\controllers\CBController {
 
 	    public function cbInit() {
 
 			# START CONFIGURATION DO NOT REMOVE THIS LINE
-			$this->title_field = "title";
+			$this->title_field = "id";
 			$this->limit = "20";
 			$this->orderby = "id,desc";
 			$this->global_privilege = false;
 			$this->button_table_action = true;
-			$this->button_bulk_action = false;
+			$this->button_bulk_action = true;
 			$this->button_action_style = "button_icon";
 			$this->button_add = true;
 			$this->button_edit = true;
 			$this->button_delete = true;
-			$this->button_detail = false;
-			$this->button_show = false;
+			$this->button_detail = true;
+			$this->button_show = true;
 			$this->button_filter = true;
 			$this->button_import = false;
 			$this->button_export = false;
-			$this->table = "countries";
+			$this->table = "viewer";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Title","name"=>"title"];
-			$this->col[] = ["label"=>"Logo","name"=>"logo","image"=>true];
-			$this->col[] = ["label"=>"Desc","name"=>"desc"];
+			$this->col[] = ["label"=>"Viewer Ip","name"=>"viewer_ip"];
+			$this->col[] = ["label"=>"Videos Id","name"=>"videos_id","join"=>"videos,link"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
-			$this->form[] = ['label'=>'Desc','name'=>'desc','type'=>'wysiwyg','validation'=>'string|min:5|max:5000','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Logo','name'=>'logo','type'=>'upload','validation'=>'image','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Latitude','name'=>'cord_lat','type'=>'text','validation'=>'required','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Longitude','name'=>'cord_long','type'=>'text','validation'=>'required','width'=>'col-sm-10'];
+
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
-			//$this->form[] = ['label'=>'Desc','name'=>'desc','type'=>'wysiwyg','validation'=>'string|min:5|max:5000','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Logo','name'=>'logo','type'=>'upload','validation'=>'image','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Latitude','name'=>'cord_lat','type'=>'text','validation'=>'required','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Longitude','name'=>'cord_long','type'=>'text','validation'=>'required','width'=>'col-sm-10'];
+			//$this->form[] = ["label"=>"Viewer Ip","name"=>"viewer_ip","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Videos Id","name"=>"videos_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"videos,title_id"];
 			# OLD END FORM
 
 			/* 
@@ -273,18 +264,6 @@
 	    */
 	    public function hook_after_add($id) {        
 	        //Your code here
-			$data = DB::table('countries')
-				->select('title')
-				->where('id', $id)
-				->first();
-
-			$result = DB::table('countries')
-				->where('id', $id)
-				->update(
-					[
-						'slug' => Str::slug($data->title)
-					]
-				);
 
 	    }
 
@@ -310,17 +289,6 @@
 	    */
 	    public function hook_after_edit($id) {
 	        //Your code here 
-			$data = DB::table('countries')
-				->select('title')
-				->where('id', $id)
-				->first();
-			$result = DB::table('countries')
-				->where('id', $id)
-				->update(
-					[
-						'slug' => Str::slug($data->title)
-					]
-				);
 
 	    }
 

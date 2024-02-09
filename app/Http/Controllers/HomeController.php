@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\Input;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
+use CRUDBooster;
 class HomeController extends Controller
 {
     /**
@@ -31,10 +32,25 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
+        $ip =  $request->ip();
+        $userAgent = $request->userAgent();
+        $referrer = $request->headers->get('/');
+        $visitor = DB::table('website_visitors')->where('ip_address', $ip)->first();
+        if (!$visitor) {
+           DB::table('website_visitors')->insert([
+                'ip_address' => $ip,
+                'user_agent' => $userAgent,
+                'referrer' => $referrer
+            ]);
+        }
         $session = Session();
-        return view('front.home', compact('session'));
+        $data['sponsor_banner'] = DB::table('sponsor_banner')
+        ->select('banner_path')
+        ->where('status', '')
+        ->get();
+        return view('front.home', compact('session', 'data'));
     }
 
 
@@ -52,8 +68,6 @@ class HomeController extends Controller
         return view('front.waching-vtr', compact('data', 'session')); 
 
     }
-
-
     public function requstEdite($username, $user_id, Request $request) {
         $data['userInfo'] = DB::table('cms_users')
             ->select()

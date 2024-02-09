@@ -5,56 +5,48 @@
 	use DB;
 	use CRUDBooster;
 
-	use Illuminate\Support\Str;
-
-	class AdminActionsController extends \crocodicstudio\crudbooster\controllers\CBController {
+	class AdminSponsorBannerController extends \crocodicstudio\crudbooster\controllers\CBController {
 
 	    public function cbInit() {
 
 			# START CONFIGURATION DO NOT REMOVE THIS LINE
-			$this->title_field = "title_en";
+			$this->title_field = "id";
 			$this->limit = "20";
-			$this->orderby = "id,desc";
+			$this->orderby = "created_at,desc";
 			$this->global_privilege = false;
 			$this->button_table_action = true;
-			$this->button_bulk_action = false;
+			$this->button_bulk_action = true;
 			$this->button_action_style = "button_icon";
 			$this->button_add = true;
 			$this->button_edit = true;
 			$this->button_delete = true;
-			$this->button_detail = false;
-			$this->button_show = false;
+			$this->button_detail = true;
+			$this->button_show = true;
 			$this->button_filter = true;
 			$this->button_import = false;
 			$this->button_export = false;
-			$this->table = "actions";
+			$this->table = "sponsor_banner";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Title EN","name"=>"title_en"];
-			$this->col[] = ["label"=>"Title JP","name"=>"title_jp"];
-			$this->col[] = ["label"=>"Img","name"=>"img","image"=>true];
+			$this->col[] = ["label"=>"Banner Path","name"=>"banner_path","image"=>true];
+			$this->col[] = ["label"=>"Ending Date","name"=>"ending_date"];
+			$this->col[] = ["label"=>"Dcr","name"=>"dcr"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Title EN','name'=>'title_en','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Title JP','name'=>'title_jp','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Desc EN','name'=>'desc_en','type'=>'wysiwyg','validation'=>'required|string','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Desc JP','name'=>'desc_jp','type'=>'wysiwyg','validation'=>'required|string','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Logo','name'=>'img','type'=>'upload','validation'=>'image','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'BG','name'=>'bg','type'=>'upload','validation'=>'image','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Banner Path','name'=>'banner_path','type'=>'upload','validation'=>'required|min:5|max:5000','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Ending Date','name'=>'ending_date','type'=>'date','validation'=>'required|date','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Dcr','name'=>'dcr','type'=>'textarea','validation'=>'string|max:5000','width'=>'col-sm-10'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ['label'=>'Title EN','name'=>'title_en','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Title JP','name'=>'title_jp','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Desc EN','name'=>'desc_en','type'=>'wysiwyg','validation'=>'required|string','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Desc JP','name'=>'desc_jp','type'=>'wysiwyg','validation'=>'required|string','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Logo','name'=>'img','type'=>'upload','validation'=>'image','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'BG','name'=>'bg','type'=>'upload','validation'=>'image','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'Panner Path','name'=>'panner_path','type'=>'upload','validation'=>'required|min:5|max:5000|image','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'Ending Date','name'=>'ending_date','type'=>'date','validation'=>'required|date','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'Dcr','name'=>'dcr','type'=>'textarea','validation'=>'string|max:5000','width'=>'col-sm-10'];
 			# OLD END FORM
 
 			/* 
@@ -276,18 +268,6 @@
 	    */
 	    public function hook_after_add($id) {        
 	        //Your code here
-			$data = DB::table('actions')
-				->select('title_en')
-				->where('id', $id)
-				->first();
-
-			$result = DB::table('actions')
-				->where('id', $id)
-				->update(
-					[
-						'slug' => Str::slug($data->title_en)
-					]
-				);
 
 	    }
 
@@ -313,18 +293,6 @@
 	    */
 	    public function hook_after_edit($id) {
 	        //Your code here 
-			$data = DB::table('actions')
-				->select('title_en')
-				->where('id', $id)
-				->first();
-
-			$result = DB::table('actions')
-				->where('id', $id)
-				->update(
-					[
-						'slug' => Str::slug($data->title_en)
-					]
-				);
 
 	    }
 

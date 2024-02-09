@@ -5,25 +5,23 @@
 	use DB;
 	use CRUDBooster;
 
-	use Illuminate\Support\Str;
-
 	class AdminKeywordsController extends \crocodicstudio\crudbooster\controllers\CBController {
 
 	    public function cbInit() {
 
 			# START CONFIGURATION DO NOT REMOVE THIS LINE
-			$this->title_field = "title_en";
-			$this->limit = "20";
+			$this->title_field = "title";
+			$this->limit = "10";
 			$this->orderby = "id,desc";
 			$this->global_privilege = false;
 			$this->button_table_action = true;
-			$this->button_bulk_action = false;
-			$this->button_action_style = "button_icon_text";
+			$this->button_bulk_action = true;
+			$this->button_action_style = "button_icon";
 			$this->button_add = true;
 			$this->button_edit = true;
 			$this->button_delete = true;
-			$this->button_detail = false;
-			$this->button_show = false;
+			$this->button_detail = true;
+			$this->button_show = true;
 			$this->button_filter = true;
 			$this->button_import = false;
 			$this->button_export = false;
@@ -32,24 +30,20 @@
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Title EN","name"=>"title_en"];
-			$this->col[] = ["label"=>"Title JP","name"=>"title_jp"];
+			$this->col[] = ["label"=>"Title","name"=>"title"];
+			$this->col[] = ["label"=>"Status","name"=>"status"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Title EN','name'=>'title_en','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Title JP','name'=>'title_jp','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Desc EN','name'=>'desc_en','type'=>'wysiwyg','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Desc JP','name'=>'desc_jp','type'=>'wysiwyg','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:100','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
+			$this->form[] = ['label'=>'Status','name'=>'status','type'=>'radio','validation'=>'required','width'=>'col-sm-10','dataenum'=>'1|public;0|private'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ["label"=>"Title En","name"=>"title_en","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
-			//$this->form[] = ["label"=>"Title Jp","name"=>"title_jp","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
-			//$this->form[] = ["label"=>"Desc En","name"=>"desc_en","type"=>"textarea","required"=>TRUE,"validation"=>"required|string|min:5|max:5000"];
-			//$this->form[] = ["label"=>"Desc Jp","name"=>"desc_jp","type"=>"textarea","required"=>TRUE,"validation"=>"required|string|min:5|max:5000"];
+			//$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:100','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
+			//$this->form[] = ['label'=>'Status','name'=>'status','type'=>'radio','validation'=>'required','width'=>'col-sm-10','dataenum'=>'1|plice;0|private'];
 			# OLD END FORM
 
 			/* 
@@ -271,18 +265,6 @@
 	    */
 	    public function hook_after_add($id) {        
 	        //Your code here
-			$data = DB::table('keywords')
-				->select('title_en')
-				->where('id', $id)
-				->first();
-
-			$result = DB::table('keywords')
-				->where('id', $id)
-				->update(
-					[
-						'slug' => Str::slug($data->title_en)
-					]
-				);
 
 	    }
 
@@ -307,19 +289,7 @@
 	    | 
 	    */
 	    public function hook_after_edit($id) {
-	        //Your code here
-			$data = DB::table('keywords')
-				->select('title_en')
-				->where('id', $id)
-				->first();
-
-			$result = DB::table('keywords')
-				->where('id', $id)
-				->update(
-					[
-						'slug' => Str::slug($data->title_en)
-					]
-				); 
+	        //Your code here 
 
 	    }
 

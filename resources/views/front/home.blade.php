@@ -35,19 +35,16 @@
         </div>
     </div>
     <div class="container" style="padding: 0;">
+        @foreach($data['sponsor_banner'] as $item)
         <a href="">
-            <img src="{{ asset('img/sponser/sp-1-(1).gif')}}" alt="" width="100%">
+            <img src="{{ asset($item->banner_path)}}" alt="" width="100%">
         </a>
-        <a href="">
-            <img src="{{ asset('img/sponser/sp-1 (3).gif')}}" alt="" width="100%">
-        </a>
-        <a href="">
-            <img src="{{ asset('img/sponser/sp-1-(4).gif')}}" alt="" width="100%">
-        </a>
+        @endforeach
     </div>
 
 <!-- ===============section one ========= Latest/Papular -->
 <section>
+<IFRAME SRC="https://lylxan.com/e/qvgra66s2yhm" FRAMEBORDER=0 MARGINWIDTH=0 MARGINHEIGHT=0 SCROLLING=NO WIDTH=640 HEIGHT=360 allowfullscreen></IFRAME>
     <div class="container-fuild category">
         <h3>Latest/Papular</h3>
         <a href="">see more</a>

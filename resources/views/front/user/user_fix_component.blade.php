@@ -6,7 +6,7 @@
                 </div>
              <div class="user-profile-pic">
                  <div class="profile-wraper" style="background-image:url('{{ asset(session()->get('admin_photo')) }}')"></div>
-                    <h2>user name</h2>
+                    <h2 class="user_name_face">{{ session()->get('admin_name') }}</h2>
              </div>
         </div>      
     </div>

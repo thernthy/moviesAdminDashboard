@@ -5,44 +5,53 @@
 	use DB;
 	use CRUDBooster;
 
-	class AdminVideoController extends \crocodicstudio\crudbooster\controllers\CBController {
+	class AdminVideosController extends \crocodicstudio\crudbooster\controllers\CBController {
 
 	    public function cbInit() {
-	    	# START CONFIGURATION DO NOT REMOVE THIS LINE
-			$this->table 			   = "video";	        
-			$this->title_field         = "id";
-			$this->limit               = 20;
-			$this->orderby             = "id,desc";
-			$this->show_numbering      = FALSE;
-			$this->global_privilege    = FALSE;	        
-			$this->button_table_action = TRUE;   
-			$this->button_action_style = "button_icon";     
-			$this->button_add          = TRUE;
-			$this->button_delete       = TRUE;
-			$this->button_edit         = TRUE;
-			$this->button_detail       = TRUE;
-			$this->button_show         = TRUE;
-			$this->button_filter       = TRUE;        
-			$this->button_export       = FALSE;	        
-			$this->button_import       = FALSE;
-			$this->button_bulk_action  = TRUE;	
-			$this->sidebar_mode		   = "normal"; //normal,mini,collapse,collapse-mini
-			# END CONFIGURATION DO NOT REMOVE THIS LINE						      
+
+			# START CONFIGURATION DO NOT REMOVE THIS LINE
+			$this->title_field = "title_id";
+			$this->limit = "10";
+			$this->orderby = "created_at,desc";
+			$this->global_privilege = true;
+			$this->button_table_action = true;
+			$this->button_bulk_action = true;
+			$this->button_action_style = "button_icon";
+			$this->button_add = true;
+			$this->button_edit = true;
+			$this->button_delete = true;
+			$this->button_detail = true;
+			$this->button_show = true;
+			$this->button_filter = true;
+			$this->button_import = false;
+			$this->button_export = false;
+			$this->table = "videos";
+			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
-	        $this->col = [];
-			$this->col[] = array("label"=>"Video Patch","name"=>"video_patch" );
-		$this->col[] = array("label"=>"Movie Id","name"=>"movie_id","join"=>"movie,id");
-		$this->col[] = array("label"=>"Movie Part Id","name"=>"movie_part_id","join"=>"movie_part,title");
-
+			$this->col = [];
+			$this->col[] = ["label"=>"Title Id","name"=>"title_id","join"=>"titles,title"];
+			$this->col[] = ["label"=>"Link","name"=>"link"];
+			$this->col[] = ["label"=>"Episode","name"=>"episode"];
+			$this->col[] = ["label"=>"Duration","name"=>"duration"];
+			$this->col[] = ["label"=>"viewer","name"=>"viewer_id","join"=>"viewer,id"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
-			# START FORM DO NOT REMOVE THIS LINE
-		$this->form = [];
-		$this->form[] = ["label"=>"Video Patch","name"=>"video_patch","type"=>"textarea","required"=>TRUE,"validation"=>"required|string|min:5|max:5000"];
-		$this->form[] = ["label"=>"Movie Id","name"=>"movie_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"movie,id"];
-		$this->form[] = ["label"=>"Movie Part Id","name"=>"movie_part_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"movie_part,title"];
 
-			# END FORM DO NOT REMOVE THIS LINE     
+			# START FORM DO NOT REMOVE THIS LINE
+			$this->form = [];
+			$this->form[] = ['label'=>'Select Title','name'=>'title_id','type'=>'select','validation'=>'required','width'=>'col-sm-10','datatable'=>'titles,title'];
+			$this->form[] = ['label'=>'Link','name'=>'link','type'=>'text','validation'=>'required|min:5','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Episode','name'=>'episode','type'=>'text','validation'=>'required','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Duration','name'=>'duration','type'=>'time','validation'=>'required','width'=>'col-sm-10'];
+			# END FORM DO NOT REMOVE THIS LINE
+
+			# OLD START FORM
+			//$this->form = [];
+			//$this->form[] = ['label'=>'Select Title','name'=>'title_id','type'=>'select','validation'=>'required','width'=>'col-sm-10','datatable'=>'titles,title'];
+			//$this->form[] = ['label'=>'Link','name'=>'link','type'=>'text','validation'=>'required|min:5','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'Episode','name'=>'episode','type'=>'text','validation'=>'required','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'Duration','name'=>'duration','type'=>'time','validation'=>'required','width'=>'col-sm-10'];
+			# OLD END FORM
 
 			/* 
 	        | ---------------------------------------------------------------------- 

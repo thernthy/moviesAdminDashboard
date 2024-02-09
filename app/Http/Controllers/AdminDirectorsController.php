@@ -1,13 +1,17 @@
 <?php namespace App\Http\Controllers;
+
 	use Session;
 	use Request;
 	use DB;
 	use CRUDBooster;
-	class AdminGalleriesController extends \crocodicstudio\crudbooster\controllers\CBController {
+
+	class AdminDirectorsController extends \crocodicstudio\crudbooster\controllers\CBController {
+
 	    public function cbInit() {
+
 			# START CONFIGURATION DO NOT REMOVE THIS LINE
-			$this->title_field = "title";
-			$this->limit = "20";
+			$this->title_field = "name";
+			$this->limit = "10";
 			$this->orderby = "id,desc";
 			$this->global_privilege = false;
 			$this->button_table_action = true;
@@ -16,46 +20,33 @@
 			$this->button_add = true;
 			$this->button_edit = true;
 			$this->button_delete = true;
-			$this->button_detail = false;
-			$this->button_show = false;
+			$this->button_detail = true;
+			$this->button_show = true;
 			$this->button_filter = true;
 			$this->button_import = false;
 			$this->button_export = false;
-			$this->table = "galleries";
+			$this->table = "directors";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Title","name"=>"title"];
-			$this->col[] = ["label"=>"Country","name"=>"country_id","join"=>"countries,title"];
-			$this->col[] = ["label"=>"Activity","name"=>"act_id","join"=>"activities,title_en"];
-			$this->col[] = ["label"=>"Img","name"=>"img","image"=>true];
-			$this->col[] = ["label"=>"Status","name"=>"status","callback_php"=>'($row->status == 1? "<span class=\"label label-success\">Show</span>" : "<span class=\"label label-danger\">Hide</span>")'];
+			$this->col[] = ["label"=>"Name","name"=>"name"];
+			$this->col[] = ["label"=>"Data Of Birth","name"=>"data_of_birth"];
+			$this->col[] = ["label"=>"Status","name"=>"status"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
-			$this->form[] = ['label'=>'Desc','name'=>'desc','type'=>'textarea','validation'=>'max:5000','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Img','name'=>'img','type'=>'upload','validation'=>'required','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Country','name'=>'country_id','type'=>'select2','validation'=>'required','width'=>'col-sm-10','datatable'=>'countries,title'];
-			$this->form[] = ['label'=>'Activity','name'=>'act_id','type'=>'select2','width'=>'col-sm-10','datatable'=>'activities,title_en'];
-			$this->form[] = ['label'=>'Status','name'=>'status','type'=>'radio','validation'=>'required','width'=>'col-sm-9','dataenum'=>'1|Show;0|Hide'];
+			$this->form[] = ['label'=>'Name','name'=>'name','type'=>'text','validation'=>'required|string|min:3|max:250','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
+			$this->form[] = ['label'=>'Data Of Birth','name'=>'data_of_birth','type'=>'date','validation'=>'required|date','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Status','name'=>'status','type'=>'radio','validation'=>'required','width'=>'col-sm-10','dataenum'=>'1|Public;0|private'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
-			//$this->form[] = ['label'=>'Desc','name'=>'desc','type'=>'textarea','validation'=>'max:5000','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Img','name'=>'img','type'=>'upload','validation'=>'required','width'=>'col-sm-10'];
-			//
-			//if(CRUDBooster::me()->id_cms_privileges!=3) {
-			//$this->form[] = ['label'=>'Country','name'=>'country_id','type'=>'select2','validation'=>'required','width'=>'col-sm-10','datatable'=>'countries,title'];
-			//$this->form[] = ['label'=>'Activity','name'=>'act_id','type'=>'select2','width'=>'col-sm-10','datatable'=>'activities,title_en'];
-			//} else {
-			//$this->form[] = ['label'=>'Country','name'=>'country_id','type'=>'hidden','validation'=>'','value'=>CRUDBooster::me()->country_id,'width'=>'col-sm-10','readonly'=>true];
-			//$this->form[] = ['label'=>'Activity','name'=>'act_id','type'=>'select2','width'=>'col-sm-10','datatable'=>'activities,title_en','datatable_where'=>'id_country='.CRUDBooster::me()->country_id];
-			//}
+			//$this->form[] = ["label"=>"Name","name"=>"name","type"=>"text","required"=>TRUE,"validation"=>"required|string|min:3|max:70","placeholder"=>"You can only enter the letter only"];
+			//$this->form[] = ["label"=>"Data Of Birth","name"=>"data_of_birth","type"=>"date","required"=>TRUE,"validation"=>"required|date"];
+			//$this->form[] = ["label"=>"Status","name"=>"status","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
 			# OLD END FORM
 
 			/* 
@@ -243,9 +234,6 @@
 	    */
 	    public function hook_query_index(&$query) {
 	        //Your code here
-			if(CRUDBooster::me()->id_cms_privileges==3) {
-				$query->where('country_id', CRUDBooster::me()->country_id);
-			}
 	            
 	    }
 
@@ -336,6 +324,5 @@
 
 	    //By the way, you can still create your own method in here... :) 
 
-	
 
 	}
