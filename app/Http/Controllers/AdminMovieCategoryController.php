@@ -5,14 +5,14 @@
 	use DB;
 	use CRUDBooster;
 
-	class AdminMoviesController extends \crocodicstudio\crudbooster\controllers\CBController {
+	class AdminMovieCategoryController extends \crocodicstudio\crudbooster\controllers\CBController {
 
 	    public function cbInit() {
 
 			# START CONFIGURATION DO NOT REMOVE THIS LINE
-			$this->title_field = "title";
+			$this->title_field = "name";
 			$this->limit = "10";
-			$this->orderby = "created_at,desc";
+			$this->orderby = "name,desc";
 			$this->global_privilege = false;
 			$this->button_table_action = true;
 			$this->button_bulk_action = true;
@@ -25,38 +25,22 @@
 			$this->button_filter = true;
 			$this->button_import = false;
 			$this->button_export = false;
-			$this->table = "titles";
+			$this->table = "movie_category";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Title","name"=>"title"];
-			$this->col[] = ["label"=>"Movie Category","name"=>"movie_category_id","join"=>"movie_category,name"];
-			$this->col[] = ["label"=>"Movie Cover","name"=>"movei_cover_path","image"=>true];
-			$this->col[] = ["label"=>"Keyword Id","name"=>"keyword_id","join"=>"keywords,title"];
-			$this->col[] = ["label"=>"Actors Id","name"=>"actors_id","join"=>"directors,name"];
+			$this->col[] = ["label"=>"Name","name"=>"name"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
-			$this->form[] = ['label'=>'Movie Category','name'=>'movie_category_id','type'=>'select','validation'=>'required','width'=>'col-sm-10','datatable'=>'movie_category,name'];
-			$this->form[] = ['label'=>'Movei Cover','name'=>'movei_cover_path','type'=>'upload','validation'=>'required|image','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Description','name'=>'description','type'=>'textarea','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Keyword','name'=>'keyword_id','type'=>'select2','width'=>'col-sm-10','datatable'=>'keywords,title'];
-			$this->form[] = ['label'=>'Actors Id','name'=>'actors_id','type'=>'select','validation'=>'required','width'=>'col-sm-10','datatable'=>'directors,name'];
-			$this->form[] = ['label'=>'Status','name'=>'status','type'=>'radio','validation'=>'required','width'=>'col-sm-10','dataenum'=>'0|private;1|public'];
+			$this->form[] = ['label'=>'Name','name'=>'name','type'=>'text','validation'=>'required||string','width'=>'col-sm-10'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
-			//$this->form[] = ['label'=>'Movie Category','name'=>'movie_category_id','type'=>'select','validation'=>'required','width'=>'col-sm-10','datatable'=>'movie_category,name'];
-			//$this->form[] = ['label'=>'Movei Cover','name'=>'movei_cover_path','type'=>'upload','validation'=>'required|image','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Description','name'=>'description','type'=>'textarea','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Keyword','name'=>'keyword_id','type'=>'select2','width'=>'col-sm-10','datatable'=>'keywords,title'];
-			//$this->form[] = ['label'=>'Actors Id','name'=>'actors_id','type'=>'select','validation'=>'required','width'=>'col-sm-10','datatable'=>'directors,name'];
-			//$this->form[] = ['label'=>'Status','name'=>'status','type'=>'radio','validation'=>'required','width'=>'col-sm-10','dataenum'=>'0|private;1|public'];
+			//$this->form[] = ['label'=>'Name','name'=>'name','type'=>'text','validation'=>'required|integer|min:5','width'=>'col-sm-10'];
 			# OLD END FORM
 
 			/* 

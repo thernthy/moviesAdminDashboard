@@ -45,6 +45,42 @@ class HomeController extends Controller
                 'referrer' => $referrer
             ]);
         }
+        $data = ['category' =>[
+            'Popular-movies' => [],
+            'K-drama-movies' => [],
+            'TV-Entertainment' => [],
+            'movies' => [],
+            'foreign-drama' => [],
+            'Japanes-cartoon' => [],
+            ],
+            '0' => ''
+        ];
+        $Movies = DB::table('titles')
+        ->join('videos', 'videos.title_id', 'titles.id')
+        ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
+        ->OrderBy('titles.created_at', 'DESC')
+        ->get();
+        if(!$Movies->isEmpty()){
+            foreach($Movies as $item){
+                if ($item->name === "k-drama") {
+                    $data['category']['K-drama-movies'][] = $item;
+                }   
+                if ($item->name === "popular") {
+                    $data['category']['Popular-movies'][] = $item;
+                }
+                if ($item->name === "entertain") {
+                    $data['category']['TV-Entertainment'][] = $item;
+                }
+                if ($item->name === "movies") {
+                    $data['category']['movies'][] = $item;
+                }
+                if ($item->name === "foreign drama") {
+                    $data['category']['foreign-drama'][] = $item;
+                }
+            }
+        }else{
+            $data['0'] = 'Data not found!';        
+        }
         $session = Session();
         $data['sponsor_banner'] = DB::table('sponsor_banner')
         ->select('banner_path')
