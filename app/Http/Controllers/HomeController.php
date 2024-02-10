@@ -160,8 +160,7 @@ class HomeController extends Controller
         $appUser = DB::table('cms_users')
         ->select('email')
         ->where('email', $request->input('user-email'))
-            ->first();
-        
+        ->first();
         if ($appUser) {
             return response()->json(['Error' => 'Sorry, your email already exists!']);
         } else {
@@ -180,4 +179,25 @@ class HomeController extends Controller
             }
         }
     }
+
+    public function details(Request $request)
+    {
+        $movieId = $request->query('id');
+        $movieDetail = DB::table('titles')
+            ->join('videos', 'videos.title_id', 'titles.id')
+            ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
+            ->where('titles.id', $movieId)
+            ->first();
+    
+        if ($movieDetail) {
+            // Assuming your movie model has 'title' and 'description' properties
+            return response()->json([
+                'moviesDetail' => $movieDetail
+            ]);
+        } else {
+            // Movie not found
+            return response()->json(['error' => 'Movie not found'], 404);
+        }
+    }
+    
 }

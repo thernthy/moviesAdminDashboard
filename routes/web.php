@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Session;
 //=================================================
 Route::get('/', 'HomeController@index');
 Route::get('/video/category/{categoryName}', 'HomeController@PageCategory');
-Route::get('video/category/{categoryName}/{part}/{movieTile}', 'HomeController@videoWach');
+Route::get('/movie/{name}/{episode}/{title}', 'HomeController@videoWach');
 
 
 
@@ -61,6 +61,14 @@ Route::middleware(['auth.guest'])->group(function () {
     })->name('register');
 });
 Route::post('/registerPost', 'HomeController@registerPost')->name('registerPost');
+//==============================================
+
+//======     Ajext route request         ==================
+
+//=================================================
+
+
+Route::get('/movie/details', 'HomeController@details');
 
 //==============================================
 

@@ -52,48 +52,47 @@
         <a href="">see more</a>
     </div>
     <div class="swiper mySwiper container-fuild">
-      <div class="swiper-wrapper content">
+        <div class="swiper-wrapper content">
             @foreach($movies as $index => $item)
-                <div class="swiper-slide col-md-4 text-left animate-box">
-					<img src="{{ asset($item->movei_cover_path)}}" alt="" class="w-100">
+                <div class="swiper-slide col-md-4 text-left animate-box" onclick="toggleMovieDetails('{{ $category }}_{{ $index }}', '{{$item->title_id}}')">
+                    <img src="{{ asset($item->movei_cover_path)}}" alt="" class="w-100">
                     <!-- <a href="#">New</a> -->
                     <h4>{{ $item->title }}</h4>
-				</div>
+                </div>
                 @php if($index+1 > 8) { break; } @endphp
             @endforeach
-          </div>
         </div>
-        <div class="container-fuild movei-detail" style="background-image: url('{{ asset('img/movei/mv (1).jpg') }}');">
-           <div class="row close-btn-wrap">
-               <button class="close-btn"><i class="fa-solid fa-xmark"></i></button>
-           </div>
-            <div class="detail-wraper">
-                <div class="play_btn">
-                    <i class="fa-regular fa-circle-play"></i>
+    </div>
+    @foreach($movies as $index => $item)
+            <div class="container-fuild movei-detail" id="movie-details-{{ $category }}_{{ $index }}" style="background-image: url('{{ asset('img/movei/mv (1).jpg') }}'); display: none;">
+                <div class="row close-btn-wrap">
+                    <button class="close-btn"><i class="fa-solid fa-xmark"></i></button>
                 </div>
-                <div class="movei-cotent">
-                    <div class="reaction_icon">
-                        <button class="reaction-btn reaction"><i class="fa-solid fa-heart"></i> <b>0</b></button>
-                        <button class="reaction-btn"><i class="fa-solid fa-heart"></i><b>100</b></button>
+                <div class="detail-wraper">
+                    <div class="play_btn">
+                        <i class="fa-regular fa-circle-play"></i>
                     </div>
-                    <p class="key-word">
-                        <a href="">#key word</a>  <a href="">#key word</a>  <a href="">#key word</a> 
-                    </p>
-                    <h2>
-                        Movie Title
-                    </h2>
-                    <p class="movie-dscr">
-                    우당탕탕 패밀리
-                    감독 : 김성근
-                    출연 : 남상지, 이도겸, 강다빈, 이효나 外
-                    제작사 : 몬스터유니온,아센디오 엔터테인먼트
-                    30년 전 원수로 헤어진 부부가 자식들 사랑으로 인해 사돈 관계로 다시 만나면서 오래된 갈등과 반목을 씻고 진정한 가족으로 거듭나는 명랑 코믹 가족극
-                    </p>
+                    <div class="movei-cotent">
+                        <div class="reaction_icon">
+                            <button class="reaction-btn reaction"><i class="fa-solid fa-heart"></i> <b>0</b></button>
+                            <button class="reaction-btn"><i class="fa-solid fa-heart"></i><b>100</b></button>
+                        </div>
+                        <p class="key-word">
+                            <a href="">#key word</a>  <a href="">#key word</a>  <a href="">#key word</a> 
+                        </p>
+                        <h2 id="{{$item->title_id}}">
+                            Movie Title
+                        </h2>
+                        <p class="movie-dscr" id="movie-description-{{ $category }}_{{ $index }}">
+                            <!-- Movie description -->
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
+    @endforeach
 </section>
 @endforeach
+
 <!--
 <section>
     <div class="container-fuild category">
@@ -683,7 +682,7 @@
 @endsection
 
 @push('scripts')
-   <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <script type="text/javascript">
     var swiper = new Swiper(".mySwiper", {
       slidesPerView: 8,
@@ -698,7 +697,35 @@
 
     });
 
-    </script>
-    
-    
+    function toggleMovieDetails(id, titleId) {
+        var movieDetail = document.getElementById('movie-details-' + id);
+        if (movieDetail.style.display === 'none') {
+            movieDetail.style.display = 'block';
+            fetchMovieDetails(id, titleId);
+        } else {
+            movieDetail.style.display = 'none';
+        }
+    }
+function fetchMovieDetails(id, titleId) {
+    fetch('/movie/details?id=' + titleId)
+        .then(response => response.json())
+        .then(data => {
+            // Update movie detail content with data received from server
+            var movieTitle = document.getElementById(titleId);
+            var movieDescription = document.getElementById('movie-description-' + id);
+            var movieDetail = document.getElementById('movie-details-' + id);
+            if (data.moviesDetail) {
+                movieTitle.innerHTML = data.moviesDetail.title;
+                movieDescription.innerHTML = data.moviesDetail.description;
+                movieDetail.addEventListener('click', function(){
+                    window.location.href = '{{ url('/movie') }}/' + data.moviesDetail.name + '/' + data.moviesDetail.episode + '/' + data.moviesDetail.title;
+                });
+            }
+        })
+        .catch(error => console.error('Error fetching movie details:', error));
+}
+
+
+</script>
+
 @endpush
