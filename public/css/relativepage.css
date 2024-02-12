@@ -172,13 +172,33 @@
    padding: 5px 15px;
    color:#fff;
    border-radius: 5px;
-   background-color: #B88FF5;
+   border: 1px solid gray;
    margin: 5px 10px;
+}
+.row.movei-apersot ul > .movei-upersot-item.ep{
+    background-color: #2b2929;
+    border: none;
+    width: 20%;
+    padding: 15px 10px;
+    font-size: 1.3rem;
+    color: gray;
+}
+.row.movei-apersot ul > .movei-upersot-item.ep.active{
+    background: rgb(66, 66, 241);
+}
+.row.movei-apersot.ep{
+    padding-left: 2rem;
 }
 .row.movei-apersot ul .movei-upersot-item a{
    font-weight: 400;
    color:#fff;
    text-decoration: none;
+}
+.row.movei-apersot ul .movei-upersot-item.ep a{
+   color:gray;
+}
+.row.movei-apersot ul .movei-upersot-item.ep.active a{
+   color:rgb(0, 0, 0);
 }
 .row.movei-cover-wraper .col-sm-9>h6{
     color: #888F96;

@@ -30,11 +30,11 @@
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
+			$this->col[] = ["label"=>"Id","name"=>"id"];
 			$this->col[] = ["label"=>"Title Id","name"=>"title_id","join"=>"titles,title"];
 			$this->col[] = ["label"=>"Link","name"=>"link"];
-			$this->col[] = ["label"=>"Episode","name"=>"episode"];
 			$this->col[] = ["label"=>"Duration","name"=>"duration"];
-			$this->col[] = ["label"=>"viewer","name"=>"viewer_id","join"=>"viewer,id"];
+			$this->col[] = ["label"=>"Episode","name"=>"episode"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE

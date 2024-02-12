@@ -13,9 +13,10 @@ use Illuminate\Support\Facades\Session;
 //=================================================
 Route::get('/', 'HomeController@index');
 Route::get('/video/category/{categoryName}', 'HomeController@PageCategory');
+Route::get('/video/category/{categoryName}', 'HomeController@PageCategory');
 Route::get('/movie/{name}/{episode}/{title}', 'HomeController@videoWach');
-
-
+Route::get('board/free_list', 'HomeController@listChart');
+Route::get('notice/', 'HomeController@notice');
 
 //==============================================
 

@@ -30,6 +30,7 @@
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
+			$this->col[] = ["label"=>"Id","name"=>"id"];
 			$this->col[] = ["label"=>"Title","name"=>"title"];
 			$this->col[] = ["label"=>"Movie Category","name"=>"movie_category_id","join"=>"movie_category,name"];
 			$this->col[] = ["label"=>"Movie Cover","name"=>"movei_cover_path","image"=>true];

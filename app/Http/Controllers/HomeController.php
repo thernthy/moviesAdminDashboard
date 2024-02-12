@@ -93,17 +93,63 @@ class HomeController extends Controller
     public function PageCategory($category)
     {
         $session = Session();
-        
-        return view('front.popular', compact('session'));
+        $data['movies'] = DB::table('titles')
+        ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
+        ->join('videos', 'videos.title_id', 'titles.id')
+        ->where('movie_category.name', $category)
+        ->get();
+        return view('front.popular', compact('session', 'data'));
     }
 
-
-    public function videoWach($CategoryName, $part, $movieTile){
+    
+    public function videoWach($CategoryName, $part, $titleId, Request $request){
         $session = Session();
-        $data['accessPoint']  = [$CategoryName, $part, $movieTile];
+        $user_Ip = $request->ip();
+        $video_id = DB::table('titles')
+        ->join('videos', 'videos.title_id', 'titles.id')
+        ->where('titles.title', $titleId)
+        ->where('videos.episode', $part)
+        ->first();    
+        $viewer_exed = DB::table('viewer')
+        ->select('viewer_ip')
+        ->where('viewer_ip', $user_Ip)
+        ->where('videos_id', $video_id->id)
+        ->first();
+        if(!$viewer_exed){
+            DB::table('viewer')->insert([
+                'viewer_ip' => $user_Ip,
+                'videos_id' => $video_id->id
+            ]);
+        }
+        $data['targetMovie'] = DB::table('videos')
+        ->select(
+            'videos.id', 
+            'titles.title', 
+            'videos.episode', 
+            'videos.link',
+            'videos.episode',
+            'titles.movei_cover_path',
+            'titles.description'
+        ) 
+        ->join('titles', 'titles.id', 'videos.title_id')
+        ->join('viewer', 'viewer.videos_id', 'videos.id')
+        ->where('titles.title', $titleId)
+        ->where('videos.episode', $part)
+        ->first();
+        $data['video_viewers'] = DB::table('viewer')
+        ->where('videos_id', $data['targetMovie']->id)
+        ->get();
+        $data['viewer_count'] = $data['video_viewers']->count();
+        $data['recommend'] = DB::table('titles')
+        ->join('videos', 'videos.title_id', 'titles.id')
+        ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
+        ->OrderBy('titles.created_at', 'DESC')
+        ->get();
         return view('front.waching-vtr', compact('data', 'session')); 
-
     }
+
+
+
     public function requstEdite($username, $user_id, Request $request) {
         $data['userInfo'] = DB::table('cms_users')
             ->select()
@@ -198,6 +244,13 @@ class HomeController extends Controller
             // Movie not found
             return response()->json(['error' => 'Movie not found'], 404);
         }
+    }
+
+    public function listChart(){
+        return view('front/noteList');
+    }
+    public function notice(){
+        return view('front/noteList');
     }
     
 }

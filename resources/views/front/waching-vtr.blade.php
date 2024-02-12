@@ -22,35 +22,76 @@
          height: 350px;
         }
     } 
-
+.row.video_view iframe{
+    height: 90vh;
+}
+.row.commend-form  form > textarea{
+    width: 100%;
+    height: 205px;
+    background: black;
+    color: gray;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    padding:10px;
+}
+.row.commend-form form > div{
+    width: 100%;
+    margin-top:10px;
+    display: flex;
+    gap:10px;
+    align-items:center;
+    justify-content:center;
+}
+.row.commend-form form  div >input{
+ width:50%;
+ padding: 10px ;
+ border-radius: 10px;
+ outline:none;
+ border:none;
+ background:black;
+}
+.row.commend-form form button{
+ margin-top:10px;
+ background:blue;
+ color:white;
+ padding: 14px 10px;
+}
 </style>
 @endpush
 @section('content')
 <div class="container-fluid" id="relative_page">
-        <div class="row">
-            <div class="col-md-12">
-                <h2 class="title_page">최신/인기 {{$data['accessPoint']->$CategoryName}}</h2>
-            </div>
+    <div class="row video_view">
+        <iframe width="100%"  class="face" src="{{$data['targetMovie']->link}}"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+        <div class="row movei-apersot">
+            <ul>
+                <li class="movei-upersot-item"><a href="#"><i class="fa-regular fa-comment"></i> commend</a></li>
+                <li class="movei-upersot-item"><a href="#"><i class="fa-regular fa-eye"></i> {{$data['viewer_count']}} 조회수</a></li>
+                <li class="movei-upersot-item"><a href="#"><i class="fa-solid fa-exclamation"></i> Report</a></li>
+                <li class="movei-upersot-item"><a href="#"><i class="fa-regular fa-heart"></i> Favorite</a></li>
+            </ul>
         </div>
+        <div class="row movei-apersot ep">
+            <ul>
+                <li class="movei-upersot-item ep active"><a href="#">Episode 1</a></li>
+                <li class="movei-upersot-item ep"><a href="#">Episode 2</a></li>
+                <li class="movei-upersot-item ep"><a href="#">Episode 3</a></li>
+                <li class="movei-upersot-item ep"><a href="#">Episode 4</a></li>
+            </ul>
+        </div>
+    </div>
         <div class="row">
             <div class="col-md-8">
-                <iframe width="100%" class="face" src="https://www.youtube.com/embed/O6c9hkgn-tY?autoplay=1&mute=1&enablejsapi=1"
-                    title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen></iframe>
                 <div class="row movie-info-wraper">
                    <div>
-                    <h4 class="text-left">
-                        이전 영상 보기
-                    </h4>
-                   </div>
-                   <div>
-                    <h4 class="text-right">
-                        조회수 : 60,518
-                    </h4>
+
                    </div>
                 </div>
-                <div class="row movei-apersot">
+                <!-- <div class="row movei-apersot">
                     <ul>
                         <li class="movei-upersot-item"><a href="#">1Ep</a></li>
                         <li class="movei-upersot-item"><a href="#">1Ep</a></li>
@@ -71,14 +112,15 @@
                         <li class="movei-upersot-item"><a href="#">1Ep</a></li>
                         <li class="movei-upersot-item"><a href="#">1Ep</a></li>
                     </ul>
-                </div>
+                </div> -->
                 <div class="row movei-cover-wraper">
                     <div class="col-sm-3">
-                        <img src="{{asset('img/movei/mv (4).jpg')}}" alt="w-100" class="w-100">
+                        <img src="{{asset($data['targetMovie']->movei_cover_path)}}" alt="w-100" class="w-100">
                     </div>
                     <div class="col-sm-9 text-left">
+                        <h2 class="title_page">최신/인기 {{$data['targetMovie']->title}}</h2>
                         <h6>
-                            콜롬비아 메데인을 떠나 마이애미 마약 제국의 '대모'로 우뚝 선 그녀. 그리셀다 블랑코의 여정을 다룬 실화 바탕의 픽션 드라마. 
+                            {{$data['targetMovie']->description}}
                         </h6>
                         <h6>
                             <b>출연:<b> <span>소피아 베르가라,알베르토 게라,크리스티안 타판</span> <br>
@@ -87,8 +129,54 @@
 
                     </div>
                 </div>
+                <div class="row user-commend">
+                    <ul>
+                        <li>
+                            <div class="profile"> 
+
+                            </div>
+                            <h3>
+                                
+                            </h3>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row commend-form pt-5">
+                   <h3 style="color:white;">답글 남기기</h3>
+                   <form action="">
+                      <textarea name="" id="" cols="100%" rows="10"></textarea>
+                      @if(!session()->has('admin_name'))
+                        <div>
+                            <input type="text" placeholder="Name">
+                            <input type="text" placeholder="Email">
+                        </div>
+                      @endif
+                      <button class="btn">Leave a commend</button>
+                   </form>
+                </div>
             </div>
             <div class="col-md-4">
+                <div class="row">
+                    <div class="video-option-wraper">
+                        <h4>이것도 좋아하실 거예요!</h4>
+                    </div>
+                    <div class="card recomeded_video">
+                        <div class="card-body active">
+                            <ul class="list-group">
+                                @foreach($data['recommend'] as $item)
+                                <li class="list-group-item">
+                                    <a href="{{url('movie', [$item->name, $item->episode, $item->title])}}">
+                                        <div class="video-cover" style="background-image:url('{{asset($item->movei_cover_path)}}');"></div>
+                                        <h6>이전 영상 보기</h6>
+                                    </a>
+                                </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col-md-4">
                 <div class="row">
                     <div class="video-option-wraper">
                         <button class="opitonBnt videoPart active">Series (10)</button>
@@ -189,7 +277,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 @endsection
