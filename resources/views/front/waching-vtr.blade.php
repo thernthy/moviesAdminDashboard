@@ -149,36 +149,37 @@
                 </div>
                 <div class="row user-commend">
                     <ul>
+                        @foreach($data['comments'] as $item)
                         <li>
                             <div class="profile"> 
                                 <img src="{{ asset('img/user_profile.png') }}" 
                                 alt="" width="50px" height="50px"></a>
                             </div>
                            <div>
-                            <h3>
-                                    user name
+                               <h3>
+                                  {{$item->user_name}}
                                 </h3>
                                 <p>
-                                    Paragraphs are the building blocks of papers. Many students define paragraphs in terms of length: a paragraph is a group of at least five sentences, a paragraph is half a page long, etc.
-                                    In reality, though, the unity and coherence of ideas among sentences is what constitutes a paragraph.
+                                  {{$item->comment}}
                                 </p>
                            </div>
                         </li>
+                        @endforeach
                     </ul>
                 </div>
                 <div class="row commend-form pt-5">
                    <h3 style="color:white;">답글 남기기</h3>
-                        <form id="commentForm" action="">
-                            <textarea name="comment" id="comment" cols="100%" rows="10"></textarea>
-                            @if(!session()->has('admin_name'))
-                                <div>
-                                    <input type="text" id="name" placeholder="Name">
-                                    <input type="email" id="email" placeholder="Email">
-                                </div>
-                            @endif
-                            <button id="submitBtn" class="btn">Leave a comment</button>
-                        </form>
-                   </form>
+                   <form id="commentForm">
+                        @csrf
+                        <textarea name="comment" id="comment" cols="100%" rows="10"></textarea>
+                        @unless(session()->has('admin_name'))
+                            <div>
+                                <input type="text" id="name" placeholder="Name">
+                                <input type="email" id="email" placeholder="Email">
+                            </div>
+                        @endunless
+                        <button id="submitBtn" class="btn">Leave a comment</button>
+                    </form>
                 </div>
             </div>
             <div class="col-md-4">
@@ -326,28 +327,71 @@
             }
         });
     });
-    document.getElementById("submitBtn").addEventListener("click", function(event){
-        event.preventDefault(); 
-        var formData = {
-            comment: document.getElementById("comment").value,
-            name:"{{session()->get('admin_name')}}"
-            @if(!session()->has('admin_name'))
-                name: document.getElementById("name").value,
-                email: document.getElementById("email").value
-            @endif
-        };
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/your-post-endpoint', true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                console.log('Success');
+    document.getElementById("commentForm").addEventListener("submit", function(event) {
+    event.preventDefault(); 
+    var formData = {
+        comment: document.getElementById("comment").value,
+        videoId: "{{$data['targetMovie']->id}}",
+        name: "{{ session()->get('admin_name') }}"
+    };
+    if (!formData.name) {
+        formData.name = document.getElementById("name").value;
+        formData.email = document.getElementById("email").value;
+    }
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '{{ url("/leavecomment") }}', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            document.getElementById("comment").value = '';
+            @unless(session()->has('admin_name'))
+            document.getElementById("name").value = '';
+            document.getElementById("email").value = '';
+            @endunless
+            var response = JSON.parse(xhr.responseText);
+            if (response.success) {
+                var commentBox = document.querySelector('.row.user-commend > ul');
+                commentBox.innerHTML = '';
+                var comments = response.comments.comments;
+                var based_Img_url = "{{ asset('') }}";
+
+                comments.forEach(item => {
+                    var html = `
+                        <li>
+                            <div class="profile"> 
+                                <img src="${based_Img_url}img/user_profile.png" alt="" width="50px" height="50px">
+                            </div>
+                            <div>
+                                <h3>${item.user_name}</h3>
+                                <p>${item.comment}</p>
+                            </div>
+                        </li>
+                    `;
+                    commentBox.insertAdjacentHTML('beforeend', html);
+                });
             } else {
-                console.error('Error:', xhr.responseText);
+                console.error('Error:', response.message);
             }
-        };
-        xhr.send(JSON.stringify(formData));
-    });
+        } else {
+            var errorMessage;
+            if (xhr.status === 419) {
+                var parser = new DOMParser();
+                var responseDoc = parser.parseFromString(xhr.responseText, 'text/html');
+                errorMessage = responseDoc.querySelector('.message').innerText.trim();
+            } else {
+                errorMessage = xhr.responseText;
+            }
+            console.error('Error:', errorMessage);
+        }
+    };
+    xhr.onerror = function() {
+        console.error('Network Error');
+    };
+    xhr.send(JSON.stringify(formData));
+});
+
+
 </script>
     
 @endpush

@@ -136,6 +136,9 @@ class HomeController extends Controller
         ->where('titles.title', $titleId)
         ->where('videos.episode', $part)
         ->first();
+        $data['comments'] = DB::table('comment')
+        ->where('video_id', $data['targetMovie']->id)
+        ->get();
         $data['video_viewers'] = DB::table('viewer')
         ->where('videos_id', $data['targetMovie']->id)
         ->get();
@@ -251,6 +254,36 @@ class HomeController extends Controller
     }
     public function notice(){
         return view('front/noteList');
+    }
+
+    public function leaveComment(Request $request){
+        $insert = [];
+        if($request->has('email') && $request->has('name')){
+            $insert = [
+                'user_name' => $request->input('name'),
+                'user_email' => $request->input('email'),
+                'comment' => $request->input('comment'),
+                'video_id' => $request->input('videoId')
+            ];
+        } else {
+            $insert = [
+                'user_name' => Session()->get('admin_name'),
+                'user_email' => Session()->get('admin_email'),
+                'comment' => $request->input('comment'),
+                'video_id' => $request->input('videoId')
+            ];
+        }
+        try {
+            if(!empty($insert)){
+                DB::table('comment')->insert($insert);
+                $data['comments'] = DB::table('comment')
+                                  ->where('video_id', $request->input('videoId'))
+                                  ->get();
+                return response()->json(['success' => true, 'comments' => $data]);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+        }
     }
      
 }
