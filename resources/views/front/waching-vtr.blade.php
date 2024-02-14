@@ -57,6 +57,24 @@
  color:white;
  padding: 14px 10px;
 }
+.row.user-commend ul > li{
+    display: flex;
+    padding: 10px 10%;
+    align-items:start;
+    justify-content:flex-start;
+}
+.row.user-commend li > .profile{
+    height: 50px;
+    width: 50px;
+    background: gray;
+    transform: translate(-5px, 15px);
+}
+.row.user-commend li > div > h3, p{
+    color:#fff;
+}
+.row.user-commend li > div > p{
+    font-weight:200;
+}
 </style>
 @endpush
 @section('content')
@@ -133,25 +151,33 @@
                     <ul>
                         <li>
                             <div class="profile"> 
-
+                                <img src="{{ asset('img/user_profile.png') }}" 
+                                alt="" width="50px" height="50px"></a>
                             </div>
+                           <div>
                             <h3>
-                                
-                            </h3>
+                                    user name
+                                </h3>
+                                <p>
+                                    Paragraphs are the building blocks of papers. Many students define paragraphs in terms of length: a paragraph is a group of at least five sentences, a paragraph is half a page long, etc.
+                                    In reality, though, the unity and coherence of ideas among sentences is what constitutes a paragraph.
+                                </p>
+                           </div>
                         </li>
                     </ul>
                 </div>
                 <div class="row commend-form pt-5">
                    <h3 style="color:white;">답글 남기기</h3>
-                   <form action="">
-                      <textarea name="" id="" cols="100%" rows="10"></textarea>
-                      @if(!session()->has('admin_name'))
-                        <div>
-                            <input type="text" placeholder="Name">
-                            <input type="text" placeholder="Email">
-                        </div>
-                      @endif
-                      <button class="btn">Leave a commend</button>
+                        <form id="commentForm" action="">
+                            <textarea name="comment" id="comment" cols="100%" rows="10"></textarea>
+                            @if(!session()->has('admin_name'))
+                                <div>
+                                    <input type="text" id="name" placeholder="Name">
+                                    <input type="email" id="email" placeholder="Email">
+                                </div>
+                            @endif
+                            <button id="submitBtn" class="btn">Leave a comment</button>
+                        </form>
                    </form>
                 </div>
             </div>
@@ -299,6 +325,28 @@
                     moviePart.classList.replace('active', 'unactive')
             }
         });
+    });
+    document.getElementById("submitBtn").addEventListener("click", function(event){
+        event.preventDefault(); 
+        var formData = {
+            comment: document.getElementById("comment").value,
+            name:"{{session()->get('admin_name')}}"
+            @if(!session()->has('admin_name'))
+                name: document.getElementById("name").value,
+                email: document.getElementById("email").value
+            @endif
+        };
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/your-post-endpoint', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                console.log('Success');
+            } else {
+                console.error('Error:', xhr.responseText);
+            }
+        };
+        xhr.send(JSON.stringify(formData));
     });
 </script>
     

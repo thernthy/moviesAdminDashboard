@@ -252,5 +252,5 @@ class HomeController extends Controller
     public function notice(){
         return view('front/noteList');
     }
-    
+     
 }
