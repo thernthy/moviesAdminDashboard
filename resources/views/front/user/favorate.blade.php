@@ -22,7 +22,7 @@
     }
     @media (min-width:1150px){
     #footer{
-        padding-left: 25%;
+        padding-left: 24%;
     }
 }
 </style>

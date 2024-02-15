@@ -4,7 +4,7 @@ use Doctrine\DBAL\Schema\Index;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-
+use Illuminate\Support\Facades\DB;
 
 //==============================================
 
@@ -34,7 +34,6 @@ Route::middleware(['auth.user'])->group(function () {
             $session = Session();
             return view('front/user/watchlater')->with(['username' => $username, 'session' => $session]);
         })->name('user.watchlater'); 
-
         Route::get('/favorite', function ($username) { 
             $session = Session();
             return view('front/user/favorate')->with(['username' => $username, 'session' => $session]);
@@ -42,7 +41,14 @@ Route::middleware(['auth.user'])->group(function () {
         
         Route::get('/history', function ($username) { 
             $session = Session();
-            return view('front/user/history')->with(['username' => $username, 'session' => $session]);
+            $data['history'] = DB::table('history')
+            ->select()
+            ->join('videos', 'videos.id', 'history.video_id')
+            ->join('titles', 'titles.id', 'videos.title_id')
+            ->where('user_id', Session()->get('admin_id'))
+            ->OrderBy('history.created_at', 'DESC')
+            ->get();
+            return view('front/user/history', compact('data'))->with(['username' => $username, 'session' => $session]);
         })->name('user.history'); 
         Route::post('/requstEdite/{user_id}', 'HomeController@requstEdite')->name('user.requstEdite'); 
     });

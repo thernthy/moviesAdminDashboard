@@ -105,22 +105,6 @@ class HomeController extends Controller
     public function videoWach($CategoryName, $part, $titleId, Request $request){
         $session = Session();
         $user_Ip = $request->ip();
-        $video_id = DB::table('titles')
-        ->join('videos', 'videos.title_id', 'titles.id')
-        ->where('titles.title', $titleId)
-        ->where('videos.episode', $part)
-        ->first();    
-        $viewer_exed = DB::table('viewer')
-        ->select('viewer_ip')
-        ->where('viewer_ip', $user_Ip)
-        ->where('videos_id', $video_id->id)
-        ->first();
-        if(!$viewer_exed){
-            DB::table('viewer')->insert([
-                'viewer_ip' => $user_Ip,
-                'videos_id' => $video_id->id
-            ]);
-        }
         $data['targetMovie'] = DB::table('videos')
         ->select(
             'videos.id', 
@@ -136,13 +120,42 @@ class HomeController extends Controller
         ->where('titles.title', $titleId)
         ->where('videos.episode', $part)
         ->first();
+
+        $viewer_exed = DB::table('viewer')
+        ->select('viewer_ip')
+        ->where('viewer_ip', $user_Ip)
+        ->where('videos_id', $data['targetMovie']->id)
+        ->first();
+
+        if(Session()->has('admin_name')){
+            $exVTR = DB::table('history')
+            ->where('video_id', $data['targetMovie']->id)
+            ->where('user_id', Session()->get('admin_id'))
+            ->first();
+            if(!$exVTR){
+                DB::table('history')->insert([
+                    'user_id' => Session()->get('admin_id'),
+                    'video_id' => $data['targetMovie']->id
+                ]);
+            }
+        }
+        
+        if(!$viewer_exed){
+            DB::table('viewer')->insert([
+                'viewer_ip' => $user_Ip,
+                'videos_id' => $video_id->id
+            ]);
+        }
+
         $data['comments'] = DB::table('comment')
         ->where('video_id', $data['targetMovie']->id)
         ->get();
+
         $data['video_viewers'] = DB::table('viewer')
         ->where('videos_id', $data['targetMovie']->id)
         ->get();
         $data['viewer_count'] = $data['video_viewers']->count();
+
         $data['recommend'] = DB::table('titles')
         ->join('videos', 'videos.title_id', 'titles.id')
         ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
