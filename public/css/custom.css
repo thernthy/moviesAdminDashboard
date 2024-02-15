@@ -114,7 +114,7 @@ h1 {
   flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 0;
+  padding: 0px 0;
 }
 
 .nav-scroll {
