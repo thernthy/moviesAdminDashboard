@@ -290,7 +290,7 @@
      border-radius: 5px 0px 0px 5px;
 }
 .password-input-wraper > i{
-    background:none;
+    background:none;.user-tools
     outline:none;
     border:0;
     margin-right: 6px;
@@ -484,7 +484,7 @@
         top: 0;
         position: fixed;
         height: 100vh;
-        background-color: #1D1D1D !important;
+        background-color: black;
     }
 }
 

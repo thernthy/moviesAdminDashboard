@@ -24,6 +24,11 @@
         width: 60%;
         margin: 0 auto;
     }
+    @media (min-width:1150px){
+    #footer{
+        padding-left: 24%;
+    }
+}
 </style>
 @endpush
 @section('content')

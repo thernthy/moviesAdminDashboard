@@ -20,6 +20,11 @@
     .wrap{
         padding-left:0;
     }
+    @media (min-width:1150px){
+    #footer{
+        padding-left: 25%;
+    }
+}
 </style>
 @endpush
 @section('content')

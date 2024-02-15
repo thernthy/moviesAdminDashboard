@@ -1,8 +1,27 @@
+<style>
+    .website-link {
+        overflow: hidden;
+        white-space: nowrap;
+    }
 
+    #marquee-link {
+        display: inline-block;
+        animation: marquee-animation 10s linear infinite;
+    }
+
+    @keyframes marquee-animation {
+        0% {
+            transform: translateX(100%);
+        }
+        100% {
+            transform: translateX(calc(-100% - 100vw));
+        }
+    }
+</style>
 <div id="footer">
     <div class="row website-link">
-        <a href="">
-            <marquee behavior="slide" direction="left">경 될 주소 안내 입니다. 지금 이곳을 눌러 확인하세요.</marquee>
+        <a href="#" id="marquee-link">
+            경 될 주소 안내 입니다. 지금 이곳을 눌러 확인하세요.
         </a>
     </div>
     <div class="row" style="width: 200px; padding: 40px 0; margin:0 auto;">
