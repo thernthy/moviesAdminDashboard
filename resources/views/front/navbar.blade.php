@@ -112,29 +112,34 @@
     const dropdowwraper = document.querySelector('.dropdow-wraper')
     const searchWraper = document.querySelector('#search-wrap');
     const searchBtn = document.getElementById('search_btn');
-    // Toggle active class when search button is clicked
     searchBtn.addEventListener('click', function(){
         searchWraper.classList.toggle('active');
         if (searchWraper.classList.contains('active')) {
-            document.body.style.overflow = 'hidden'; // Disable scrolling
+            document.body.style.overflow = 'hidden'; 
         } else {
-            document.body.style.overflow = ''; // Enable scrolling
+            document.body.style.overflow = ''; 
         }
     });
 
-    // Remove active class when clicking outside of the search wrapper
+    // function to reomve active class when the click target is not tru to that section
     document.addEventListener('click', function(event) {
         if (!searchWraper.contains(event.target) && event.target !== searchBtn) {
             searchWraper.classList.remove('active');
-            document.body.style.overflow = ''; // Enable scrolling
+            document.body.style.overflow = ''; 
         }
         if (!dropdowwraper.contains(event.target) && event.target !== dropdoWraperOne) {
             dropdowwraper.classList.remove('active');
             dropDowIcon.classList.remove('active')
         }
+        if (!showingMueBtn.contains(event.target)) {
+            showingMueBtn.classList.remove('active')
+            menueWraper.classList.remove('active')
+        }
     });
+
+
+
     dropdoWraperOne.addEventListener('click', function(){
-        console.log(dropDowIcon)
         if(dropdowwraper.classList.contains('active') && dropDowIcon.classList.contains('active')){
             dropdowwraper.classList.remove('active')
             dropDowIcon.classList.remove('active')

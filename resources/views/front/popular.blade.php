@@ -28,25 +28,21 @@
             </div> 
         @endforeach
     </div>
-
+    <div style="
+    width:50%;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    ">
+        {{$data['movies']->links()}}
+    </div>
 </div>
 @endsection
 
 @push('scripts')
-   <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <script>
-    var swiper = new Swiper(".mySwiper", {
-      slidesPerView: 8,
-      spaceBetween:5,
-      slidesPerGroup: 1,
-      loop: true,
-      loopFillGroupWithBlank: false,
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-      },
 
-    });
     </script>
     
 @endpush

@@ -48,16 +48,17 @@
 @foreach($data['category'] as $category => $movies)
 <section>
     <div class="container-fuild category">
-        <h3 style="text-transform: capitalize;">{{  $category }}</h3>
+        <h5 style="text-transform: capitalize;">{{  $category }}</h5>
         <a href="">see more</a>
     </div>
     <div class="swiper mySwiper container-fuild">
         <div class="swiper-wrapper content">
             @foreach($movies as $index => $item)
-                <div class="swiper-slide col-md-4 text-left animate-box" onclick="toggleMovieDetails('{{ $category }}_{{ $index }}', '{{$item->title_id}}')">
+                <div class="swiper-slide text-left animate-box" onclick="toggleMovieDetails('{{ $category }}_{{ $index }}', '{{$item->title_id}}')">
                     <img src="{{ asset($item->movei_cover_path)}}" alt="" class="w-100">
                     <!-- <a href="#">New</a> -->
-                    <h4>{{ $item->title }}</h4>
+                    <h6>{{ $item->title }}</h6>
+                    <div class="swiper-pagination"></div>
                 </div>
                 @php if($index+1 > 8) { break; } @endphp
             @endforeach
@@ -696,6 +697,17 @@
       },
 
     });
+    function updateSwiperWidth() {
+        var screenWidth = window.innerWidth;
+        if (screenWidth <= 768) { 
+        swiper.params.width = 250;
+        } else {
+        swiper.params.width = null; 
+        }
+        swiper.update();
+    }
+    window.onload = updateSwiperWidth;
+    window.onresize = updateSwiperWidth;
 
     function toggleMovieDetails(id, titleId) {
         var movieDetail = document.getElementById('movie-details-' + id);

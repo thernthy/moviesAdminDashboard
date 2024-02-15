@@ -97,7 +97,7 @@ class HomeController extends Controller
         ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
         ->join('videos', 'videos.title_id', 'titles.id')
         ->where('movie_category.name', $category)
-        ->get();
+        ->paginate(3);
         return view('front.popular', compact('session', 'data'));
     }
 
@@ -228,7 +228,7 @@ class HomeController extends Controller
             }
         }
     }
-
+    
     public function details(Request $request)
     {
         $movieId = $request->query('id');
