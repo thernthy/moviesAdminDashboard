@@ -34,6 +34,7 @@
 <!-- content -->
 <div class="wrap">
     @yield('content')
+
 </div>
 @include('front.footer')
 <!-- Placed at the end of the document so the pages load faster -->

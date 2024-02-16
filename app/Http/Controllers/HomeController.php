@@ -318,9 +318,32 @@ class HomeController extends Controller
             ]);
            return response()->json(['favorited-set' => $favorite]);
         }
-
         return response()->json(['favorited-set' => $favorite]);
+    }
 
+    public function searchHandle(Request $request){
+        $query = $request->input('query');
+        $searchResults = [];
+        $movieTitle = DB::table('titles')
+            ->join('videos', 'videos.title_id', 'titles.id')
+            ->where('titles.title', 'LIKE', "%{$query}%")
+            ->get();
+        
+        if ($movieTitle->isEmpty()) {
+            $keyWork = DB::table('keywords')
+                ->where('title', 'LIKE', "%{$query}%")
+                ->orWhere('id', 'LIKE', "%{$query}%")
+                ->get();
+        
+            if ($keyWork->isEmpty()) {
+                return response()->json(["message" => "No results found."]);
+            } else {
+                return response()->json(["message" => "Keyword found!", "keywords" => $keyWork]);
+            }
+        } else {
+            $searchResults = $movieTitle;
+        }
+        return response()->json(["message" => "Search results found.", "results" => $searchResults]);
     }
 
 }

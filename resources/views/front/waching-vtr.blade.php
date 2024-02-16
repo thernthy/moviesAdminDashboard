@@ -90,7 +90,7 @@
         </iframe>
         <div class="row movei-apersot">
             <ul>
-                <li class="movei-upersot-item"><a href="#"><i class="fa-regular fa-comment"></i> commend</a></li>
+                <li class="movei-upersot-item"><a href="#commentform"><i class="fa-regular fa-comment"></i> commend</a></li>
                 <li class="movei-upersot-item"><a href="#"><i class="fa-regular fa-eye"></i> {{$data['viewer_count']}} 조회수</a></li>
                 <li class="movei-upersot-item"><a href="#"><i class="fa-solid fa-exclamation"></i>Report</a></li>
                 <?php  $video_id = $data['targetMovie']->id; $user_id = session()->get('admin_id')?>
@@ -171,7 +171,7 @@
                         @endforeach
                     </ul>
                 </div>
-                <div class="row commend-form pt-5">
+                <div class="row commend-form pt-5" id="commentform">
                    <h3 style="color:white;">답글 남기기</h3>
                    <form id="commentForm">
                         @csrf

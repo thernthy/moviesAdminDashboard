@@ -35,8 +35,26 @@ body::-webkit-scrollbar-thumb
     height: 64px;
     transform: translateY(4px);
 }
+.container-fuild.shearch_result_wrapper.wrap {
+  background: #13161f;
+  height: 100vh;
+  overflow-y: auto;
+  padding-bottom: 8rem;
+  padding-top: 2rem;
+  scrollbar-width: none;
+  cursor: grab;
+}
+.container-fuild.shearch_result_wrapper.wrap > #loadingIcon {
+  width: 50%;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+  display: none;
+}
+.container-fuild.shearch_result_wrapper.wrap::-webkit-scrollbar {
+  display: none;
+}
 
-/* Set the fixed height of the footer here */
 #footer {
   height: 60px;
   background-color: #13161F;

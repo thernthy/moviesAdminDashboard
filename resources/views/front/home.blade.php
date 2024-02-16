@@ -706,27 +706,7 @@
       },
 
     });
-    function updateSwiperWidth() {
-        var screenWidth = window.innerWidth;
-        if (screenWidth <= 768) { 
-        swiper.params.width = 250;
-        } else {
-        swiper.params.width = null; 
-        }
-        swiper.update();
-    }
-    window.onload = updateSwiperWidth;
-    window.onresize = updateSwiperWidth;
-
-    function toggleMovieDetails(id, titleId) {
-        var movieDetail = document.getElementById('movie-details-' + id);
-        if (movieDetail.style.display === 'none') {
-            movieDetail.style.display = 'block';
-            fetchMovieDetails(id, titleId);
-        } else {
-            movieDetail.style.display = 'none';
-        }
-    }
+    
 function fetchMovieDetails(id, titleId) {
     fetch('/movie/details?id=' + titleId)
         .then(response => response.json())

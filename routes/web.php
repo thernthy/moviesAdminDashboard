@@ -19,6 +19,7 @@ Route::get('board/free_list', 'HomeController@listChart');
 Route::get('notice/', 'HomeController@notice');
 Route::post('/leavecomment', 'HomeController@leavecomment');
 Route::get('/movie/favoriteset', 'HomeController@favoriteHandle')->name('favoriteHandle');
+Route::get('search/', 'HomeController@searchHandle');
 //==============================================
 
 //======     User route         ==================

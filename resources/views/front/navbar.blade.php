@@ -88,6 +88,21 @@
                <a href=""><i class="fa-solid fa-magnifying-glass"></i></a>
             </div>
         </div>
+        <div class="container-fuild shearch_result_wrapper wrap" style="display:none;">
+            <div id="loadingIcon">
+                <lord-icon
+                    src="https://cdn.lordicon.com/abaxrbtq.json"
+                    trigger="loop"
+                    delay="500"
+                    stroke="light"
+                    colors="primary:#c7166f,secondary:#c7166f"
+                    style="width:50px;height:50px">
+                </lord-icon>
+            </div>
+            <div class="container-movie-wrap sh"> 
+                
+            </div>
+        </div>
     </div>
     <!--/.navbar -->
     @push('scripts')
@@ -140,8 +155,6 @@
         }
     });
 
-
-
     dropdoWraperOne.addEventListener('click', function(){
         if(dropdowwraper.classList.contains('active') && dropDowIcon.classList.contains('active')){
             dropdowwraper.classList.remove('active')
@@ -149,6 +162,101 @@
         }else{
             dropdowwraper.classList.add('active')
             dropDowIcon.classList.add('active')
+        }
+    });
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+    var container = document.querySelector('.shearch_result_wrapper');
+    var isScrolling = false;
+    var startX, startY, scrollLeft, scrollTop;
+        container.addEventListener('mousedown', function(e) {
+            isScrolling = true;
+            startX = e.pageX - container.offsetLeft;
+            startY = e.pageY - container.offsetTop;
+            scrollLeft = container.scrollLeft;
+            scrollTop = container.scrollTop;
+        });
+
+        container.addEventListener('mouseleave', function() {
+            isScrolling = false;
+        });
+
+        container.addEventListener('mouseup', function() {
+            isScrolling = false;
+        });
+
+        container.addEventListener('mousemove', function(e) {
+            if (!isScrolling) return;
+            e.preventDefault();
+            var x = e.pageX - container.offsetLeft;
+            var y = e.pageY - container.offsetTop;
+            var walkX = x - startX;
+            var walkY = y - startY;
+            container.scrollLeft = scrollLeft - walkX;
+            container.scrollTop = scrollTop - walkY;
+        });
+    });
+    const searchfill = document.querySelector('.sh-inpu-wrap > input')
+    const loadingIcon = document.getElementById('loadingIcon');
+    const imgUrl = "{{asset('')}}";
+    searchfill.addEventListener('change', (e) => {
+        if(searchfill.value!=''){
+            document.querySelector('.container-fuild.shearch_result_wrapper').style.display= "block"
+            loadingIcon.style.display = 'flex';
+            fetch(`/search?query=${encodeURIComponent(e.target.value)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(response => {
+                        let movieCarWrapper = document.querySelector('.container-movie-wrap.sh');
+                        if (response.message!='No results found.') {
+                            let intemInterFace = '';
+
+                            let searchResultValue = response.results;
+                            searchResultValue.forEach((item, index) => {
+                                intemInterFace += `
+                                <div class="card"> 
+                                    <a href="">
+                                        <div class="img">
+                                            <img src="${imgUrl}${item.movei_cover_path}" alt="Placeholder Image"> 
+                                        </div>
+                                        <h4 class="card-title">${item.title}</h4> 
+                                    </a>
+                                </div>`;
+                            });
+                            movieCarWrapper.innerHTML = intemInterFace;
+                        }else{
+                            movieCarWrapper.innerHTML = `
+                                <div class="empty-state">
+                                    <div class="empty-state__content">
+                                        <div class="empty-state__icon">
+                                            <lord-icon
+                                                src="https://cdn.lordicon.com/pcllgpqm.json"
+                                                trigger="loop"
+                                                delay="1000"
+                                                colors="primary:#911710,secondary:#e83a30,tertiary:#f4f19c"
+                                                style="width:250px;height:250px">
+                                            </lord-icon>
+                                        </div>
+                                        <h2 class="empty-state__title">No Records Found</h2>
+                                        <p class="empty-state__subtitle"></p>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                        loadingIcon.style.display = 'none';
+                    })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                    loadingIcon.style.display = 'none';
+                });
+                        
+        }else{
+            document.querySelector('.container-fuild.shearch_result_wrapper').style.display= "none"
         }
     });
     </script>
