@@ -215,7 +215,6 @@
                         let movieCarWrapper = document.querySelector('.container-movie-wrap.sh');
                         if (response.message!='No results found.') {
                             let intemInterFace = '';
-
                             let searchResultValue = response.results;
                             searchResultValue.forEach((item, index) => {
                                 intemInterFace += `

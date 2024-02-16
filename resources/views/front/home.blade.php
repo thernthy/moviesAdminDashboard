@@ -706,7 +706,15 @@
       },
 
     });
-    
+function toggleMovieDetails(id, titleId) {
+        var movieDetail = document.getElementById('movie-details-' + id);
+        if (movieDetail.style.display === 'none') {
+            movieDetail.style.display = 'block';
+            fetchMovieDetails(id, titleId);
+        } else {
+            movieDetail.style.display = 'none';
+        }
+}
 function fetchMovieDetails(id, titleId) {
     fetch('/movie/details?id=' + titleId)
         .then(response => response.json())
