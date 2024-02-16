@@ -31,6 +31,10 @@ body::-webkit-scrollbar-thumb
   margin-right:0px;
 }
 
+.logo-wrapper a > img{
+    height: 64px;
+    transform: translateY(4px);
+}
 
 /* Set the fixed height of the footer here */
 #footer {
@@ -246,6 +250,10 @@ h1 {
   }
   .tools-wrap.logo-wrap{
     width: 50%;
+  }
+  .logo-wrapper a > img{
+    height: 50px;
+    transform: translateY(7px);
   }
 }
 @media (max-width: 768px) {

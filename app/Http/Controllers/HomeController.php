@@ -113,14 +113,13 @@ class HomeController extends Controller
             'videos.link',
             'videos.episode',
             'titles.movei_cover_path',
-            'titles.description'
+            'titles.description',
         ) 
         ->join('titles', 'titles.id', 'videos.title_id')
         ->join('viewer', 'viewer.videos_id', 'videos.id')
         ->where('titles.title', $titleId)
         ->where('videos.episode', $part)
         ->first();
-
         $viewer_exed = DB::table('viewer')
         ->select('viewer_ip')
         ->where('viewer_ip', $user_Ip)
@@ -138,6 +137,10 @@ class HomeController extends Controller
                     'video_id' => $data['targetMovie']->id
                 ]);
             }
+            $data['favorited'] = DB::table('favorite_movies')
+            ->where('user_id', Session()->get('admin_id'))
+            ->where('video_id', $data['targetMovie']->id)
+            ->first();
         }
         
         if(!$viewer_exed){
@@ -299,4 +302,25 @@ class HomeController extends Controller
         }
     }
      
+
+
+    //   handle user favorite click request
+    public function favoriteHandle(Request $request){
+        $favorite = DB::table('favorite_movies')
+        ->where('user_id', Session()->get('admin_id'))
+        ->where('video_id', $request->input('video_id'))
+        ->first();
+        if(!$favorite){
+            DB::table('favorite_movies')
+            ->insert([
+                'user_id' => $request->input('userId'),
+                'video_id' => $request->input('video_id')
+            ]);
+           return response()->json(['favorited-set' => $favorite]);
+        }
+
+        return response()->json(['favorited-set' => $favorite]);
+
+    }
+
 }

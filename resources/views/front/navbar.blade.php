@@ -3,7 +3,10 @@
         <div class="container-fluid wrap navbar-wraper">
             <div class="tools-wrap logo-wrap">
                 <ul>
-                    <li class="{{request()->is('/')?'menu_active':''}}"><a href="{{url('/')}}">Logo</a></li>    
+                    <li class="{{request()->is('/')?'menu_active':''}} logo-wrapper">
+                        <a href="{{url('/')}}">
+                            <img src="{{ asset('favicon.png') }}" alt=""> 
+                        </a></li>    
                 </ul>
             </div>
             <div class="navbar-menue-wraper">
