@@ -51,13 +51,23 @@
     </div>
 
 <!-- ===============section one ========= Latest/Papular -->
-
 @if($data['0']=='')
 @foreach($data['category'] as $category => $movies)
 <section>
     <div class="container-fuild category">
         <h5 style="text-transform: capitalize;">{{  $category }}</h5>
-        <a href="">see more</a>
+        <a href="{{ url('video/category', 
+                    ($category == 'Popular-movies') ? 'popular' :
+                    (($category == 'K-drama-movies') ? 'K-drama' :
+                    (($category == 'TV-Entertainment') ? 'entertain' :
+                    (($category == 'movies') ? 'movies' :
+                    (($category == 'foreign-drama') ? 'foreign-drama' :
+                    (($category == 'Japanes-cartoon') ? 'Japanese-cartoon' :
+                    'OOP'
+                    )))))) }}">
+            see more
+        </a>
+
     </div>
     <div class="swiper mySwiper container-fuild">
         <div class="swiper-wrapper content">
@@ -72,7 +82,7 @@
             @endforeach
         </div>
     </div>
-    <div class="container-fuild movei-detail" id="movie-details-{{ $category }}" style="background-image: url('{{ asset('img/movei/mv (1).jpg') }}'); display: none;">
+    <div class="container-fuild movei-detail" id="movie-details-{{ $category }}" style="display: none;">
         <div class="row close-btn-wrap">
             <button class="close-btn"><i class="fa-solid fa-xmark"></i></button>
         </div>
@@ -713,12 +723,15 @@
             .then(response => response.json())
             .then(data => {
                 // Update movie detail content with data received from server
+                const basImgUrl = "{{asset('')}}"
                 var movieTitle = document.getElementById('movie-' + category_id);
                 var movieDescription = document.getElementById('movie-description-' + category_id);
+                var movieDetailbg = document.getElementById('movie-details-' + category_id);
                 var movieDetail = document.querySelector('.detail-wraper-' + category_id);
                 if (data.moviesDetail) {
                     movieTitle.innerHTML = data.moviesDetail.title;
                     movieDescription.innerHTML = data.moviesDetail.description;
+                    movieDetailbg.style.backgroundImage = `url('${basImgUrl}${data.moviesDetail.movei_cover_path}')` 
                     movieDetail.addEventListener('click', function(){
                         window.location.href = '{{ url('/movie') }}/' + data.moviesDetail.name + '/' + data.moviesDetail.episode + '/' + data.moviesDetail.title;
                     });
