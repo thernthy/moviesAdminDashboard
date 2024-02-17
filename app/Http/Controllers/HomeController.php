@@ -121,8 +121,11 @@ class HomeController extends Controller
             'videos.episode',
             'titles.movei_cover_path',
             'titles.description',
+            'movie_category.id',
+            'movie_category.name'
         ) 
         ->join('titles', 'titles.id', 'videos.title_id')
+        ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
         ->where('titles.title', $titleId)
         // ->where('videos.episode', $part)
         ->get();

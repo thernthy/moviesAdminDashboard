@@ -101,7 +101,9 @@
             @if($data['targetMovie']->episode!='' || $data['targetMovie']->episode!=0)
             <ul>
                 @foreach($data['Movies'] as $item => $index)
-                    <li class="movei-upersot-item ep {{($data['targetMovie']->episode == $index->episode)? 'active' : '' }}"><a href="#">Episode {{$index->episode}}</a></li>
+                    <li class="movei-upersot-item ep {{($data['targetMovie']->episode == $index->episode)? 'active' : '' }}">
+                        <a href="{{url('movie', [$index->name, $index->episode, $index->title])}}">Episode {{$index->episode}}</a>
+                    </li>
                     @php if($index <= 0) break @endphp
                 @endforeach
             </ul>
