@@ -98,7 +98,7 @@
                 <li class="movei-upersot-item"><a href="#"><i class="fa-solid fa-exclamation"></i>Report</a></li>
                 @if((session()->has('admin_name')))
                     <?php  $video_id = $data['targetMovie']->id; $user_id = session()->get('admin_id')?>
-                    <li class="movei-upersot-item fav {{($data['favorited']->favorite_id!='')?'active':''}}" Onclick="favoriteHandle({{$video_id}}, {{$user_id}})"><span><i class="fa-regular fa-heart"></i>Favorite</span></li>
+                    <li class="movei-upersot-item fav {{($data['favorited']->favorite_id!='')?'active':''}}" Onclick="favoriteHandle('{{$data['targetMovie']->id}}', '{{session()->get('admin_id')}}')"><span><i class="fa-regular fa-heart"></i>Favorite</span></li>
                 @endif
             </ul>
         </div>
