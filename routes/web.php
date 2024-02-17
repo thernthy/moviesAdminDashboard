@@ -38,7 +38,13 @@ Route::middleware(['auth.user'])->group(function () {
         })->name('user.watchlater'); 
         Route::get('/favorite', function ($username) { 
             $session = Session();
-            return view('front/user/favorate')->with(['username' => $username, 'session' => $session]);
+            $data['favorite_movies'] = DB::table('favorite_movies')
+            ->join('videos', 'videos.id', 'favorite_movies.video_id')
+            ->join('titles', 'titles.id', 'videos.title_id')
+            ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
+            ->where('favorite_movies.user_id', Session()->get('admin_id'))
+            ->get();
+            return view('front/user/favorate')->with(['username' => $username, 'session' => $session, 'data' => $data]);
         })->name('user.favorite'); 
         
         Route::get('/history', function ($username) { 

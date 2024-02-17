@@ -32,14 +32,15 @@
 @include('front/user/user_fix_component')
 <div class="row">
         <div class="user-page-body-wraper">
-            <div class="container-movie-wrap"> 
+            <div class="container-movie-wrap">
+                       @foreach($data['favorite_movies'] as $item) 
                         <div class="card"> 
-                            <a href="{{ url('video/category/categoryName/part/movieTile') }}">
+                            <a href="{{url('movie', [$item->name, $item->episode, $item->title])}}">
                                 <div class="img">
-                                    <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
+                                    <img src="{{asset($item->movei_cover_path) }}" alt="Placeholder Image"> 
                                 </div>
                                 <div style="display:flex; align-items:center; justify-content:space-between;">
-                                    <h4 class="card-title">영화 제목</h4> 
+                                    <h4 class="card-title">{{$item->title}}</h4> 
                                     <lord-icon src="https://cdn.lordicon.com/xyboiuok.json" trigger="hover" 
                                         style="width: 25px;height: 25px;background: #fff;border-radius: 50%;"
                                         >
@@ -47,54 +48,7 @@
                                 </div>
                             </a>
                         </div> 
-                        <div class="card"> 
-                            <a href="">
-                                <div class="img">
-                                    <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
-                                </div>
-                                <h4 class="card-title">영화 제목</h4> 
-                            </a>
-                        </div> 
-                        <div class="card"> 
-                            <a href="">
-                                <div class="img">
-                                    <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
-                                </div>
-                                <h4 class="card-title">영화 제목</h4> 
-                            </a>
-                        </div> 
-                        <div class="card"> 
-                            <a href="">
-                                <div class="img">
-                                    <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
-                                </div>
-                                <h4 class="card-title">영화 제목</h4> 
-                            </a>
-                        </div> 
-                        <div class="card"> 
-                            <a href="">
-                                <div class="img">
-                                    <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
-                                </div>
-                                <h4 class="card-title">영화 제목</h4> 
-                            </a>
-                        </div> 
-                        <div class="card"> 
-                            <a href="">
-                                <div class="img">
-                                    <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
-                                </div>
-                                <h4 class="card-title">영화 제목</h4> 
-                            </a>
-                        </div> 
-                        <div class="card"> 
-                            <a href="">
-                                <div class="img">
-                                    <img src="{{asset('img/movei/mv (1).jpg') }}" alt="Placeholder Image"> 
-                                </div>
-                                <h4 class="card-title">영화 제목</h4> 
-                            </a>
-                        </div> 
+                        @endforeach
             </div>
         </div>
     </div>  
