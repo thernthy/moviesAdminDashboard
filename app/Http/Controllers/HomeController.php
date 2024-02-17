@@ -56,9 +56,16 @@ class HomeController extends Controller
             '0' => ''
         ];
         $Movies = DB::table('titles')
-        ->join('videos', 'videos.title_id', 'titles.id')
-        ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
-        ->OrderBy('titles.created_at', 'DESC')
+        ->select(
+        'titles.id as title_id', 
+        'titles.movie_category_id',
+        'titles.title', 
+        'titles.movei_cover_path', 
+        'titles.created_at', 
+        'movie_category.id', 
+        'movie_category.name')
+        ->join('movie_category', 'movie_category.id', '=', 'titles.movie_category_id')
+        ->orderBy('titles.created_at', 'DESC')
         ->get();
         if(!$Movies->isEmpty()){
             foreach($Movies as $item){

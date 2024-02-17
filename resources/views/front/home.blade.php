@@ -62,43 +62,40 @@
     <div class="swiper mySwiper container-fuild">
         <div class="swiper-wrapper content">
             @foreach($movies as $index => $item)
-                <div class="swiper-slide text-left animate-box" onclick="toggleMovieDetails('{{ $category }}_{{ $index }}', '{{$item->title_id}}')">
+                <div class="swiper-slide text-left animate-box" onclick="toggleMovieDetails('{{ $category }}', '{{$item->title_id}}')">
                     <img src="{{ asset($item->movei_cover_path)}}" alt="" class="w-100">
                     <!-- <a href="#">New</a> -->
                     <h6>{{ $item->title }}</h6>
                     <div class="swiper-pagination"></div>
                 </div>
-                @php if($index+1 > 8) { break; } @endphp
+                @php if($index+1 > 16) { break; } @endphp
             @endforeach
         </div>
     </div>
-    @foreach($movies as $index => $item)
-            <div class="container-fuild movei-detail" id="movie-details-{{ $category }}_{{ $index }}" style="background-image: url('{{ asset('img/movei/mv (1).jpg') }}'); display: none;">
-                <div class="row close-btn-wrap">
-                    <button class="close-btn"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-                <div class="detail-wraper">
-                    <div class="play_btn">
-                        <i class="fa-regular fa-circle-play"></i>
-                    </div>
-                    <div class="movei-cotent">
-                        <div class="reaction_icon">
-                            <button class="reaction-btn reaction"><i class="fa-solid fa-heart"></i> <b>0</b></button>
-                            <button class="reaction-btn"><i class="fa-solid fa-heart"></i><b>100</b></button>
-                        </div>
-                        <p class="key-word">
-                            <a href="">#key word</a>  <a href="">#key word</a>  <a href="">#key word</a> 
-                        </p>
-                        <h2 id="{{$item->title_id}}">
-                            Movie Title
-                        </h2>
-                        <p class="movie-dscr" id="movie-description-{{ $category }}_{{ $index }}">
-                            <!-- Movie description -->
-                        </p>
-                    </div>
-                </div>
+    <div class="container-fuild movei-detail" id="movie-details-{{ $category }}" style="background-image: url('{{ asset('img/movei/mv (1).jpg') }}'); display: none;">
+        <div class="row close-btn-wrap">
+            <button class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="detail-wraper detail-wraper-{{ $category }}">
+            <div class="play_btn">
+                <i class="fa-regular fa-circle-play"></i>
             </div>
-    @endforeach
+            <div class="movei-cotent">
+                <div class="reaction_icon">
+                    <button class="reaction-btn reaction"><i class="fa-solid fa-heart"></i> <b>0</b></button>
+                    <button class="reaction-btn"><i class="fa-solid fa-heart"></i><b>100</b></button>
+                </div>
+                <p class="key-word">
+                    <a href="">#key word</a>  <a href="">#key word</a>  <a href="">#key word</a> 
+                </p>
+                <h2 id="movie-{{$category}}">
+                </h2>
+                <p class="movie-dscr" id="movie-description-{{ $category}}">
+                    <!-- Movie description -->
+                </p>
+            </div>
+        </div>
+    </div>
 </section>
 @endforeach
 
@@ -706,33 +703,40 @@
       },
 
     });
-function toggleMovieDetails(id, titleId) {
-        var movieDetail = document.getElementById('movie-details-' + id);
-        if (movieDetail.style.display === 'none') {
-            movieDetail.style.display = 'block';
-            fetchMovieDetails(id, titleId);
-        } else {
-            movieDetail.style.display = 'none';
-        }
-}
-function fetchMovieDetails(id, titleId) {
-    fetch('/movie/details?id=' + titleId)
-        .then(response => response.json())
-        .then(data => {
-            // Update movie detail content with data received from server
-            var movieTitle = document.getElementById(titleId);
-            var movieDescription = document.getElementById('movie-description-' + id);
-            var movieDetail = document.getElementById('movie-details-' + id);
-            if (data.moviesDetail) {
-                movieTitle.innerHTML = data.moviesDetail.title;
-                movieDescription.innerHTML = data.moviesDetail.description;
-                movieDetail.addEventListener('click', function(){
-                    window.location.href = '{{ url('/movie') }}/' + data.moviesDetail.name + '/' + data.moviesDetail.episode + '/' + data.moviesDetail.title;
-                });
+    function toggleMovieDetails(category_id, titleId) {
+        var movieDetail = document.getElementById('movie-details-' + category_id);
+        movieDetail.style.display = 'block';
+        fetchMovieDetails(category_id, titleId);
+    }
+    function fetchMovieDetails(category_id, titleId) {
+        fetch('/movie/details?id=' + titleId)
+            .then(response => response.json())
+            .then(data => {
+                // Update movie detail content with data received from server
+                var movieTitle = document.getElementById('movie-' + category_id);
+                var movieDescription = document.getElementById('movie-description-' + category_id);
+                var movieDetail = document.querySelector('.detail-wraper-' + category_id);
+                if (data.moviesDetail) {
+                    movieTitle.innerHTML = data.moviesDetail.title;
+                    movieDescription.innerHTML = data.moviesDetail.description;
+                    movieDetail.addEventListener('click', function(){
+                        window.location.href = '{{ url('/movie') }}/' + data.moviesDetail.name + '/' + data.moviesDetail.episode + '/' + data.moviesDetail.title;
+                    });
+                }
+            })
+            .catch(error => console.error('Error fetching movie details:', error));
+    }
+document.addEventListener('DOMContentLoaded', function() {
+    var closeButtons = document.querySelectorAll('.close-btn');
+    closeButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var movieDetail = button.closest('.movei-detail');
+            if (movieDetail) {
+                movieDetail.style.display = 'none';
             }
-        })
-        .catch(error => console.error('Error fetching movie details:', error));
-}
+        });
+    });
+});
 
 
 </script>
