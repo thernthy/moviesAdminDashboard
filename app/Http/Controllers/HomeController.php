@@ -175,7 +175,6 @@ class HomeController extends Controller
         $data['viewer_count'] = $data['video_viewers']->count();
 
         $data['recommend'] = DB::table('titles')
-        ->join('videos', 'videos.title_id', 'titles.id')
         ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
         ->OrderBy('titles.created_at', 'DESC')
         ->get();
