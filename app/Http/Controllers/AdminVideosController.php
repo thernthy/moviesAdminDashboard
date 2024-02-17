@@ -42,7 +42,7 @@
 			$this->form = [];
 			$this->form[] = ['label'=>'Select Title','name'=>'title_id','type'=>'select','validation'=>'required','width'=>'col-sm-10','datatable'=>'titles,title'];
 			$this->form[] = ['label'=>'Link','name'=>'link','type'=>'text','validation'=>'required|min:5','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Episode','name'=>'episode','type'=>'text','validation'=>'required','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Episode','name'=>'episode','type'=>'text','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Duration','name'=>'duration','type'=>'time','validation'=>'required','width'=>'col-sm-10'];
 			# END FORM DO NOT REMOVE THIS LINE
 
