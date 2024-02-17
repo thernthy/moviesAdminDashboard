@@ -98,12 +98,14 @@
             </ul>
         </div>
         <div class="row movei-apersot ep">
+            @if($data['targetMovie']->episode!='' || $data['targetMovie']->episode!=0)
             <ul>
-                <li class="movei-upersot-item ep active"><a href="#">Episode 1</a></li>
-                <li class="movei-upersot-item ep"><a href="#">Episode 2</a></li>
-                <li class="movei-upersot-item ep"><a href="#">Episode 3</a></li>
-                <li class="movei-upersot-item ep"><a href="#">Episode 4</a></li>
+                @foreach($data['Movies'] as $item => $index)
+                    <li class="movei-upersot-item ep {{($data['targetMovie']->episode == $index->episode)? 'active' : '' }}"><a href="#">Episode {{$index->episode}}</a></li>
+                    @php if($index <= 0) break @endphp
+                @endforeach
             </ul>
+            @endif
         </div>
     </div>
         <div class="row">

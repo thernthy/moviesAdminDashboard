@@ -112,7 +112,7 @@ class HomeController extends Controller
     public function videoWach($CategoryName, $part, $titleId, Request $request){
         $session = Session();
         $user_Ip = $request->ip();
-        $data['targetMovie'] = DB::table('videos')
+        $data['Movies'] = DB::table('videos')
         ->select(
             'videos.id', 
             'titles.title', 
@@ -124,8 +124,14 @@ class HomeController extends Controller
         ) 
         ->join('titles', 'titles.id', 'videos.title_id')
         ->where('titles.title', $titleId)
-        ->where('videos.episode', $part)
-        ->first();
+        // ->where('videos.episode', $part)
+        ->get();
+        $data['targetMovie'] = '';
+        foreach($data['Movies'] as $movie){
+            if($movie->episode == $part){
+                $data['targetMovie'] = $movie;
+            }
+        }
         $viewer_exed = DB::table('viewer')
         ->select('viewer_ip')
         ->where('viewer_ip', $user_Ip)
@@ -172,8 +178,6 @@ class HomeController extends Controller
         ->get();
         return view('front.waching-vtr', compact('data', 'session')); 
     }
-
-
 
     public function requstEdite($username, $user_id, Request $request) {
         $data['userInfo'] = DB::table('cms_users')
