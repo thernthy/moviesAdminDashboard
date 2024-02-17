@@ -32,6 +32,7 @@
 			$this->col = [];
 			$this->col[] = ["label"=>"Id","name"=>"id"];
 			$this->col[] = ["label"=>"Title Id","name"=>"title_id","join"=>"titles,title"];
+			$this->col[] = ["label"=>"cover photo","name"=>"title_id","join"=>"titles,movei_cover_path","image"=>true];
 			$this->col[] = ["label"=>"Link","name"=>"link"];
 			$this->col[] = ["label"=>"Duration","name"=>"duration"];
 			$this->col[] = ["label"=>"Episode","name"=>"episode"];

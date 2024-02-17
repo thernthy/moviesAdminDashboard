@@ -68,7 +68,7 @@
                     <h6>{{ $item->title }}</h6>
                     <div class="swiper-pagination"></div>
                 </div>
-                @php if($index+1 > 8) { break; } @endphp
+                @php if($index+1 > 16) { break; } @endphp
             @endforeach
         </div>
     </div>
