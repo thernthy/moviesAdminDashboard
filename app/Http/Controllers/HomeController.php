@@ -161,7 +161,7 @@ class HomeController extends Controller
         if(!$viewer_exed){
             DB::table('viewer')->insert([
                 'viewer_ip' => $user_Ip,
-                'videos_id' => $video_id->id
+                'videos_id' => $data['targetMovie']->id
             ]);
         }
 

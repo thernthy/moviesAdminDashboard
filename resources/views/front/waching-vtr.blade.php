@@ -78,6 +78,9 @@
 .movei-upersot-item.fav.active{
     background:red;
 }
+.movei-upersot-item.fav{
+ cursor: pointer;
+}
 </style>
 @endpush
 @section('content')
@@ -93,8 +96,10 @@
                 <li class="movei-upersot-item"><a href="#commentform"><i class="fa-regular fa-comment"></i> commend</a></li>
                 <li class="movei-upersot-item"><a href="#"><i class="fa-regular fa-eye"></i> {{$data['viewer_count']}} 조회수</a></li>
                 <li class="movei-upersot-item"><a href="#"><i class="fa-solid fa-exclamation"></i>Report</a></li>
-                <?php  $video_id = $data['targetMovie']->id; $user_id = session()->get('admin_id')?>
-                <li class="movei-upersot-item fav {{($data['favorited']->favorite_id!='')?'active':''}}" Onclick="favoriteHandle({{$video_id}}, {{$user_id}})"><span><i class="fa-regular fa-heart"></i>Favorite</span></li>
+                @if((session()->has('admin_name')))
+                    <?php  $video_id = $data['targetMovie']->id; $user_id = session()->get('admin_id')?>
+                    <li class="movei-upersot-item fav {{($data['favorited']->favorite_id!='')?'active':''}}" Onclick="favoriteHandle({{$video_id}}, {{$user_id}})"><span><i class="fa-regular fa-heart"></i>Favorite</span></li>
+                @endif
             </ul>
         </div>
         <div class="row movei-apersot ep">
@@ -363,7 +368,6 @@
                 commentBox.innerHTML = '';
                 var comments = response.comments.comments;
                 var based_Img_url = "{{ asset('') }}";
-
                 comments.forEach(item => {
                     var html = `
                         <li>
@@ -403,21 +407,20 @@ function favoriteHandle(video_id, user_id) {
     let buttonTartget =  document.querySelector('.movei-upersot-item.fav');
     if(!buttonTartget.classList.contains('active')){
         const url = `/movie/favoriteset?userId=${user_id}&video_id=${video_id}`;
+        buttonTartget.classList.add('active');
         fetch(url)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
-                buttonTartget.classList.add('active');
             })
             .then(data => {
-                if (data['favorited-set']) {
-                    buttonTartget.classList.add('active');
-                     //console.log('Movie details:', data['favorited-set']);
-                 } else {
-                     console.log('No movie details found');
-                 }
+                // if (data['favorited-set']) {
+                //     buttonTartget.classList.add('active');
+                //  } else {
+                //      console.log('No movie details found');
+                //  }
             })
             .catch(error => {
                 console.error('Error fetching movie details:', error);
