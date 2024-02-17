@@ -78,7 +78,7 @@ class HomeController extends Controller
                 if ($item->name === "entertain") {
                     $data['category']['TV-Entertainment'][] = $item;
                 }
-                if ($item->name === "movies") {
+                if ($item->name === "Movies") {
                     $data['category']['movies'][] = $item;
                 }
                 if ($item->name === "foreign drama") {
@@ -123,7 +123,6 @@ class HomeController extends Controller
             'titles.description',
         ) 
         ->join('titles', 'titles.id', 'videos.title_id')
-        ->join('viewer', 'viewer.videos_id', 'videos.id')
         ->where('titles.title', $titleId)
         ->where('videos.episode', $part)
         ->first();

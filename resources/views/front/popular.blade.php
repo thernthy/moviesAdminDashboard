@@ -47,7 +47,7 @@
                     <div class="img">
                         <img src="{{asset($item->movei_cover_path) }}" alt="Placeholder Image"> 
                     </div>
-                    <h4 class="card-title">영화 제목</h4> 
+                    <h4 class="card-title">{{$item->title}}</h4> 
                 </a>
             </div> 
         @endforeach
