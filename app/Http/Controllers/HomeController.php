@@ -176,7 +176,10 @@ class HomeController extends Controller
 
         $data['recommend'] = DB::table('titles')
         ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
+        ->join('videos', 'videos.title_id', 'titles.id')
         ->OrderBy('titles.created_at', 'DESC')
+        ->where('movie_category.name', $CategoryName)
+        ->where('titles.title', '!=', $titleId)
         ->get();
         return view('front.waching-vtr', compact('data', 'session')); 
     }

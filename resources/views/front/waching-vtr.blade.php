@@ -207,7 +207,7 @@
                                 <li class="list-group-item">
                                     <a href="{{url('movie', [$item->name, $item->episode, $item->title])}}">
                                         <div class="video-cover" style="background-image:url('{{asset($item->movei_cover_path)}}');"></div>
-                                        <h6>이전 영상 보기</h6>
+                                        <h6>{{$item->title}}</h6>
                                     </a>
                                 </li>
                                 @endforeach
