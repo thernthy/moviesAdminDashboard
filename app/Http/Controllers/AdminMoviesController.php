@@ -41,7 +41,7 @@
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
 			$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
-			$this->form[] = ['label'=>'Movie Category','name'=>'movie_category_id','type'=>'select','validation'=>'required','width'=>'col-sm-10','datatable'=>'movie_category,name'];
+			$this->form[] = ['label'=>'Movie Category','name'=>'movie_category_id','type'=>'select','validation'=>'required','width'=>'col-sm-10','datatable'=>'movie_category,name','datatable_format'=>'id,\' - \',name'];
 			$this->form[] = ['label'=>'Movei Cover','name'=>'movei_cover_path','type'=>'upload','validation'=>'required|image','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Description','name'=>'description','type'=>'textarea','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Keyword','name'=>'keyword_id','type'=>'select2','width'=>'col-sm-10','datatable'=>'keywords,title'];

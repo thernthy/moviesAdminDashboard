@@ -66,7 +66,7 @@
                     (($category == 'TV-Entertainment') ? 'entertain' :
                     (($category == 'movies') ? 'movies' :
                     (($category == 'foreign-drama') ? 'foreign-drama' :
-                    (($category == 'Japanes-cartoon') ? 'Japanese-cartoon' :
+                    (($category == 'Cartoon') ? 'cartoon' :
                     'OOP'
                     )))))) }}">
             see more

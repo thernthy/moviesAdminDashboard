@@ -51,7 +51,7 @@ class HomeController extends Controller
             'TV-Entertainment' => [],
             'movies' => [],
             'foreign-drama' => [],
-            'Japanes-cartoon' => [],
+            'Cartoon' => [],
             ],
             '0' => ''
         ];
@@ -83,6 +83,9 @@ class HomeController extends Controller
                 }
                 if ($item->name === "foreign drama") {
                     $data['category']['foreign-drama'][] = $item;
+                }
+                if ($item->name === "cartoon") {
+                    $data['category']['Cartoon'][] = $item;
                 }
             }
         }else{

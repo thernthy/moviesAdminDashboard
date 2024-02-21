@@ -40,7 +40,17 @@
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Select Title','name'=>'title_id','type'=>'select','validation'=>'required','width'=>'col-sm-10','datatable'=>'titles,title'];
+            $this->form[] = [
+                'label' => 'Select Title',
+                'name' => 'title_id',
+                'type' => 'select',
+                'validation' => 'required',
+                'width' => 'col-sm-10',
+                'datatable' => 'titles,title',
+                'datatable_format' => 'id,\' - \',title',
+                'datatable_orderby' => 'created_at DESC' // Assuming 'created_at' is the column you want to order by
+            ];
+
 			$this->form[] = ['label'=>'Link','name'=>'link','type'=>'text','validation'=>'required|min:5','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Episode','name'=>'episode','type'=>'text','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Duration','name'=>'duration','type'=>'time','validation'=>'required','width'=>'col-sm-10'];
@@ -48,9 +58,9 @@
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ['label'=>'Select Title','name'=>'title_id','type'=>'select','validation'=>'required','width'=>'col-sm-10','datatable'=>'titles,title'];
+			//$this->form[] = ['label'=>'Select Title','name'=>'title_id','type'=>'select','validation'=>'required','width'=>'col-sm-10','datatable'=>'titles,title','datatable_format'=>'id,\' - \',name'];
 			//$this->form[] = ['label'=>'Link','name'=>'link','type'=>'text','validation'=>'required|min:5','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Episode','name'=>'episode','type'=>'text','validation'=>'required','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'Episode','name'=>'episode','type'=>'text','width'=>'col-sm-10'];
 			//$this->form[] = ['label'=>'Duration','name'=>'duration','type'=>'time','validation'=>'required','width'=>'col-sm-10'];
 			# OLD END FORM
 
