@@ -33,6 +33,7 @@
 <div class="row">
         <div class="user-page-body-wraper">
             <div class="container-movie-wrap">
+                   
                        @foreach($data['favorite_movies'] as $item) 
                         <div class="card"> 
                             <a href="{{url('movie', [$item->name, $item->episode, $item->title])}}">
