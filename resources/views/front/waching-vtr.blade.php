@@ -97,8 +97,8 @@
                 <li class="movei-upersot-item"><a href="#"><i class="fa-regular fa-eye"></i> {{$data['viewer_count']}} 조회수</a></li>
                 <li class="movei-upersot-item"><a href="#"><i class="fa-solid fa-exclamation"></i>Report</a></li>
                 @if((session()->has('admin_name')))
-                    <?php  $video_id = $data['targetMovie']->id; $user_id = session()->get('admin_id')?>
-                    <li class="movei-upersot-item fav {{($data['favorited']->favorite_id!='')?'active':''}}" Onclick="favoriteHandle('{{$data['targetMovie']->id}}', '{{session()->get('admin_id')}}')"><span><i class="fa-regular fa-heart"></i>Favorite</span></li>
+                    <?php  $video_id = $data['targetMovie']->video_id; $user_id = session()->get('admin_id')?>
+                    <li class="movei-upersot-item fav {{($data['favorited']->favorite_id!='')?'active':''}}" Onclick="favoriteHandle('{{$data['targetMovie']->video_id}}', '{{session()->get('admin_id')}}')"><span><i class="fa-regular fa-heart"></i>Favorite</span></li>
                 @endif
             </ul>
         </div>
@@ -122,28 +122,6 @@
 
                    </div>
                 </div>
-                <!-- <div class="row movei-apersot">
-                    <ul>
-                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
-                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
-                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
-                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
-                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
-                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
-                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
-                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
-                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
-                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
-                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
-                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
-                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
-                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
-                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
-                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
-                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
-                        <li class="movei-upersot-item"><a href="#">1Ep</a></li>
-                    </ul>
-                </div> -->
                 <div class="row movei-cover-wraper">
                     <div class="col-sm-3">
                         <img src="{{asset($data['targetMovie']->movei_cover_path)}}" alt="w-100" class="w-100">
@@ -216,108 +194,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="col-md-4">
-                <div class="row">
-                    <div class="video-option-wraper">
-                        <button class="opitonBnt videoPart active">Series (10)</button>
-                        <button class="opitonBnt recomeded" >Recommended Videos</button>
-                    </div>
-                    <div class="card video_part_list">
-                        <div class="card-body active">
-                            <ul class="list-group">
-                                <li class="list-group-item active">
-                                    <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
-                                    <h5>이전 영상 보기</h5>
-                                </li>
-                                <li class="list-group-item ">
-                                    <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
-                                </li>
-                                <li class="list-group-item ">
-                                    <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
-                                </li>
-                                <li class="list-group-item ">
-                                    <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
-                                </li>
-                                <li class="list-group-item ">
-                                    <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
-                                </li>
-                                <li class="list-group-item ">
-                                    <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
-                                </li>
-                                <li class="list-group-item ">
-                                    <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card recomeded_video">
-                        <div class="card-body unactive">
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
-                                    <h6>이전 영상 보기</h6>
-                                </li>
-                                <li class="list-group-item ">
-                                    <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
-                                    <h6>이전 영상 보기</h6>
-                                </li>
-                                <li class="list-group-item ">
-                                    <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
-                                    <h6>이전 영상 보기</h6>
-                                </li>
-                                <li class="list-group-item ">
-                                    <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
-                                    <h6>이전 영상 보기</h6>
-                                </li>
-                                <li class="list-group-item ">
-                                    <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
-                                    <h6>이전 영상 보기</h6>
-                                </li>
-                                <li class="list-group-item ">
-                                    <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
-                                    <h6>이전 영상 보기</h6>
-                                </li>
-                                <li class="list-group-item ">
-                                    <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
-                                    <h6>이전 영상 보기</h6>
-                                </li>
-                                <li class="list-group-item ">
-                                    <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
-                                    <h6>이전 영상 보기</h6>
-                                </li>
-                                <li class="list-group-item ">
-                                    <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
-                                    <h6>이전 영상 보기</h6>
-                                </li>
-                                <li class="list-group-item ">
-                                    <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
-                                    <h6>이전 영상 보기</h6>
-                                </li>
-                                <li class="list-group-item ">
-                                    <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
-                                    <h6>이전 영상 보기</h6>
-                                </li>
-                                <li class="list-group-item ">
-                                    <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
-                                    <h6>이전 영상 보기</h6>
-                                </li>
-                                <li class="list-group-item ">
-                                    <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
-                                    <h6>이전 영상 보기</h6>
-                                </li>
-                                <li class="list-group-item ">
-                                    <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
-                                    <h6>이전 영상 보기</h6>
-                                </li>
-                                <li class="list-group-item ">
-                                    <div class="video-cover" style="background-image:url('{{asset('img/movei/mv (4).jpg')}}');"></div>
-                                    <h6>이전 영상 보기</h6>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
         </div>
     </div>
 @endsection

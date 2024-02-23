@@ -26,8 +26,8 @@
                     <li class="{{ request()->is('video/category/foreign drama') ? 'menu_active' : '' }}">
                         <a href="{{ url('/video/category/foreign drama') }}">외국 드라마</a>
                     </li>
-                    <li class="{{ request()->is('video/category/Japanes cartoon') ? 'menu_active' : '' }}">
-                        <a href="{{ url('/video/category/Japanes cartoon') }}">만화 영화</a>
+                    <li class="{{ request()->is('video/category/cartoon') ? 'menu_active' : '' }}">
+                        <a href="{{ url('/video/category/cartoon') }}">만화 영화</a>
                     </li>
                     <li class="{{ request()->is('notice')?'menu_active' : '' }}">
                         <a href="{{ url('/notice') }}">발표</a>
@@ -200,11 +200,11 @@
     const searchfill = document.querySelector('.sh-inpu-wrap > input')
     const loadingIcon = document.getElementById('loadingIcon');
     const imgUrl = "{{asset('')}}";
-    searchfill.addEventListener('change', (e) => {
+    searchfill.addEventListener('input', (e) => {
         if(searchfill.value!=''){
             document.querySelector('.container-fuild.shearch_result_wrapper').style.display= "block"
             loadingIcon.style.display = 'flex';
-            fetch(`/search?query=${encodeURIComponent(e.target.value)}`)
+            fetch(`/search?query=${encodeURIComponent(searchfill.value)}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');

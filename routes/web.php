@@ -34,8 +34,15 @@ Route::middleware(['auth.user'])->group(function () {
         
         Route::get('/watchlater', function ($username) { 
             $session = Session();
-            return view('front/user/watchlater')->with(['username' => $username, 'session' => $session]);
+            $data['videoSaved'] = DB::table('save_movies')
+            ->join('videos', 'videos.id', 'save_movies.video_id')
+            ->join('titles', 'titles.id', 'videos.title_id')
+            ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
+            ->where('save_movies.user_id', Session()->get('admin_id'))
+            ->get();
+            return view('front/user/watchlater')->with(['username' => $username, 'session' => $session, 'data' => $data]);
         })->name('user.watchlater'); 
+        
         Route::get('/favorite', function ($username) { 
             $session = Session();
             $data['favorite_movies'] = DB::table('favorite_movies')
@@ -84,6 +91,7 @@ Route::post('/registerPost', 'HomeController@registerPost')->name('registerPost'
 
 
 Route::get('/movie/details', 'HomeController@details');
+Route::get('/movie/save', 'HomeController@saveMovies');
 
 //==============================================
 

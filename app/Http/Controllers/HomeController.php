@@ -32,8 +32,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request){
         $ip =  $request->ip();
         $userAgent = $request->userAgent();
         $referrer = $request->headers->get('/');
@@ -100,12 +99,10 @@ class HomeController extends Controller
     }
 
 
-    public function PageCategory($category)
-    {
+    public function PageCategory($category){
         $session = Session();
         $data['movies'] = DB::table('titles')
         ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
-        ->join('videos', 'videos.title_id', 'titles.id')
         ->where('movie_category.name', $category)
         ->paginate(21);
         return view('front.popular', compact('session', 'data'));
@@ -117,7 +114,7 @@ class HomeController extends Controller
         $user_Ip = $request->ip();
         $data['Movies'] = DB::table('videos')
         ->select(
-            'videos.id', 
+            'videos.id as video_id', 
             'titles.title', 
             'videos.episode', 
             'videos.link',
@@ -130,7 +127,6 @@ class HomeController extends Controller
         ->join('titles', 'titles.id', 'videos.title_id')
         ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
         ->where('titles.title', $titleId)
-        // ->where('videos.episode', $part)
         ->get();
         $data['targetMovie'] = '';
         foreach($data['Movies'] as $movie){
@@ -138,42 +134,43 @@ class HomeController extends Controller
                 $data['targetMovie'] = $movie;
             }
         }
+        
         $viewer_exed = DB::table('viewer')
         ->select('viewer_ip')
         ->where('viewer_ip', $user_Ip)
-        ->where('videos_id', $data['targetMovie']->id)
+        ->where('videos_id', $data['targetMovie']->video_id)
         ->first();
 
         if(Session()->has('admin_name')){
             $exVTR = DB::table('history')
-            ->where('video_id', $data['targetMovie']->id)
+            ->where('video_id', $data['targetMovie']->video_id)
             ->where('user_id', Session()->get('admin_id'))
             ->first();
             if(!$exVTR){
                 DB::table('history')->insert([
                     'user_id' => Session()->get('admin_id'),
-                    'video_id' => $data['targetMovie']->id
+                    'video_id' => $data['targetMovie']->video_id
                 ]);
             }
             $data['favorited'] = DB::table('favorite_movies')
             ->where('user_id', Session()->get('admin_id'))
-            ->where('video_id', $data['targetMovie']->id)
+            ->where('video_id', $data['targetMovie']->video_id)
             ->first();
         }
         
         if(!$viewer_exed){
             DB::table('viewer')->insert([
                 'viewer_ip' => $user_Ip,
-                'videos_id' => $data['targetMovie']->id
+                'videos_id' => $data['targetMovie']->video_id
             ]);
         }
 
         $data['comments'] = DB::table('comment')
-        ->where('video_id', $data['targetMovie']->id)
+        ->where('video_id', $data['targetMovie']->video_id)
         ->get();
 
         $data['video_viewers'] = DB::table('viewer')
-        ->where('videos_id', $data['targetMovie']->id)
+        ->where('videos_id', $data['targetMovie']->video_id)
         ->get();
         $data['viewer_count'] = $data['video_viewers']->count();
 
@@ -262,22 +259,30 @@ class HomeController extends Controller
         }
     }
     
-    public function details(Request $request)
-    {
+    public function details(Request $request){
         $movieId = $request->query('id');
         $movieDetail = DB::table('titles')
+            ->select(
+                'videos.id as video_id', 
+                'titles.description',
+                'titles.movei_cover_path',
+                'movie_category.name',
+                'titles.title',
+                'videos.episode',
+                )
             ->join('videos', 'videos.title_id', 'titles.id')
             ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
             ->where('titles.id', $movieId)
             ->first();
-    
+        $movieSave = DB::table('save_movies')
+            ->where('video_id', $movieDetail->video_id)
+            ->first();
         if ($movieDetail) {
-            // Assuming your movie model has 'title' and 'description' properties
             return response()->json([
-                'moviesDetail' => $movieDetail
+                'moviesDetail' => $movieDetail,
+                'saveMovie' => $movieSave
             ]);
         } else {
-            // Movie not found
             return response()->json(['error' => 'Movie not found'], 404);
         }
     }
@@ -319,8 +324,7 @@ class HomeController extends Controller
         }
     }
      
-
-
+     
     //   handle user favorite click request
     public function favoriteHandle(Request $request){
         $favorite = DB::table('favorite_movies')
@@ -337,6 +341,24 @@ class HomeController extends Controller
         }
         return response()->json(['favorited-set' => $favorite]);
     }
+    
+    // handle have movies 
+    public function saveMovies(Request $request){
+        $savedMovie = DB::table('save_movies')
+                        ->where('video_id', $request->input('video_id'))
+                        ->first();
+        if(!$savedMovie){
+            $insert = DB::table('save_movies')->insert([
+                'user_id' => $request->input('userId'),
+                'video_id' => $request->input('video_id')
+            ]);
+    
+            if($insert){
+                return response()->json(['success' => 'ok']);
+            }
+        }
+    }
+
 
     public function searchHandle(Request $request){
         $query = $request->input('query');

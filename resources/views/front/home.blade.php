@@ -14,6 +14,12 @@
     .empty-state__title, .empty-state__subtitle {
         color: #83757547;
     }
+    button.btn.save{
+        background:purple;
+    }
+    button.btn.active{
+        background:green;
+    }
 </style>
 @endpush
 @section('content')
@@ -59,7 +65,19 @@
 @foreach($data['category'] as $category => $movies)
 <section>
     <div class="container-fuild category">
-        <h5 style="text-transform: capitalize;">{{  $category }}</h5>
+        <h3 style="text-transform: capitalize;">
+            {{
+            ($category == 'Popular-movies') ? '인기 있는' :
+            (($category == 'K-drama-movies') ? 'K-드라마' :
+            (($category == 'TV-Entertainment') ? '예능/오락
+' :
+            (($category == 'movies') ? '영화 산업' :
+            (($category == 'foreign-drama') ? '외국 드라마' :
+            (($category == 'Cartoon') ? '만화|애니메이션' :
+            'OOP')))))
+            }}
+            
+        </h3>
         <a href="{{ url('video/category', 
                     ($category == 'Popular-movies') ? 'popular' :
                     (($category == 'K-drama-movies') ? 'K-drama' :
@@ -69,7 +87,7 @@
                     (($category == 'Cartoon') ? 'cartoon' :
                     'OOP'
                     )))))) }}">
-            see more
+            더보기
         </a>
 
     </div>
@@ -80,7 +98,7 @@
                     <img src="{{ asset($item->movei_cover_path)}}" alt="" class="w-100">
                     <!-- <a href="#">New</a> -->
                     <h6>{{ $item->title }}</h6>
-                    <div class="swiper-pagination"></div>
+                    <!--<div class="swiper-pagination"></div>-->
                 </div>
                 @php if($index+1 > 16) { break; } @endphp
             @endforeach
@@ -90,11 +108,11 @@
         <div class="row close-btn-wrap">
             <button class="close-btn"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div class="detail-wraper detail-wraper-{{ $category }}">
-            <div class="play_btn">
+        <div class="detail-wraper">
+            <div class="play_btn detail-wraper-{{ $category }}">
                 <i class="fa-regular fa-circle-play"></i>
             </div>
-            <div class="movei-cotent">
+            <div class="movei-cotent movei-cotent-{{ $category }}">
                 <div class="reaction_icon">
                     <button class="reaction-btn reaction"><i class="fa-solid fa-heart"></i> <b>0</b></button>
                     <button class="reaction-btn"><i class="fa-solid fa-heart"></i><b>100</b></button>
@@ -113,102 +131,6 @@
 </section>
 @endforeach
 
-<!--
-<section>
-    <div class="container-fuild category">
-        <h3>Latest/Papular</h3>
-        <a href="">see more</a>
-    </div>
-    <div class="swiper mySwiper container-fuild">
-      <div class="swiper-wrapper content">
-                <div class="swiper-slide col-md-4 text-left animate-box">
-						<img src="{{asset('img/movei/mv (1).jpg') }}" alt="" class="w-100">
-                        <a href="#">New</a>
-                        <h4>영화 제목</h4>
-				</div>
-                <div class="swiper-slide col-md-4 text-left animate-box">
-					<img src="{{asset('img/movei/mv (1).jpg') }}" alt="" class="w-100">
-                    <a href="#">New</a>
-                    <h4>영화 제목</h4>
-				</div>
-                <div class="swiper-slide col-md-4 text-left animate-box">
-						<img src="{{asset('img/movei/mv (1).jpg') }}" alt="" class="w-100">
-                        <a href="#">New</a>
-                        <h4>영화 제목</h4>
-				</div>
-                <div class="swiper-slide col-md-4 text-left animate-box">
-						<img src="{{asset('img/movei/mv (1).jpg') }}" alt="" class="w-100">
-                        <a href="#">New</a>
-                        <h4>영화 제목</h4>
-				</div>
-                <div class="swiper-slide col-md-4 text-left animate-box">
-						<img src="{{asset('img/movei/mv (1).jpg') }}" alt="" class="w-100">
-                        <a href="#">New</a>
-                        <h4>영화 제목</h4>
-				</div>
-                <div class="swiper-slide col-md-4 text-left animate-box">
-						<img src="{{asset('img/movei/mv (3).jpg') }}" alt="" class="w-100">
-                        <a href="#">New</a>
-                        <h4>영화 제목</h4>
-				</div>
-                <div class="swiper-slide col-md-4 text-left animate-box">
-						<img src="{{asset('img/movei/mv (1).jpg') }}" alt="" class="w-100">
-                        <a href="#">New</a>
-                        <h4>영화 제목</h4>
-				</div>
-                <div class="swiper-slide col-md-4 text-left animate-box">
-						<img src="{{asset('img/movei/mv (1).jpg') }}" alt="" class="w-100">
-                        <h4>영화 제목</h4>
-                        <a href="#">New</a>
-				</div>
-                <div class="swiper-slide col-md-4 text-left animate-box">
-						<img src="{{asset('img/movei/mv (1).jpg') }}" alt="" class="w-100">
-                        <a href="#">New</a>
-                        <h4>영화 제목</h4>
-				</div>
-                <div class="swiper-slide col-md-4 text-left animate-box">
-						<img src="{{asset('img/movei/mv (1).jpg') }}" alt="" class="w-100">
-                        <a href="#">New</a>
-                        <h4>영화 제목</h4>
-				</div>
-                <div class="swiper-slide col-md-4 text-left animate-box">
-						<img src="{{asset('img/movei/mv (1).jpg') }}" alt="" class="w-100">
-                        <a href="#">New</a>
-                        <h4>영화 제목</h4>
-				</div>
-          </div>
-        </div>
-        <div class="container-fuild movei-detail" style="background-image: url('{{asset('img/movei/mv (1).jpg') }}');">
-           <div class="row close-btn-wrap">
-               <button class="close-btn"><i class="fa-solid fa-xmark"></i></button>
-           </div>
-            <div class="detail-wraper">
-                <div class="play_btn">
-                    <i class="fa-regular fa-circle-play"></i>
-                </div>
-                <div class="movei-cotent">
-                    <div class="reaction_icon">
-                        <button class="reaction-btn reaction"><i class="fa-solid fa-heart"></i> <b>0</b></button>
-                        <button class="reaction-btn"><i class="fa-solid fa-heart"></i><b>100</b></button>
-                    </div>
-                    <p class="key-word">
-                        <a href="">#key word</a>  <a href="">#key word</a>  <a href="">#key word</a> 
-                    </p>
-                    <h2>
-                        Movie Title
-                    </h2>
-                    <p class="movie-dscr">
-                    우당탕탕 패밀리
-                    감독 : 김성근
-                    출연 : 남상지, 이도겸, 강다빈, 이효나 外
-                    제작사 : 몬스터유니온,아센디오 엔터테인먼트
-                    30년 전 원수로 헤어진 부부가 자식들 사랑으로 인해 사돈 관계로 다시 만나면서 오래된 갈등과 반목을 씻고 진정한 가족으로 거듭나는 명랑 코믹 가족극
-                    </p>
-                </div>
-            </div>
-        </div>
-</section>
--->
 @else
         <div class="empty-state">
             <div class="empty-state__content">
@@ -243,12 +165,26 @@
       },
 
     });
+    
+    //saving button this saving button will work when the user has login 
+    let saveButton = document.createElement('button');
     function toggleMovieDetails(category_id, titleId) {
         var movieDetail = document.getElementById('movie-details-' + category_id);
+        var contentBlock = document.querySelector('.movei-cotent-' + category_id)
         movieDetail.style.display = 'block';
         fetchMovieDetails(category_id, titleId);
+        saveButton.className = 'btn save';
+        saveButton.innerText = 'Save';
+        @if(session()->has('admin_name'))
+         contentBlock.appendChild(saveButton);
+        @endif
     }
+    
+    // functions for handling fetch api for detail movies
     function fetchMovieDetails(category_id, titleId) {
+        @if(session()->has('admin_name'))
+         const userId = '{{session()->get("admin_id")}}';
+        @endif
         fetch('/movie/details?id=' + titleId)
             .then(response => response.json())
             .then(data => {
@@ -261,7 +197,24 @@
                 if (data.moviesDetail) {
                     movieTitle.innerHTML = data.moviesDetail.title;
                     movieDescription.innerHTML = data.moviesDetail.description;
-                    movieDetailbg.style.backgroundImage = `url('${basImgUrl}${data.moviesDetail.movei_cover_path}')` 
+                    movieDetailbg.style.backgroundImage = `url('${basImgUrl}${data.moviesDetail.movei_cover_path}')`
+                    if(data.saveMovie)
+                    {
+                        saveButton.classList.add('active')
+                        saveButton.innerText = 'Saved';
+                    }else{
+                        if(!saveButton.classList.contains('active')){
+                            //if user has login this function will work
+                            if(userId){
+                                saveButton.onclick = function() {
+                                    Handlesave(data.moviesDetail.video_id, userId);
+                                }
+            
+                            }
+                        }
+                    }
+                    
+                    //when user click on play button the website will derect to:
                     movieDetail.addEventListener('click', function(){
                         window.location.href = '{{ url('/movie') }}/' + data.moviesDetail.name + '/' + data.moviesDetail.episode + '/' + data.moviesDetail.title;
                     });
@@ -269,17 +222,40 @@
             })
             .catch(error => console.error('Error fetching movie details:', error));
     }
-document.addEventListener('DOMContentLoaded', function() {
-    var closeButtons = document.querySelectorAll('.close-btn');
-    closeButtons.forEach(function(button) {
-        button.addEventListener('click', function() {
-            var movieDetail = button.closest('.movei-detail');
-            if (movieDetail) {
-                movieDetail.style.display = 'none';
-            }
+    
+    //function for handling saving movie 
+    function Handlesave(video_id, userId){
+        const url = `/movie/save?userId=${userId}&video_id=${video_id}`;
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+               if(data.success){
+                   saveButton.classList.add('active')
+                   saveButton.innerText = 'Saved';
+               }
+            })
+            .catch(error => {
+                console.error('Error fetching movie details:', error);
+            });
+    }
+    
+    //closing button after showing detain movie blok
+    document.addEventListener('DOMContentLoaded', function() {
+        var closeButtons = document.querySelectorAll('.close-btn');
+        closeButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var movieDetail = button.closest('.movei-detail');
+                if (movieDetail) {
+                    movieDetail.style.display = 'none';
+                }
+            });
         });
     });
-});
 
 
 </script>
