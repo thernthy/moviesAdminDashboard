@@ -93,12 +93,15 @@ Route::post('/registerPost', 'HomeController@registerPost')->name('registerPost'
 Route::get('/movie/details', 'HomeController@details');
 Route::get('/movie/save', 'HomeController@saveMovies');
 
+Route::post('/admin/crawler', 'AdminCrawlBoardController@BoardCrawler');
+
 //==============================================
 
 //======     Error route          ==================
 
 //=================================================
 Route::get('/error-page', function () {
+    
     return view('error_pages.errors');
 })->name('error-page', ['message' =>  'Sorry you can not access to this pages']);
 

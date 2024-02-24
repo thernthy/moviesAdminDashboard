@@ -102,10 +102,19 @@ class HomeController extends Controller
     public function PageCategory($category){
         $session = Session();
         $data['movies'] = DB::table('titles')
-        ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
-        ->where('movie_category.name', $category)
-        ->paginate(21);
+            ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
+            ->join('videos', function($join) {
+                $join->on('videos.title_id', '=', 'titles.id')
+                     ->where(function($query) {
+                         $query->where('videos.episode', 1)
+                               ->orWhere('videos.episode', 0);
+                     });
+            })
+            ->where('movie_category.name', $category)
+            ->paginate(21);
+        
         return view('front.popular', compact('session', 'data'));
+
     }
 
     
@@ -176,6 +185,13 @@ class HomeController extends Controller
 
         $data['recommend'] = DB::table('titles')
         ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
+        ->join('videos', function($join) {
+                $join->on('videos.title_id', '=', 'titles.id')
+                     ->where(function($query) {
+                         $query->where('videos.episode', 1)
+                               ->orWhere('videos.episode', 0);
+                     });
+                 })
         ->OrderBy('titles.created_at', 'DESC')
         ->where('movie_category.name', $CategoryName)
         ->where('titles.title', '!=', $titleId)

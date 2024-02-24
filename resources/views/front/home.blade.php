@@ -198,6 +198,7 @@
                     movieTitle.innerHTML = data.moviesDetail.title;
                     movieDescription.innerHTML = data.moviesDetail.description;
                     movieDetailbg.style.backgroundImage = `url('${basImgUrl}${data.moviesDetail.movei_cover_path}')`
+                    @if(session()->has('admin_name'))
                     if(data.saveMovie)
                     {
                         saveButton.classList.add('active')
@@ -213,6 +214,7 @@
                             }
                         }
                     }
+                    @endif
                     
                     //when user click on play button the website will derect to:
                     movieDetail.addEventListener('click', function(){
