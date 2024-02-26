@@ -229,6 +229,30 @@
         width: calc(100% - 10px); /* 1 card per row */ 
     } 
 }
+@media (max-width:900px) {
+    .container-fuild.movei-detail .detail-wraper{
+            padding: 190px 20px;
+    }
+    .container-fuild.movei-detail .movei-cotent{
+        width:50%;
+    }
+}
+@media (max-width:600px) {
+    .container-fuild.movei-detail .detail-wraper{
+       padding: 70px 20px;
+    }
+
+    .container-fuild.movei-detail{
+        background-position-x: 0;
+        box-shadow: unset;
+        -webkit-box-shadow: unset;
+    }
+    .container-fuild.movei-detail .detail-wraper {
+        box-shadow: 300px -70px 300px 100px rgb(0, 0, 0) inset;
+        -webkit-box-shadow: 300px -70px 135px 100px rgb(0 0 0 / 74%) inset;
+        -moz-box-shadow: 300px -70px 150px 100px rgb(0, 0, 0) inset;
+    }
+}
 
 /*  ================================================= 
 
