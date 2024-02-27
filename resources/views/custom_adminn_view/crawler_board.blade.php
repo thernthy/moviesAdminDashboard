@@ -122,28 +122,6 @@
                                             <div class="text-danger">{!! $errors->first($name)?"<i class='fa fa-info-circle'></i> ".$errors->first($name):"" !!}</div>
                                             <p class='help-block'>{{ @$form['help'] }}</p>
                                     </div>
-                                    <script>
-                                        $(function() {
-                                            var $datepickerInput = $('#date');
-                                            $datepickerInput.datepicker({
-                                                dateFormat: 'Y-m-d', 
-                                                yearRange: '2024:c+10', 
-                                                onSelect: function(dateText, inst) {
-                                                    $datepickerInput.val(dateText);
-                                                }
-                                            });
-                                        });
-                                    $(document).ready(function() {
-                                        $('#checkAll').click(function() {
-                                            $('.siteNameCheckbox').prop('checked', $(this).prop('checked'));
-                                        });
-                                        $('.siteNameCheckbox').click(function() {
-                                            if (!$(this).prop('checked')) {
-                                                $('#checkAll').prop('checked', false);
-                                            }
-                                        });
-                                    });
-                                </script>
                                     <div class="input-group">
                                             <select  name="cateroymovies" style="width: 200px; text-align: center;" class="form-control input-sm">
                                                 @foreach($data['categorymovies'] as $item)
@@ -182,77 +160,111 @@
         </div>
       </div>
     </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('crawlerBoard').addEventListener('submit', function(event) {
+            event.preventDefault();
+            $('#loading-component').show();
+            var formData = new FormData(this);
+            var url = '{{url('/admin/crawler')}}';
+            fetchData(url, formData);
+        });
+    });
+
+    function fetchData(url, formData) {
+        fetch(url, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            $('#loading-component').hide();
+            updateContent(data);
+        })
+        .catch(error => {
+            console.error('There was an error!', error);
+        });
+    }
+
+    function updateContent(data) {
+        let dataRow = '';
+        if (data.success && data.data[1].length > 0) {
+            var data = data.data;
+            dataRow = data[0].map(ResuleSite => {
+                let site = ResuleSite[0];
+                return data[1].map(movie => {
+                    return generateTableRow(site, movie);
+                }).join('');
+            }).join('');
+            $('#content-wrapper').html(dataRow);
+        } else {
+            displayNotFound();
+        }
+    }
+
+    function generateTableRow(site, movie) {
+        return `
+            <tr>
+                <td>${site.name}</td>
+                ${
+                    (site.name !== 'kotv-001.com') ?
+                    `<td><a href="${site.url}movie/play/${movie.title}/${movie.episode}">${site.url}movie/play/${movie.title}/${movie.episode}</a></td>` :
+                    `<td><a href="${site.url}movie/${movie.name}/${movie.episode}/${movie.title}">${site.url}movie/${movie.name}/${movie.episode}/${movie.title}</a></td>`
+                }
+                <td>${movie.title}</td>
+                <td>${movie.created_at}</td>
+                <td>${(movie.status==1)? `<span style="color:green;">active</span>`: `<span style="color:red;">inactive</span>`}</td>
+                <td><button class="btn btn-danger">Delete</button></td>
+            </tr>`;
+    }
+
+    function displayNotFound() {
+        let notFound = `
+            <tr>
+                <td colspan="6">
+                    <div style="
+                        width: fit-content;
+                        margin: auto;
+                        text-align: center;">
+                        <lord-icon src="https://cdn.lordicon.com/rkiwwysn.json"
+                            trigger="loop"
+                            delay="2000"
+                            colors="primary:#e83a30"
+                            style="width:50px;height:50px">
+                        </lord-icon>
+                        <h3 style="
+                            font-size: 3rem;
+                            color: #548dbc;font-weight: 800;">404 Not Found</h3>
+                    </div>
+                </td>
+            </tr>`;
+        $('#content-wrapper').html(notFound);
+    }
+</script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('crawlerBoard').addEventListener('submit', function(event) {
-                event.preventDefault();
-                $('#loading-component').show();
-                var formData = new FormData(this);
-                var url = '{{url('/admin/crawler')}}';
-                fetch(url, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
+        $(function() {
+                var $datepickerInput = $('#date');
+                $datepickerInput.datepicker({
+                    dateFormat: 'Y-m-d', 
+                    yearRange: '2024:c+10', 
+                    onSelect: function(dateText, inst) {
+                        $datepickerInput.val(dateText);
                     }
-                    return response.json();
-                })
-                .then(data => {
-                    $('#loading-component').hide();
-        			let dataRow = '';
-        			if (data.success && data.data[1].length > 0) {
-        			    var data = data.data;
-        			    dataRow = data[0].map(ResuleSite => {
-        			        let site = ResuleSite[0]
-                            return data[1].map(movie => {
-                                return `
-                               <tr>
-                                    <td>${site.name}</td>
-                                    ${
-                                        (site.name !== 'kotv-001.com') ?
-                                        `<td><a href="${site.url}movie/play/${movie.title}/${movie.episode}">${site.url}movie/play/${movie.title}/${movie.episode}</a></td>` :
-                                        `<td><a href="${site.url}movie/${movie.name}/${movie.episode}/${movie.title}">${site.url}movie/${movie.name}/${movie.episode}/${movie.title}</a></td>`
-                                    }
-                                    <td>${movie.title}</td>
-                                    <td>${movie.created_at}</td>
-                                    <td>${movie.status}</td>
-                                    <td>delete</td>
-                                </tr>
-
-                                `;
-                            }).join('');
-                        }).join('');
-			            $('#content-wrapper').html(dataRow);
-		    	    }else{
-		    	        let notFound = `
-		    	                <tr>
-                                    <td colspan="6">
-                                        <div style="
-                                                width: fit-content;
-                                                margin: auto;
-                                                text-align: center;">
-                                                <lord-icon src="https://cdn.lordicon.com/rkiwwysn.json"
-                                                    trigger="loop"
-                                                    delay="2000"
-                                                    colors="primary:#e83a30"
-                                                    style="width:50px;height:50px">
-                                                </lord-icon>
-                                                <h3 style="
-                                                    font-size: 3rem;
-                                                    color: #548dbc;font-weight: 800;">404 Not Found</h3>
-                                            </div>
-                                        </td>
-                            </tr>
-		    	        `
-		    	        $('#content-wrapper').html(notFound);
-		    	    }
-
-                })
-                .catch(error => {
-                    console.error('There was an error!', error);
                 });
+            });
+        $(document).ready(function() {
+            $('#checkAll').click(function() {
+                $('.siteNameCheckbox').prop('checked', $(this).prop('checked'));
+            });
+            $('.siteNameCheckbox').click(function() {
+                if (!$(this).prop('checked')) {
+                    $('#checkAll').prop('checked', false);
+                }
             });
         });
     </script>

@@ -153,18 +153,27 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <script type="text/javascript">
-    var swiper = new Swiper(".mySwiper", {
-      slidesPerView: 8,
-      spaceBetween:5,
-      slidesPerGroup: 1,
-      loop: true,
-      loopFillGroupWithBlank: false,
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-      },
+        var swiper = new Swiper(".mySwiper", {
+          slidesPerView: 2,
+          spaceBetween: 5,
+          slidesPerGroup: 1,
+          loop: true,
+          loopFillGroupWithBlank: false,
+          pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+          },
+          breakpoints: {
+            450: {
+              slidesPerView: 4,
+            },
+            850: {
+              slidesPerView: 8,
+            },
+          },
+        });
 
-    });
+
     
     //saving button this saving button will work when the user has login 
     let saveButton = document.createElement('button');

@@ -1,7 +1,12 @@
 #nav.active{
     background-color: #373940;
 }
-
+.carousel-inner>.item{
+    height:65vh;
+}
+.carousel-inner>.item>a>img, .carousel-inner>.item>img{
+    height:65vh;
+}
 .carousel-indicators .active{
     background-color: #007AFF;
 }
@@ -236,6 +241,11 @@
     .container-fuild.movei-detail .movei-cotent{
         width:50%;
     }
+}
+@media (max-width:850px){
+  .logo-wrapper a > img{
+      height:40px;
+  }
 }
 @media (max-width:600px) {
     .container-fuild.movei-detail .detail-wraper{

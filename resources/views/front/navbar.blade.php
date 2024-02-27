@@ -29,12 +29,12 @@
                     <li class="{{ request()->is('video/category/cartoon') ? 'menu_active' : '' }}">
                         <a href="{{ url('/video/category/cartoon') }}">만화 영화</a>
                     </li>
-                    <li class="{{ request()->is('notice')?'menu_active' : '' }}">
+                    <!--{!---<li class="{{ request()->is('notice')?'menu_active' : '' }}">
                         <a href="{{ url('/notice') }}">발표</a>
                     </li>
                     <li class="{{ request()->is('board/free_list') ? 'menu_active' : '' }}">
                         <a href="{{ url('board/free_list') }}">업로드 문의</a>
-                    </li>
+                    </li>--!}-->
                     <li class="dropdown-mn" id="dropdow-wraper1">
                         <a href="#">제휴업체<i class="fa-solid fa-circle-chevron-down"></i></a>
                         <div class="dropdow-wraper wrap">
