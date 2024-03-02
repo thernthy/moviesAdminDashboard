@@ -16,11 +16,8 @@
      }); 
      $(".bt-logout").click( function() { 
          $.ajax({ 
-
              url: "{{route('logout')}}", 
-
              type: "POST", 
-
              success: function(response) {
                     window.location.href = '/';
                 }

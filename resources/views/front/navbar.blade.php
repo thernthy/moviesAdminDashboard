@@ -200,6 +200,7 @@
     const searchfill = document.querySelector('.sh-inpu-wrap > input')
     const loadingIcon = document.getElementById('loadingIcon');
     const imgUrl = "{{asset('')}}";
+    const baseUrl = "{{url('')}}"
     searchfill.addEventListener('input', (e) => {
         if(searchfill.value!=''){
             document.querySelector('.container-fuild.shearch_result_wrapper').style.display= "block"
@@ -219,7 +220,7 @@
                             searchResultValue.forEach((item, index) => {
                                 intemInterFace += `
                                 <div class="card"> 
-                                    <a href="">
+                                    <a href="${baseUrl}/movie/${item.name}/${item.episode}/${item.title}">
                                         <div class="img">
                                             <img src="${imgUrl}${item.movei_cover_path}" alt="Placeholder Image"> 
                                         </div>

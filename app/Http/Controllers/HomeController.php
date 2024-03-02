@@ -32,6 +32,12 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+    protected $keywords = [];
+    public function __construct(){
+            $keywords = DB::table('keywords')->pluck('title')->toArray();
+            $this->keywords = $keywords;
+    }
+     
     public function index(Request $request){
         $ip =  $request->ip();
         $userAgent = $request->userAgent();
@@ -95,6 +101,7 @@ class HomeController extends Controller
         ->select('banner_path')
         ->where('status', '')
         ->get();
+        $data['key_words'] = $this->keywords;
         return view('front.home', compact('session', 'data'));
     }
 
@@ -111,8 +118,9 @@ class HomeController extends Controller
                      });
             })
             ->where('movie_category.name', $category)
+            ->orderBy('titles.created_at','DESC')
             ->paginate(21);
-        
+        $data['key_words'] = $this->keywords;
         return view('front.popular', compact('session', 'data'));
 
     }
@@ -196,6 +204,7 @@ class HomeController extends Controller
         ->where('movie_category.name', $CategoryName)
         ->where('titles.title', '!=', $titleId)
         ->get();
+        $data['key_words'] = $this->keywords;
         return view('front.waching-vtr', compact('data', 'session')); 
     }
 
@@ -381,7 +390,9 @@ class HomeController extends Controller
         $searchResults = [];
         $movieTitle = DB::table('titles')
             ->join('videos', 'videos.title_id', 'titles.id')
+            ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
             ->where('titles.title', 'LIKE', "%{$query}%")
+            ->where('videos.episode', '!=', '')
             ->get();
         
         if ($movieTitle->isEmpty()) {

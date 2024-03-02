@@ -129,7 +129,7 @@
                                                 @endforeach
                                             </select>
                                             <div class="input-group-btn">
-                                              <button type="submit" class="btn btn-sm btn-default btn-success"><i class="fa-solid fa-gears"></i>Runing</button>
+                                              <button type="submit" class="btn btn-sm btn-default btn-success"><i class="fa-solid fa-gears"></i>Running</button>
                                             </div>
                                     </div>
                                 </div>

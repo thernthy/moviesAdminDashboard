@@ -45,7 +45,12 @@
             <div class="card"> 
                 <a href="{{url('movie', [$item->name, $item->episode, $item->title])}}">
                     <div class="img">
-                        <img src="{{asset($item->movei_cover_path) }}" alt="Placeholder Image"> 
+                        <img data-src="{{ asset($item->movei_cover_path)}}" 
+                        src="{{asset('loding.gif')}}" 
+                        loading="lazy"  alt="{{ $item->title }}" 
+                        class="w-100 lazyrate"
+                        >
+                        
                     </div>
                     <h4 class="card-title">{{$item->title}}</h4> 
                 </a>
@@ -69,5 +74,41 @@
     <script>
 
     </script>
-    
+<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.lazyrate.js"></script>
+<script>
+    $(document).ready(function() {
+        // Array to keep track of failed images
+        var failedImages = [];
+        // Function to load images dynamically
+        function loadImages() {
+            $('.lazyrate').each(function() {
+                var $img = $(this);
+                var src = $img.data('src'); // Get data-src attribute value
+                var tempImg = new Image(); // Create a temporary image object
+
+                // Check if the image has already failed in previous attempts
+                if (!failedImages.includes(src)) {
+                    tempImg.onload = function() {
+                        $img.attr('src', src); // Set the src attribute once the image is loaded
+                    };
+                    tempImg.onerror = function() {
+                        failedImages.push(src); // Add the failed image to the list
+                    };
+                    tempImg.src = src; // Start loading the image
+                }
+            });
+        }
+
+        // Load images dynamically on document ready
+        loadImages();
+
+        // Retry loading failed images
+        var retryInterval = setInterval(function() {
+            // Clear the failedImages array before retrying
+            failedImages = [];
+            loadImages(); // Retry loading failed images
+        }, 5000); // Retry every 5 seconds
+    });
+</script>
 @endpush

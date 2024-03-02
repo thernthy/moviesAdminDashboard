@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
-
+use crocodicstudio\crudbooster\controllers\AdminController;
 //==============================================
 
 //======     Public route         ==================
@@ -29,11 +29,12 @@ Route::middleware(['auth.user'])->group(function () {
     Route::prefix('/user/{username}')->group(function () { 
         Route::get('/', function ($username) {
             $session = Session();
-            return view('front/user/index')->with(['username' => $username, 'session' => $session]);
+            $data['key_words'] = DB::table('keywords')->pluck('title')->toArray();
+            return view('front/user/index', compact('data'))->with(['username' => $username, 'session' => $session]);
         })->name('user.dashboard');
-        
         Route::get('/watchlater', function ($username) { 
             $session = Session();
+            $data['key_words'] = DB::table('keywords')->pluck('title')->toArray();
             $data['videoSaved'] = DB::table('save_movies')
             ->join('videos', 'videos.id', 'save_movies.video_id')
             ->join('titles', 'titles.id', 'videos.title_id')
@@ -44,6 +45,7 @@ Route::middleware(['auth.user'])->group(function () {
         })->name('user.watchlater'); 
         
         Route::get('/favorite', function ($username) { 
+            $data['key_words'] = DB::table('keywords')->pluck('title')->toArray();
             $session = Session();
             $data['favorite_movies'] = DB::table('favorite_movies')
             ->join('videos', 'videos.id', 'favorite_movies.video_id')
@@ -55,6 +57,7 @@ Route::middleware(['auth.user'])->group(function () {
         })->name('user.favorite'); 
         
         Route::get('/history', function ($username) { 
+            $data['key_words'] = DB::table('keywords')->pluck('title')->toArray();
             $session = Session();
             $data['history'] = DB::table('history')
             ->select()
@@ -74,26 +77,29 @@ Route::middleware(['auth.user'])->group(function () {
 //======     Accessing router          ==================
 
 //=================================================
-Route::middleware(['auth.guest'])->group(function () {
+Route::middleware(['guest'])->group(function () {
     Route::get('/login', function () {
-        return view('Auth/login');
+        $data['key_words'] = DB::table('keywords')->pluck('title')->toArray();
+        return view('auth.login', compact('data'));
     })->name('login');
     Route::get('/register', function() {
-        return view('Auth/register');
+        $data['key_words'] = DB::table('keywords')->pluck('title')->toArray();
+        return view('auth/register', compact('data'));
     })->name('register');
 });
+Route::post('/logout', [AdminController::class, 'getLogout'])->name('logout');
+
 Route::post('/registerPost', 'HomeController@registerPost')->name('registerPost');
 //==============================================
 
 //======     Ajext route request         ==================
 
 //=================================================
-
-
 Route::get('/movie/details', 'HomeController@details');
 Route::get('/movie/save', 'HomeController@saveMovies');
-
 Route::post('/admin/crawler', 'AdminCrawlBoardController@BoardCrawler');
+Route::post('/scrapping', 'AdminLinkScraperController@view');
+Route::post('/savedata', 'AdminLinkScraperController@savedata');
 
 //==============================================
 
@@ -101,8 +107,8 @@ Route::post('/admin/crawler', 'AdminCrawlBoardController@BoardCrawler');
 
 //=================================================
 Route::get('/error-page', function () {
-    
     return view('error_pages.errors');
 })->name('error-page', ['message' =>  'Sorry you can not access to this pages']);
 
-Auth::routes();
+
+

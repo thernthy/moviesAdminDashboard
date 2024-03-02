@@ -20,6 +20,12 @@
     button.btn.active{
         background:green;
     }
+    .loading {
+        opacity:.5;
+    }
+    .loaded {
+        opacity:1;
+    }
 </style>
 @endpush
 @section('content')
@@ -92,10 +98,14 @@
 
     </div>
     <div class="swiper mySwiper container-fuild">
-        <div class="swiper-wrapper content">
+        <div class="swiper-wrapper content" id="content">
              @foreach($movies as $index => $item)
                 <div class="swiper-slide text-left animate-box" onclick="toggleMovieDetails('{{ $category }}', '{{$item->title_id}}')">
-                    <img src="{{ asset($item->movei_cover_path)}}" alt="" class="w-100">
+                    <img data-src="{{ asset($item->movei_cover_path)}}" 
+                    src="{{asset('loding.gif')}}" 
+                    loading="lazy"  alt="{{ $item->title }}" 
+                    class="w-100 lazyrate"
+                    >
                     <!-- <a href="#">New</a> -->
                     <h6>{{ $item->title }}</h6>
                     <!--<div class="swiper-pagination"></div>-->
@@ -152,7 +162,49 @@
 
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-    <script type="text/javascript">
+<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.lazyrate.js"></script>
+<script>
+    $(document).ready(function() {
+        // Array to keep track of failed images
+        var failedImages = [];
+
+        // Function to load images dynamically
+        function loadImages() {
+            $('.lazyrate').each(function() {
+                var $img = $(this);
+                var src = $img.data('src'); // Get data-src attribute value
+                var tempImg = new Image(); // Create a temporary image object
+
+                // Check if the image has already failed in previous attempts
+                if (!failedImages.includes(src)) {
+                    tempImg.onload = function() {
+                        $img.attr('src', src); // Set the src attribute once the image is loaded
+                    };
+                    tempImg.onerror = function() {
+                        failedImages.push(src); // Add the failed image to the list
+                    };
+                    tempImg.src = src; // Start loading the image
+                }
+            });
+        }
+
+        // Load images dynamically on document ready
+        loadImages();
+
+        // Retry loading failed images
+        var retryInterval = setInterval(function() {
+            // Clear the failedImages array before retrying
+            failedImages = [];
+            loadImages(); // Retry loading failed images
+        }, 5000); // Retry every 5 seconds
+    });
+</script>
+
+
+
+
+<script type="text/javascript">
         var swiper = new Swiper(".mySwiper", {
           slidesPerView: 2,
           spaceBetween: 5,
@@ -173,8 +225,6 @@
           },
         });
 
-
-    
     //saving button this saving button will work when the user has login 
     let saveButton = document.createElement('button');
     function toggleMovieDetails(category_id, titleId) {
