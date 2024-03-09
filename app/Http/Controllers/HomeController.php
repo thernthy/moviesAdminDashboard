@@ -139,10 +139,13 @@ class HomeController extends Controller
             'titles.movei_cover_path',
             'titles.description',
             'movie_category.id',
-            'movie_category.name'
+            'movie_category.name',
+            'directors.name as director',
+            'directors.id'
         ) 
         ->join('titles', 'titles.id', 'videos.title_id')
         ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
+        ->join('directors', 'directors.id', 'titles.actors_id')
         ->where('titles.title', $titleId)
         ->get();
         $data['targetMovie'] = '';
@@ -205,7 +208,12 @@ class HomeController extends Controller
         ->where('titles.title', '!=', $titleId)
         ->get();
         $data['key_words'] = $this->keywords;
-        return view('front.waching-vtr', compact('data', 'session')); 
+        $linkArray = json_decode($data['targetMovie']->link, true);
+        if (is_array($linkArray)) {
+            return view('front.waching-vtr-array', compact('data', 'session'));
+        } else {
+            return view('front.waching-vtr', compact('data', 'session'));
+        }
     }
 
     public function requstEdite($username, $user_id, Request $request) {
@@ -315,6 +323,7 @@ class HomeController extends Controller
     public function listChart(){
         return view('front/noteList');
     }
+    
     public function notice(){
         return view('front/noteList');
     }

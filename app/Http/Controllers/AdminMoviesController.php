@@ -11,7 +11,7 @@
 
 			# START CONFIGURATION DO NOT REMOVE THIS LINE
 			$this->title_field = "title";
-			$this->limit = "10";
+			$this->limit = "50";
 			$this->orderby = "created_at,desc";
 			$this->global_privilege = false;
 			$this->button_table_action = true;
@@ -331,10 +331,8 @@
 	    | 
 	    */
 	    public function hook_after_delete($id) {
-	        //Your code here
-
+	        DB::table('videos')->where('title_id', $id)->delete();
 	    }
-
 
 
 	    //By the way, you can still create your own method in here... :) 

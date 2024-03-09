@@ -7,14 +7,14 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <meta name="description" content="
-        enjoy watching korean drama, japanese animation, cartoon, hollywood and amny action movie on our website. ejoy with your watching. 
-        សូមរីករាយទស្សនារឿងភាគកូរ៉េ គំនូរជីវចលជប៉ុន តុក្កតា ហូលីវូដ និងភាពយន្តសកម្មភាពអាមនី នៅលើគេហទំព័ររបស់យើង។ រីករាយជាមួយនឹងការមើលរបស់អ្នក។
-        저희 웹사이트에서 한국 드라마, 일본 애니메이션, 만화, 헐리우드, 앰니 액션 영화를 즐겨보세요. 즐겁게 시청하세요.
+코끼리티비 - 최신드라마, 드라마, 예능다시보기, 인기드라마, 공포영화, 액션영화, 코미디영화, 코믹영화, 성인영화, 19금영화, 최신뉴스, 스포츠뉴스, 스포츠방송, 최신영화, 무료영화, 영화다시보기, 다시보기, 드라마 다시보기
 ">
 @foreach($data['key_words'] as $keyword)
     <meta name="keywords" content="{{ $keyword }}">
 @endforeach
 <meta name="keywords" content="새로운">
+<meta name="keywords" content="최신드라마, 드라마, 예능다시보기, 인기드라마, 공포영화, 액션영화, 코미디영화, 
+코믹영화, 성인영화, 19금영화, 최신뉴스, 스포츠뉴스, 스포츠방송, 최신영화, 무료영화, 영화다시보기, 다시보기, 드라마 다시보기, 한드다시보기,미드다시보기">
 <meta name="keywords" content="새 영화">
 <meta name="keywords" content="2024년 새 영화">
 <meta name="keywords" content="រឿងកូរ៉េចេញថ្មីៗ">
@@ -34,6 +34,7 @@
 <!-- custom css -->
 <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 <script src="https://kit.fontawesome.com/c49fa14979.js" crossorigin="anonymous"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8365829716237780" crossorigin="anonymous"></script>
 <script type="application/ld+json">
     {
       "@context": "http://schema.org",

@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{ asset('css/home.css') }}">
 <link rel="stylesheet" href="{{ asset('css/relativepage.css') }}">
 <style>
-        #nav {
+    #nav {
                 background-color: #1D1D1D !important; 
                 transition: all .5s;
         }
@@ -86,11 +86,18 @@
 @section('content')
 <div class="container-fluid" id="relative_page">
     <div class="row video_view">
-        <iframe width="100%"  class="face" src="{{$data['targetMovie']->link}}"
-                        title="YouTube video player" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-        </iframe>
+        <?php
+        $linkArray = json_decode($data['targetMovie']->link);
+        $firstLink = reset($linkArray); // Get the first element of the array
+        $firstUrl = reset($firstLink); // Get the URL from the first object
+        ?>
+        <div style="position:relative;padding-bottom:56%;padding-top:20px;height:0;">
+            <IFRAME id="video-iframe"  class="face" src="{{$firstUrl}}" 
+            FRAMEBORDER=0 MARGINWIDTH=0 MARGINHEIGHT=0 SCROLLING=NO WIDTH=640 HEIGHT=360
+            allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;">
+                
+            </IFRAME>
+        </div>
         <div class="row movei-apersot">
             <ul>
                 <li class="movei-upersot-item"><a href="#commentform"><i class="fa-regular fa-comment"></i> commend</a></li>
@@ -102,6 +109,40 @@
                 @endif
             </ul>
         </div>
+        <?php
+        $linkArray = json_decode($data['targetMovie']->link);
+        ?>
+        <h3 class="text-center" style="color:white;">Server</h3>
+        <div class="row" style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-bottom:30px;
+        ">
+            <?php $serverCount = 1; ?>
+            <?php foreach ($linkArray as $link): ?>
+                <?php foreach ($link as $label => $url): ?>
+                    <?php
+                        // Check if the URL starts with 'https://streamruby.com/'
+                        if (strpos($url, 'https://streamruby.com/') === 0) {
+                            // Replace 'https://streamruby.com/' with 'https://rubystm.com/embed-'
+                            $url = str_replace('https://streamruby.com/', 'https://rubystm.com/embed-', $url);
+                        }
+                    ?>
+                    <button class="link-button" data-url="<?php echo $url; ?>" style="
+                        padding: 10px;
+                        outline: none;
+                        border: none;
+                        margin: 0 10px;
+                        border-radius: 20px;
+                        background: blue;
+                        color: white;
+                    ">Serve <?php echo $serverCount; ?></button>
+                    <?php $serverCount++; ?>
+                <?php endforeach; ?>
+            <?php endforeach; ?>
+        </div>
+
         <div class="row movei-apersot ep">
             @if($data['targetMovie']->episode!='' && $data['targetMovie']->episode!=0)
             <ul>
@@ -303,7 +344,21 @@ function favoriteHandle(video_id, user_id) {
             });
     }
 }
+    // Get all buttons with the class 'link-button'
+    var buttons = document.querySelectorAll('.link-button');
 
+    // Get the iframe element
+    var iframe = document.getElementById('video-iframe');
+
+    // Loop through each button and attach a click event listener
+    buttons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            // Get the URL associated with the clicked button from the data-url attribute
+            var url = this.getAttribute('data-url');
+            // Update the src attribute of the iframe with the new URL
+            iframe.src = url;
+        });
+    });
 
 
 </script>

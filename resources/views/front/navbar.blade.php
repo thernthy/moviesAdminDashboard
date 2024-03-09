@@ -218,15 +218,19 @@
                             let intemInterFace = '';
                             let searchResultValue = response.results;
                             searchResultValue.forEach((item, index) => {
-                                intemInterFace += `
+                                intemInterFace  += `
                                 <div class="card"> 
                                     <a href="${baseUrl}/movie/${item.name}/${item.episode}/${item.title}">
                                         <div class="img">
-                                            <img src="${imgUrl}${item.movei_cover_path}" alt="Placeholder Image"> 
+                                            ${item.movei_cover_path.startsWith("uploads/") ? 
+                                                `<img src="${imgUrl}${item.movei_cover_path}" alt="Placeholder Image">` :
+                                                `<img src="${item.movei_cover_path}" alt="Placeholder Image">`
+                                            }
                                         </div>
                                         <h4 class="card-title">${item.title}</h4> 
                                     </a>
                                 </div>`;
+
                             });
                             movieCarWrapper.innerHTML = intemInterFace;
                         }else{

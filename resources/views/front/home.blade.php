@@ -123,13 +123,13 @@
                 <i class="fa-regular fa-circle-play"></i>
             </div>
             <div class="movei-cotent movei-cotent-{{ $category }}">
-                <div class="reaction_icon">
+                <!--<div class="reaction_icon">
                     <button class="reaction-btn reaction"><i class="fa-solid fa-heart"></i> <b>0</b></button>
                     <button class="reaction-btn"><i class="fa-solid fa-heart"></i><b>100</b></button>
                 </div>
                 <p class="key-word">
                     <a href="">#key word</a>  <a href="">#key word</a>  <a href="">#key word</a> 
-                </p>
+                </p>-->
                 <h2 id="movie-{{$category}}">
                 </h2>
                 <p class="movie-dscr" id="movie-description-{{ $category}}">
@@ -256,7 +256,11 @@
                 if (data.moviesDetail) {
                     movieTitle.innerHTML = data.moviesDetail.title;
                     movieDescription.innerHTML = data.moviesDetail.description;
-                    movieDetailbg.style.backgroundImage = `url('${basImgUrl}${data.moviesDetail.movei_cover_path}')`
+                    if(data.moviesDetail.movei_cover_path.startsWith("/upload")){
+                        movieDetailbg.style.backgroundImage = `url('${basImgUrl}${data.moviesDetail.movei_cover_path}')`
+                    }else{
+                        movieDetailbg.style.backgroundImage = `url('${data.moviesDetail.movei_cover_path}')`
+                    }
                     @if(session()->has('admin_name'))
                     if(data.saveMovie)
                     {

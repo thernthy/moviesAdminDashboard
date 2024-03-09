@@ -20,6 +20,22 @@ Route::get('notice/', 'HomeController@notice');
 Route::post('/leavecomment', 'HomeController@leavecomment');
 Route::get('/movie/favoriteset', 'HomeController@favoriteHandle')->name('favoriteHandle');
 Route::get('search/', 'HomeController@searchHandle');
+
+
+Route::get('/viewDeteled', function() {
+    $data['key_words'] = DB::table('keywords')->pluck('title')->toArray();
+    $data['videos'] = DB::table('videos')->limit(10)->get();
+    $data['tartget'] = [];
+    foreach($data['videos'] as $item){
+        // Fetch titles except the one associated with the current video
+        $titles = DB::table('titles')->where('id', '!=', $item->title_id)->get();  
+        $data['tartget'][] = $titles;
+    }
+    
+    dd($data['tartget']);
+    return view('front.deletForm', compact('data'));
+});
+
 //==============================================
 
 //======     User route         ==================

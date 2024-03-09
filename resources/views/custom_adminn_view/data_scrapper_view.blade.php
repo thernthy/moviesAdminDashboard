@@ -153,6 +153,7 @@
                                     </tbody>
                                 </table>
                                 <button type="button" id="submitBtn" class="btn btn-success">Save</button>
+                                <button type="button" onclick="testing()" class="btn btn-success">Testing</button>
                             </form>
                             {{--{!! $data['crawl_boards']->render() !!}--}}
                         </div>
@@ -199,18 +200,18 @@
         if (data.element) {
             var dataElement = data.element;
             const category_option = data.category;
-            dataRow = dataElement.map(item => {
+            dataRow = dataElement.map((item, index) => {
                 return `
                     <tr>
-                      <td><input type="checkbox" name="checkbox_name[]" class="checkElement"></td>
+                        <td><input type="checkbox" name="checkbox_name[]" class="checkElement"></td>
                         <td>
                             <select class="form-select">
-                               ${category_option.map(item => `<option value="${item.id}">${item.name}</option>`).join('')}
+                               ${category_option.map(option => `<option value="${option.id}">${option.name}</option>`).join('')}
                             </select>
                         </td>
-                        ${item.map(dataElement => generateTableRow(dataElement)).join('')}
+                        ${item.map(dataElement => generateTableRow(dataElement, index)).join('')}
                     </tr>`;
-            }).join('');
+            }).reverse().join('');
             $('#content-wrapper').html(dataRow);
         } else {
             displayNotFound();
@@ -234,7 +235,7 @@
                 }
             }
         } else {
-            tableCell = `<td>${dataElement}</td>`;
+            tableCell = `<td><input type="text" /></td>`;
         }
         return tableCell;
     }
@@ -271,7 +272,51 @@
         $('#content-wrapper').html(notFound);
     }
     
-    
+   function testing() {
+            var selectedData = [];
+            $('table tr').each(function() {
+            if ($(this).find('.checkElement').prop('checked')) {
+                var rowData = {
+                    'imgSrc': '',
+                    'text': $(this).find('td:nth-child(3)').text(),
+                    'decr': $(this).find('td:nth-child(5)').text(), 
+                    'selectedOption': '',
+                    'links': []
+                };
+                if(rowData.text == ''){
+                   $(this).find('td:nth-child(3)').each(function() {
+                        var inputValue = $(this).find('input').val();
+                        rowData.text = inputValue;
+                    });
+                }
+                var imgElement = $(this).find('img');
+                if (imgElement.length > 0 && imgElement.attr('src')) {
+                    rowData.imgSrc = imgElement.attr('src');
+                } else {
+                    rowData.imgSrc = $(this).find('td:nth-child(4)').text();
+                }
+                
+                var selectedValue = $(this).find('.form-select').val();
+                // Update selectedOption if a value is selected
+                if (selectedValue !== null) {
+                    rowData.selectedOption = selectedValue;
+                }
+                var links = $(this).find('a');
+                if (links.length > 0) {
+                    // Iterate over each <a> element and push its text and href into rowData.links
+                    links.each(function() {
+                        var linkObj = {};
+                        linkObj[$(this).text()] = $(this).attr('href');
+                        rowData.links.push(linkObj);
+                    });
+                } else {
+                   rowData.links = $(this).find('td:nth-child(6)').text()
+                }
+                selectedData.push(rowData);
+            }
+        });
+        console.log(selectedData)
+   }
     
 $(document).ready(function() {
     $('#submitBtn').click(function() {
@@ -280,24 +325,41 @@ $(document).ready(function() {
         $('table tr').each(function() {
             if ($(this).find('.checkElement').prop('checked')) {
                 var rowData = {
-                    'imgSrc': $(this).find('img').attr('src'),
+                    'imgSrc': '',
                     'text': $(this).find('td:nth-child(3)').text(),
                     'decr': $(this).find('td:nth-child(5)').text(), 
                     'selectedOption': '',
                     'links': []
                 };
+                if(rowData.text == ''){
+                   $(this).find('td:nth-child(3)').each(function() {
+                        var inputValue = $(this).find('input').val();
+                        rowData.text = inputValue;
+                    });
+                }
+                var imgElement = $(this).find('img');
+                if (imgElement.length > 0 && imgElement.attr('src')) {
+                    rowData.imgSrc = imgElement.attr('src');
+                } else {
+                    rowData.imgSrc = $(this).find('td:nth-child(4)').text();
+                }
+                
                 var selectedValue = $(this).find('.form-select').val();
                 // Update selectedOption if a value is selected
                 if (selectedValue !== null) {
                     rowData.selectedOption = selectedValue;
                 }
-                
-                $(this).find('a').each(function() {
-                    var linkObj = {};
-                    linkObj[$(this).text()] = $(this).attr('href');
-                    rowData.links.push(linkObj);
-                });
-
+                var links = $(this).find('a');
+                if (links.length > 0) {
+                    // Iterate over each <a> element and push its text and href into rowData.links
+                    links.each(function() {
+                        var linkObj = {};
+                        linkObj[$(this).text()] = $(this).attr('href');
+                        rowData.links.push(linkObj);
+                    });
+                } else {
+                   rowData.links = $(this).find('td:nth-child(6)').text()
+                }
                 selectedData.push(rowData);
             }
         });
