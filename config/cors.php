@@ -1,3 +1,4 @@
+
 <?php
 
 return [
@@ -17,18 +18,18 @@ return [
 
     'paths' => ['api/*'],
 
-    'allowed_methods' => ['*'],
+    'allowed_methods' => ['GET', 'POST', 'PUT', 'DELETE'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['http://www.kotv-001.com', 'https://www.kotv-001.com'],
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*'],
+    'allowed_headers' => ['Content-Type', 'Authorization'],
 
     'exposed_headers' => [],
 
-    'max_age' => 0,
+    'max_age' => 3600, // 1 hour
 
-    'supports_credentials' => false,
+    'supports_credentials' => true,
 
 ];

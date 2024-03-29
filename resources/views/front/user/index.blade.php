@@ -75,10 +75,17 @@
                         </div>
                         <div class="form-control">
                             <h5 class="active"><i class="fa-solid fa-check-double"></i>........................</h5>
-                            <input type="password" name="user-confirm-pass" id="user-confirm-pass" placeholder="Comfirm Password"> 
+                            <input type="password" name="new_pass" id="new_pass" placeholder="New password"> 
                             <div class="tool-btn-wraper">
-                                <button class="cofirm-btn"> <i class="fa-solid fa-check"></i> </button> 
+                                <button class="cofirm-btn new-btn" onclick="Updatepass({{$session->get('admin_id')}})"> <i class="fa-solid fa-check"></i> </button> 
                                 <button class="cancel-btn"><i class="fa-solid fa-xmark"></i></button> 
+                            </div>
+                        </div>
+                        <div class="form-control">
+                            <h5 class="active"><i class="fa-solid fa-check-double"></i>........................</h5>
+                            <input type="password" onkeyup="confirmPassInterface()" name="user-confirm-pass" id="user-confirm-pass" placeholder="Comfirm Password"> 
+                            <div class="tool-btn-wraper cofirm">
+                                <button class="cofirm-btn  confirm"> <i class="fa-solid fa-xmark"></i> </button> 
                             </div>
                         </div>
                         <div onclick="HandleSubmition({{$session->get('admin_id')}})"
@@ -102,7 +109,7 @@
 @include('front/user/user_index_js')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    function HanddleuserEditContainer(){
+function HanddleuserEditContainer(){
      let allInput =  document.querySelectorAll('.form-control > input')
      let h5 =  document.querySelectorAll('.form-control > h5')
      let allBtnwraper = document.querySelectorAll('.tool-btn-wraper')
@@ -132,15 +139,24 @@
             }
         }
     }
-    const cancelButtons = document.querySelectorAll('.cancel-btn');
+    
+const cancelButtons = document.querySelectorAll('.cancel-btn');
         cancelButtons.forEach(cancelButton => {
         cancelButton.addEventListener('click', function() {
             const formControl = cancelButton.closest('.form-control');
             const input = formControl.querySelector('input');
             input.value = '';
         });
-    });
-  function showingPass(){
+});
+    
+function confirmPassInterface() {
+        var userPasswordValue = document.getElementById("new_pass").value;
+        var userConfirmPassValue = document.getElementById("user-confirm-pass").value;
+        var comfirmBtn = document.querySelector(".cofirm-btn.confirm > i.fa-solid")
+        //(userPasswordValue === userConfirmPassValue)? comfirmBtn.classList.replace('fa-xmark', 'fa-check'):comfirmBtn.classList.replace('fa-check', 'fa-xmark');
+}
+
+function showingPass(){
     let passwordhandling =  document.querySelector('.password')
 		passwordhandling.type = passwordhandling.type === "password" ? "text" : "password";
     if(document.querySelector('.password_icon').classList.contains('fa-eye-slash')){
@@ -149,14 +165,16 @@
         document.querySelector('.password_icon').classList.replace('fa-eye', 'fa-eye-slash')
     }
   }
+  
 function HandleSubmition(user_id) {
         var userNameValue = document.getElementById("user-name").value;
         var userEmailValue = document.getElementById("user-email").value;
         var userProfileValue = document.getElementById("user-profile").value;
         var userPasswordValue = document.getElementById("password").value;
         var userConfirmPassValue = document.getElementById("user-confirm-pass").value;
+        var newpass = document.getElementById("new_pass").value;
         if (userNameValue !== '' && userEmailValue !== '' && userProfileValue !== '' && userPasswordValue !== '' && userConfirmPassValue !== '') {
-         (userPasswordValue === userConfirmPassValue) ? postingSubmit(user_id) : alert('Passwords do not match');
+         (newpass === userConfirmPassValue) ? postingSubmit(user_id) : alert('Passwords do not match');
         } else {
             (userNameValue === '') ? alert('Please enter username') :
             (userEmailValue === '') ? alert('Please enter email') :
@@ -169,7 +187,8 @@ function HandleSubmition(user_id) {
                 formData.append('user-name', userNameValue);
                 formData.append('email', userEmailValue);
                 formData.append('profile', userProfileValue);
-                formData.append('userpassword', userPasswordValue);
+                formData.append('password', userPasswordValue);
+                formData.append('newpass', newpass);
                 var url = "{{ route('user.requstEdite', ['username' => session()->get('admin_name'), 'user_id' => ':user_id']) }}",
                 url = url.replace(':user_id', user_id);
                 $.ajax({
@@ -243,6 +262,7 @@ function updateName(user_id){
             }
         });
 }
+
 function UpdateEmail(user_id){
         var userEmailValue = document.getElementById("user-email").value;
         var formData = new FormData();
@@ -280,6 +300,59 @@ function UpdateEmail(user_id){
                 console.log(xhr.responseText);
             }
         });
+}
+function Updatepass(user_id){
+        var userPasswordValue = document.getElementById("password").value;
+        var userConfirmPassValue = document.getElementById("user-confirm-pass").value;
+        var newpass = document.getElementById("new_pass").value;
+        var formData = new FormData();
+        formData.append('newpass', newpass);
+        formData.append('password', userPasswordValue);
+            if(newpass===userConfirmPassValue){
+                var url = "{{ route('user.requstEdite', ['username' => session()->get('admin_name'), 'user_id' => ':user_id']) }}",
+                url = url.replace(':user_id', user_id);
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        console.log(response)
+                        if(response && response.status === 200){
+                                (response.Success!=='')?
+                                    (
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Success!',
+                                            text: response.Success,
+                                        }),
+                                        updateUserInterFaceHandle(response.data)
+                                    )
+                                :
+                                (response.Errors!=='')?
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: response.Errors,
+                                })
+                                :Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: 'An error occurred while submitting the form.',
+                                });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        const errors = JSON.parse(xhr.responseText); // Parse the JSON response
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: errors,
+                        });
+                    }
+                });
+             }
 }
 function UpdateProfile(user_id) {
     var userProfileValue = document.getElementById("user-profile").files[0];
@@ -321,7 +394,6 @@ function UpdateProfile(user_id) {
         }
     });
 }
-
 
 function updateUserInterFaceHandle(userData){
 

@@ -1,14 +1,7 @@
 <?php
-
 namespace App\Http\Controllers;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; 
-use App\Product;
-use App\Cart;  
-use App\CartItem;  
-use App\Order;
-use App\OrderItem;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Input\Input;
@@ -37,7 +30,9 @@ class HomeController extends Controller
             $keywords = DB::table('keywords')->pluck('title')->toArray();
             $this->keywords = $keywords;
     }
-     
+//==========================================================//
+//=======          Function Index page           ==========//
+//========================================================//
     public function index(Request $request){
         $ip =  $request->ip();
         $userAgent = $request->userAgent();
@@ -71,6 +66,7 @@ class HomeController extends Controller
         'movie_category.name')
         ->join('movie_category', 'movie_category.id', '=', 'titles.movie_category_id')
         ->orderBy('titles.created_at', 'DESC')
+        ->where('titles.status', 1)
         ->get();
         if(!$Movies->isEmpty()){
             foreach($Movies as $item){
@@ -106,7 +102,11 @@ class HomeController extends Controller
     }
 
 
+//==========================================================//
+//=======    Function for return category page   ==========//
+//========================================================//
     public function PageCategory($category){
+        $data['pageTitle'] = $category;
         $session = Session();
         $data['movies'] = DB::table('titles')
             ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
@@ -118,17 +118,25 @@ class HomeController extends Controller
                      });
             })
             ->where('movie_category.name', $category)
+            ->where('titles.status', 1)
             ->orderBy('titles.created_at','DESC')
             ->paginate(21);
         $data['key_words'] = $this->keywords;
         return view('front.popular', compact('session', 'data'));
-
     }
 
-    
+
+//===========================================================//
+//=======    Funcitons for return waching video   ==========//
+//=========================================================//
     public function videoWach($CategoryName, $part, $titleId, Request $request){
         $session = Session();
         $user_Ip = $request->ip();
+        $data['targetMovie'] = '';
+        $data['key_words'] = $this->keywords;
+        $data['keywords'] = DB::table('keywords')->get();
+        
+        //get all videos from db
         $data['Movies'] = DB::table('videos')
         ->select(
             'videos.id as video_id', 
@@ -140,6 +148,7 @@ class HomeController extends Controller
             'titles.description',
             'movie_category.id',
             'movie_category.name',
+            'titles.keyword_id',
             'directors.name as director',
             'directors.id'
         ) 
@@ -148,19 +157,28 @@ class HomeController extends Controller
         ->join('directors', 'directors.id', 'titles.actors_id')
         ->where('titles.title', $titleId)
         ->get();
-        $data['targetMovie'] = '';
+        
         foreach($data['Movies'] as $movie){
             if($movie->episode == $part){
                 $data['targetMovie'] = $movie;
             }
         }
         
+        //get viewers for make sure
         $viewer_exed = DB::table('viewer')
         ->select('viewer_ip')
         ->where('viewer_ip', $user_Ip)
         ->where('videos_id', $data['targetMovie']->video_id)
         ->first();
-
+        //when user not wached this video yet
+        if(!$viewer_exed){
+            DB::table('viewer')->insert([
+                'viewer_ip' => $user_Ip,
+                'videos_id' => $data['targetMovie']->video_id
+            ]);
+        }
+        
+        //if user login this will store history wached
         if(Session()->has('admin_name')){
             $exVTR = DB::table('history')
             ->where('video_id', $data['targetMovie']->video_id)
@@ -178,22 +196,21 @@ class HomeController extends Controller
             ->first();
         }
         
-        if(!$viewer_exed){
-            DB::table('viewer')->insert([
-                'viewer_ip' => $user_Ip,
-                'videos_id' => $data['targetMovie']->video_id
-            ]);
-        }
 
+        //get user comments from db when page has been request
         $data['comments'] = DB::table('comment')
         ->where('video_id', $data['targetMovie']->video_id)
+        ->leftJoin('cms_users', 'cms_users.email', '=', 'comment.user_email')
+        ->orderBy('comment.created_at','DESC')
         ->get();
-
+        
+        //get all viewers from db base on video tartget waching 
         $data['video_viewers'] = DB::table('viewer')
         ->where('videos_id', $data['targetMovie']->video_id)
         ->get();
-        $data['viewer_count'] = $data['video_viewers']->count();
-
+        $data['viewer_count'] = $data['video_viewers']->count();//count video waching viewers
+        
+        //get recommend video base on category video waching
         $data['recommend'] = DB::table('titles')
         ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
         ->join('videos', function($join) {
@@ -206,8 +223,10 @@ class HomeController extends Controller
         ->OrderBy('titles.created_at', 'DESC')
         ->where('movie_category.name', $CategoryName)
         ->where('titles.title', '!=', $titleId)
+        ->where('titles.status',  1)
         ->get();
-        $data['key_words'] = $this->keywords;
+        
+        //check video waching if it has multiple link serve or not
         $linkArray = json_decode($data['targetMovie']->link, true);
         if (is_array($linkArray)) {
             return view('front.waching-vtr-array', compact('data', 'session'));
@@ -215,21 +234,27 @@ class HomeController extends Controller
             return view('front.waching-vtr', compact('data', 'session'));
         }
     }
-
+    
+    
+//========================================================//
+//=======    ajax  user edite informaction     ==========//
+//======================================================//
     public function requstEdite($username, $user_id, Request $request) {
         $data['userInfo'] = DB::table('cms_users')
             ->select()
             ->where('id', $user_id)
             ->first();
     
-        if ($request->has('userpassword')) {
-            $newpassword = $request->input('userpassword');
-            if (!Hash::check($newPassword, $data['userInfo']->password)) {
-                return response()->json(['Errors' => 'Sorry, your current password input is not correct!', 'correntpass' => $newpassword,'pass'=>$data['userInfo']->password], 400);
+        $updateData = [];
+        if ($request->has('password')) {
+            $newpassword = $request->input('password');
+            if (!Hash::check($newpassword, $data['userInfo']->password)) {
+                return response()->json(['Sorry, your current password input is not correct!'], 400);
+            }else{
+               $updateData['password'] = Hash::make($request->input('newpass'));
             }
         }
     
-        $updateData = [];
 
         if ($request->has('user-name')) {
             $updateData['name'] = $request->input('user-name');
@@ -238,17 +263,13 @@ class HomeController extends Controller
         if ($request->has('email')) {
             $updateData['email'] = $request->input('email');
         }
-
         if ($request->hasFile('profile')) {
             $profile = $request->file('profile');
             $fileName = uniqid() . '.' . $profile->getClientOriginalExtension();
             $profile->move(public_path('uploads'), $fileName);
             $updateData['photo'] = 'uploads/'.$fileName; 
         }
-    
-        if ($request->has('userpassword')) {
-            $updateData['password'] = $newpassword;
-        }
+        
         if (!empty($updateData)) {
                 $userUpdate = DB::table('cms_users')->where('id', $user_id)->update($updateData);
                 if ($userUpdate) {
@@ -259,7 +280,7 @@ class HomeController extends Controller
                     Session::put('admin_name', $data['newUserInfo']->name);
                     Session::put('admin_email', $data['newUserInfo']->email);
                     Session::put('admin_photo', $data['newUserInfo']->photo);
-                return response()->json(["Success" => "Success Updated", "data" => $data]);
+                    return response()->json(["Success" => "Success Updated", "data" => $data]);
                 } else {
                     return response()->json(["Errors" => "Something wrong"]);
                 }
@@ -268,6 +289,11 @@ class HomeController extends Controller
         }
     }
     
+    
+    
+//========================================================//
+//=======      ajax user  registeration        ==========//
+//======================================================//
     public function registerPost(Request $request) {
         $appUser = DB::table('cms_users')
         ->select('email')
@@ -281,9 +307,8 @@ class HomeController extends Controller
                     'name' => $request->input('user-name'),
                     'email' => $request->input('user-email'),
                     'password' => Hash::make($request->input('password')),
-                    'id_cms_privileges' => 2
+                    'id_cms_privileges' => 3
                 ]);
-        
             if ($newUser) {
                 return response()->json(['Success' => 'Thank you for joining us']);
             } else {
@@ -292,6 +317,10 @@ class HomeController extends Controller
         }
     }
     
+    
+//========================================================//
+//=======    ajax request for detail movie     ==========//
+//======================================================//
     public function details(Request $request){
         $movieId = $request->query('id');
         $movieDetail = DB::table('titles')
@@ -302,6 +331,7 @@ class HomeController extends Controller
                 'movie_category.name',
                 'titles.title',
                 'videos.episode',
+                'titles.keyword_id'
                 )
             ->join('videos', 'videos.title_id', 'titles.id')
             ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
@@ -310,10 +340,20 @@ class HomeController extends Controller
         $movieSave = DB::table('save_movies')
             ->where('video_id', $movieDetail->video_id)
             ->first();
+        $keyworsData = DB::table('keywords')->get();
+        $keywords = false;
+        $converdId = unserialize($movieDetail->keyword_id);
+        foreach($keyworsData as $key){
+            if (is_array($converdId) && in_array($key->id, $converdId)) {
+                $keywords[] = $key;
+            }
+        }
+        
         if ($movieDetail) {
             return response()->json([
                 'moviesDetail' => $movieDetail,
-                'saveMovie' => $movieSave
+                'saveMovie' => $movieSave,
+                'keywords' => $keywords
             ]);
         } else {
             return response()->json(['error' => 'Movie not found'], 404);
@@ -328,6 +368,10 @@ class HomeController extends Controller
         return view('front/noteList');
     }
 
+
+//========================================================//
+//=======         ajax comment video           ==========//
+//======================================================//
     public function leaveComment(Request $request){
         $insert = [];
         if($request->has('email') && $request->has('name')){
@@ -349,7 +393,9 @@ class HomeController extends Controller
             if(!empty($insert)){
                 DB::table('comment')->insert($insert);
                 $data['comments'] = DB::table('comment')
-                                  ->where('video_id', $request->input('videoId'))
+                                  ->leftJoin('cms_users', 'cms_users.email', '=', 'comment.user_email')
+                                  ->where('comment.video_id', $request->input('videoId'))
+                                  ->orderBy('comment.created_at','DESC')
                                   ->get();
                 return response()->json(['success' => true, 'comments' => $data]);
             }
@@ -359,7 +405,9 @@ class HomeController extends Controller
     }
      
      
-    //   handle user favorite click request
+//========================================================//
+//=======         ajax request  faovite        ==========//
+//======================================================//
     public function favoriteHandle(Request $request){
         $favorite = DB::table('favorite_movies')
         ->where('user_id', Session()->get('admin_id'))
@@ -376,7 +424,10 @@ class HomeController extends Controller
         return response()->json(['favorited-set' => $favorite]);
     }
     
-    // handle have movies 
+    
+//========================================================//
+//=======     ajax request save movie          ==========//
+//======================================================//
     public function saveMovies(Request $request){
         $savedMovie = DB::table('save_movies')
                         ->where('video_id', $request->input('video_id'))
@@ -394,6 +445,10 @@ class HomeController extends Controller
     }
 
 
+
+//========================================================//
+//=======     seach functions                  ==========//
+//======================================================//
     public function searchHandle(Request $request){
         $query = $request->input('query');
         $searchResults = [];
@@ -419,6 +474,55 @@ class HomeController extends Controller
             $searchResults = $movieTitle;
         }
         return response()->json(["message" => "Search results found.", "results" => $searchResults]);
+    }
+    
+    
+    
+//========================================================//
+//=======    Function reture keyworks view     ==========//
+//======================================================//
+    public function keyword(Request $request){
+        $session = Session();
+        $token = $request->query('tk');
+        $key = $request->query('key');
+        $title = $request->query('tt');
+        $keyword = false;
+        $data['movies'] = [];
+        $data['title'] = $title;
+        $data['key_words'] = $this->keywords;
+        $movies = DB::table('titles')
+            ->join('movie_category', 'movie_category.id', 'titles.movie_category_id')
+            ->join('videos', function($join) {
+                $join->on('videos.title_id', '=', 'titles.id')
+                     ->where(function($query) {
+                         $query->where('videos.episode', 1)
+                               ->orWhere('videos.episode', 0);
+                     });
+            })
+            ->where('titles.status', 1)
+            ->orderBy('titles.created_at','DESC')
+            ->get();
+            
+        if(isset($token) &&  !empty($key) && !empty($title)) {
+           $keyword = DB::table('keywords')->where('title', $title)->first();
+           if(!$keyword){
+               $keyword = false;
+           }
+        }
+        if($keyword){
+            foreach($movies as $movie){
+                $converd_keyword_id = unserialize($movie->keyword_id);
+                $keywordId = $keyword->id;
+                if (is_array($converd_keyword_id) && in_array($keywordId, $converd_keyword_id)) {
+                    $data['movies'][] = $movie;
+                }
+            }
+        }
+        if(!empty($data['movies'])){
+            return view('front.keyword', compact('session', 'data'));
+        }else{
+            return view('error_pages.errors');
+        }
     }
 
 }

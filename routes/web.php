@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use crocodicstudio\crudbooster\controllers\AdminController;
+use crocodicstudio\crudbooster\controllers\AdminComicDataScrapperController;
 //==============================================
 
 //======     Public route         ==================
@@ -20,6 +21,7 @@ Route::get('notice/', 'HomeController@notice');
 Route::post('/leavecomment', 'HomeController@leavecomment');
 Route::get('/movie/favoriteset', 'HomeController@favoriteHandle')->name('favoriteHandle');
 Route::get('search/', 'HomeController@searchHandle');
+Route::get('/searchks', 'HomeController@keyword');
 
 
 Route::get('/viewDeteled', function() {
@@ -31,10 +33,28 @@ Route::get('/viewDeteled', function() {
         $titles = DB::table('titles')->where('id', '!=', $item->title_id)->get();  
         $data['tartget'][] = $titles;
     }
-    
-    dd($data['tartget']);
     return view('front.deletForm', compact('data'));
 });
+
+
+//==============================================
+
+//======     Admin route         ==================
+
+//=================================================
+Route::post('/change-language', 'AdminController@changeLanguage')->name('language.change');
+Route::get('/autoPost', 'AdminController@autoPost');
+
+Route::get('/logms', function () {
+    $logs = file(storage_path('logs/laravel.log'));
+    return response()->json($logs);
+});
+
+
+Route::post('/admin/dosearch', 'AdminComicDataScrapperController@dosearch')->name('dosearch');
+Route::post('/admin/dosave', function() {
+    dd('eeer');
+})->name('dosave');
 
 //==============================================
 

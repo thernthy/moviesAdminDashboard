@@ -39,7 +39,23 @@
             </div>
         </div>
     @else
-    <div class="row"><h2 class="title_page">최신/인기</h2></div>
+        @php
+            $pageTitle = '';
+            if ($data['pageTitle'] === "popular") {
+                $pageTitle = '최신/인기';
+            } elseif ($data['pageTitle'] === 'K-drama') {
+                $pageTitle = '한국 드라마';
+            } elseif ($data['pageTitle'] === 'entertain') {
+                $pageTitle = 'TV/엔터테인먼트';
+            } elseif ($data['pageTitle'] === 'movies') {
+                $pageTitle = '영화';
+            } elseif ($data['pageTitle'] === 'foreign drama') {
+                $pageTitle = '외국 드라마';
+            } elseif ($data['pageTitle'] === 'cartoon') {
+                $pageTitle = '만화 영화';
+            }
+        @endphp
+    <div class="row"><h2 class="title_page">{{ $pageTitle }}</h2></div>
     <div class="container-movie-wrap"> 
         @foreach($data['movies'] as  $item)
             <div class="card"> 

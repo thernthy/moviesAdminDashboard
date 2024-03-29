@@ -30,12 +30,13 @@
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Id","name"=>"id"];
-			$this->col[] = ["label"=>"Title","name"=>"title"];
-			$this->col[] = ["label"=>"Movie Category","name"=>"movie_category_id","join"=>"movie_category,name"];
-			$this->col[] = ["label"=>"Movie Cover","name"=>"movei_cover_path","image"=>true];
-			$this->col[] = ["label"=>"Keyword Id","name"=>"keyword_id","join"=>"keywords,title"];
-			$this->col[] = ["label"=>"Actors Id","name"=>"actors_id","join"=>"directors,name"];
+			$this->col[] = ["label"=>cbLang('id'),"name"=>"id"];
+			$this->col[] = ["label"=>cbLang('title'),"name"=>"title"];
+			$this->col[] = ["label"=>cbLang('category_list'),"name"=>"movie_category_id","join"=>"movie_category,name"];
+			$this->col[] = ["label"=>cbLang('cover_photo'),"name"=>"movei_cover_path","image"=>true];
+			$this->col[] = ["label"=>cbLang('keyword')." ".cbLang('id'),"name"=>"keyword_id","join"=>"keywords,title"];
+			$this->col[] = ["label"=>cbLang('director.director')." ".cbLang('id'),"name"=>"actors_id","join"=>"directors,name"];
+			$this->col[] = ["label"=>cbLang('status'),"name"=>"status","callback_php"=>'($row->status == 1 ? "<span class=\"label label-success\">Active</span>" : ($row->status == 0 ? "<span class=\"label label-danger\">Inactive</span>" : ($row->status == ""? "<span class=\"label label-danger\">Not set</span>" : "unknown")))'];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
@@ -51,23 +52,11 @@
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
+			//$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
 			//$this->form[] = ['label'=>'Movie Category','name'=>'movie_category_id','type'=>'select','validation'=>'required','width'=>'col-sm-10','datatable'=>'movie_category,name','datatable_format'=>'id,\' - \',name'];
 			//$this->form[] = ['label'=>'Movei Cover','name'=>'movei_cover_path','type'=>'upload','validation'=>'required|image','width'=>'col-sm-10'];
 			//$this->form[] = ['label'=>'Description','name'=>'description','type'=>'textarea','width'=>'col-sm-10'];
-			//$this->form[] = [
-			//'label' => 'Keyword',
-			//'name' => 'keyword_id', // Include [] to indicate multiple selections
-			//'type' => 'select2', // Use select2 type
-			//'width' => 'col-sm-10',
-			//'datatable' => 'keywords,title',
-			//'datatable_format' => 'id,\'-\',title',
-			//'attributes' => [
-			//'multiple' => 'multiple', // Add HTML attribute for multiple selection
-			//'required' => 'required', // If you want it to be a required field
-			//]
-			//];
-			//
+			//$this->form[] = ['label'=>'Keyword','name'=>'keyword_id','type'=>'select2','width'=>'col-sm-10','datatable'=>'keywords,title','datatable_format'=>'id,\'-\',title'];
 			//$this->form[] = ['label'=>'Actors Id','name'=>'actors_id','type'=>'select','validation'=>'required','width'=>'col-sm-10','datatable'=>'directors,name'];
 			//$this->form[] = ['label'=>'Status','name'=>'status','type'=>'radio','validation'=>'required','width'=>'col-sm-10','dataenum'=>'1|public;0|private'];
 			# OLD END FORM
@@ -170,6 +159,9 @@
 	        |
 	        */
 	        $this->script_js = null;
+	        $this->script_js .= "
+				// input
+				$('.select2').select2();";
 
             /*
 	        | ---------------------------------------------------------------------- 
@@ -204,7 +196,8 @@
 	        |
 	        */
 	        $this->load_js = array();
-	        
+	        $this->load_js[] = asset("vendor/crudbooster/assets/select2/dist/js/select2.full.min.js");
+			$this->load_js[] = asset("vendor/crudbooster/assets/summernote/summernote.min.js");
 	        /*
 	        | ---------------------------------------------------------------------- 
 	        | Add css style at body 
@@ -214,6 +207,26 @@
 	        |
 	        */
 	        $this->style_css = NULL;
+	        $this->style_css = "
+
+				.select2-container--default .select2-selection--single {
+					border-radius: 0px !important
+				}
+				.select2-container .select2-selection--single {
+					height: 35px !important
+				}
+				.select2-container--default .select2-selection--multiple .select2-selection__choice {
+					background-color: #3c8dbc !important;
+					border-color: #367fa9 !important;
+					color: #fff !important;
+				}
+				.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+					color: #fff !important;
+				}
+				.select2-container {
+					width:100%;
+				}
+			";
 	        /*
 	        | ---------------------------------------------------------------------- 
 	        | Include css File 
@@ -223,6 +236,8 @@
 	        |
 	        */
 	        $this->load_css = array();
+	        $this->load_css[] = asset("vendor/crudbooster/assets/select2/dist/css/select2.min.css");
+			$this->load_css[] = asset("vendor/crudbooster/assets/summernote/summernote.css");
 	    }
 
 
@@ -271,7 +286,7 @@
 	    */
 	    public function hook_before_add(&$postdata) {        
 	        //Your code here
-
+	        $postdata['keyword_id'] = serialize($postdata['keyword_id']);
 	    }
 
 	    /* 
@@ -294,10 +309,17 @@
 	    | @id       = current id 
 	    | 
 	    */
-	    public function hook_before_edit(&$postdata,$id) {        
-	        //Your code here
+        public function hook_before_edit(&$postdata, $id) {
+                $postdata['keyword_id'] = serialize($postdata['keyword_id']);
+                // Fetch the default value from the database
+                $defaultValue = DB::table('titles')->where('id', $id)->value('movei_cover_path');
+                // Check if the movei_cover_path field is empty in the form data
+                if (empty($postdata['movei_cover_path'])) {
+                    // Set the default value from the database
+                    $postdata['movei_cover_path'] = $defaultValue;
+                }
+        }
 
-	    }
 
 	    /* 
 	    | ---------------------------------------------------------------------- 
@@ -308,7 +330,7 @@
 	    */
 	    public function hook_after_edit($id) {
 	        //Your code here 
-
+            
 	    }
 
 	    /* 
@@ -336,6 +358,48 @@
 
 
 	    //By the way, you can still create your own method in here... :) 
+	    public function getAdd(){
+			$data['page_title'] = "Add movie";
+			$data['category'] = DB::table('movie_category')
+				->select('name as val', 'id')
+				->get();
+			$data['keyword'] = DB::table('keywords')
+				->select('title as val', 'id')
+				->get();
+			$data['actors_id'] = DB::table('directors')
+				->select('name as val', 'id')
+				->get();
+			return $this->view('custom_adminn_view.movie.add', $data);
+		}
+		
+		//get edit function 
+		public function getEdit($id){
+			//Create an Auth
+			if(!CRUDBooster::isUpdate() && $this->global_privilege==FALSE || $this->button_edit==FALSE) {    
+				CRUDBooster::redirect(CRUDBooster::adminPath(),trans("crudbooster.denied_access"));
+			}
+
+			$data = [];
+			$data['page_title'] = 'Edit Activity';
+			$data['row'] = DB::table('titles')
+				->where(
+					'id',
+					$id
+					)
+				->first();
+			//dd($data['row']);
+			$data['page_title'] = "Edit movie";
+			$data['category'] = DB::table('movie_category')
+				->select('name as val', 'id')
+				->get();
+			$data['keyword'] = DB::table('keywords')
+				->select('title as val', 'id')
+				->get();
+			$data['actors_id'] = DB::table('directors')
+				->select('name as val', 'id')
+				->get();
+			return $this->view('custom_adminn_view.movie.edit', $data);
+		}
 
 
 	}

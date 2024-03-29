@@ -8,6 +8,10 @@ return [
         To Allowed Specific User Agent Only
         E.g : ['Android','OkHttp','Mozilla','Mac']
     */
+    'languages' =>[
+        'en' => 'English',
+        'kor' => 'Korean',
+    ],
     'API_USER_AGENT_ALLOWED' => [],
 
     'USER_TABLE' => 'cms_users',

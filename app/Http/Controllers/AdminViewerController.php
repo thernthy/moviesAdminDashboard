@@ -30,8 +30,8 @@
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Viewer Ip","name"=>"viewer_ip"];
-			$this->col[] = ["label"=>"Videos Id","name"=>"videos_id","join"=>"videos,link"];
+			$this->col[] = ["label"=>cbLang("viewers")." ".cbLang('ip'),"name"=>"viewer_ip"];
+			$this->col[] = ["label"=>cbLang("video")." ".cbLang('url'),"name"=>"videos_id","join"=>"videos,link"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE

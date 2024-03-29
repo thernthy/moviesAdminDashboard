@@ -111,7 +111,7 @@
             <div id='crud-panel'>
                 <div class='panel panel-default'>
                     <div class='panel-heading'>
-                        <strong>List of Crawl Boards</strong>
+                        <strong>{{ cbLang('link_scrapper') }}</strong>
                     <div class='panel-body'>
                         <div id="loading-component" style="display: none;">
                             <div class="spinner-border text-primary" role="status">
@@ -125,10 +125,10 @@
                                 <div class="shearchWraper">
                                     <div class='form-group srapper_form {{$header_group_class}} {{ ($errors->first($name))?"has-error":"" }}' id='form-group-{{$name}}' style="{{@$form['style']}} width:100%;">
                                         <div class="input-group" style="width:80%;">
-                                            <input type='text' class='form-control notfocus input_date' name="url" id="InputUrl" style="width:100%;" />
+                                            <input type='text' class='form-control notfocus input_date' name="url" placeholder="{{cbLang('enter_url')}}" id="InputUrl" style="width:100%;" />
                                         </div>
                                         <div class="input-group">
-                                          <button type="submit" class="btn btn-sm btn-default btn-success"><i class="fa-solid fa-gears"></i>Running</button>
+                                          <button type="submit" class="btn btn-sm btn-default btn-success"><i class="fa-solid fa-gears"></i>{{ cbLang('running') }}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -141,19 +141,19 @@
                                 <table id="table_dashboard" class="table table-hover">
                                     <thead style="background: #548dbc; padding:10px 0;">
                                         <tr>
-                                            <th><label><input type="checkbox" id="checkAll">All</label></th>
-                                            <th>Select Cateogry</th>
-                                            <th>Title</th>
-                                            <th>Derc</th>
-                                            <th>Image Url</th>
-                                            <th>Url</th>
+                                            <th><label><input type="checkbox" id="checkAll">{{ cbLang('all') }}</label></th>
+                                            <th>{{ cbLang('select_cateogry') }}</th>
+                                            <th>{{ cbLang('title') }}</th>
+                                            <th>{{ cbLang('image_url') }}</th>
+                                            <th>{{ cbLang('dcr') }}</th>
+                                            <th>{{ cbLang('url') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody id="content-wrapper">
                                     </tbody>
                                 </table>
-                                <button type="button" id="submitBtn" class="btn btn-success">Save</button>
-                                <button type="button" onclick="testing()" class="btn btn-success">Testing</button>
+                                <button type="button" id="submitBtn" class="btn btn-success">{{ cbLang('button_save') }}</button>
+                                <!--<button type="button" onclick="testing()" class="btn btn-success">Testing</button>-->
                             </form>
                             {{--{!! $data['crawl_boards']->render() !!}--}}
                         </div>

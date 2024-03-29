@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-
+<title>코끼리티비 - 최신드라마, 드라마, 예능다시보기, 인기드라마, 공포영화, 액션영화, 코미디영화, 코믹영화, 성인영화, 19금영화, 최신뉴스, 스포츠뉴스, 스포츠방송, 최신영화, 무료영화, 영화다시보기, 다시보기, 드라마 다시보기</title>
 <meta name="description" content="
 코끼리티비 - 최신드라마, 드라마, 예능다시보기, 인기드라마, 공포영화, 액션영화, 코미디영화, 코믹영화, 성인영화, 19금영화, 최신뉴스, 스포츠뉴스, 스포츠방송, 최신영화, 무료영화, 영화다시보기, 다시보기, 드라마 다시보기
 ">
@@ -35,6 +35,7 @@
 <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 <script src="https://kit.fontawesome.com/c49fa14979.js" crossorigin="anonymous"></script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8365829716237780" crossorigin="anonymous"></script>
+
 <script type="application/ld+json">
     {
       "@context": "http://schema.org",
@@ -49,6 +50,13 @@
       "
     }
 </script>
+<style>
+    @media (min-width:760px){
+        li.search_bar{
+            margin: 12px 47px 10px 42px;
+        }
+    }
+</style>
 @stack('styles')
 </head>
 <body>
@@ -62,17 +70,6 @@
 @include('front.scripts')
 </body>
 <script>
-    /*
-    document.addEventListener('contextmenu', function(event) {
-        event.preventDefault();
-    });
-    document.onkeydown = function(event) {
-        // Check for Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C (Chrome & Firefox)
-        if ((event.ctrlKey && event.shiftKey && event.keyCode === 73) 
-            (event.ctrlKey && event.shiftKey && event.keyCode === 74) 
-            (event.ctrlKey && event.shiftKey && event.keyCode === 67)) { 
-            event.preventDefault();
-        }
-    };*/
+
 </script>
 </html>

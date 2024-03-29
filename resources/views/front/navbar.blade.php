@@ -35,7 +35,7 @@
                     <li class="{{ request()->is('board/free_list') ? 'menu_active' : '' }}">
                         <a href="{{ url('board/free_list') }}">업로드 문의</a>
                     </li>--!}-->
-                    <li class="dropdown-mn" id="dropdow-wraper1">
+                    <!---<li class="dropdown-mn" id="dropdow-wraper1">
                         <a href="#">제휴업체<i class="fa-solid fa-circle-chevron-down"></i></a>
                         <div class="dropdow-wraper wrap">
                             <ul>
@@ -47,7 +47,7 @@
                                 <li><a href="">Menu one</a></li>
                             </ul>
                         </div>
-                    </li>
+                    </li>-->
                 </ul>
             </div>
             <div class="tools-wrap user_tools">
@@ -59,7 +59,7 @@
                             <li>
                                 <div class="user_profile">
                                     <span></span>
-                                    <a href="{{ url('user', session()->get('admin_name')) }}"><img src="{{ asset('img/001 (2).png')}}" alt=""></a>
+                                    <a href="{{ url('user', session()->get('admin_name')) }}"><img src="{{ asset(session()->get('admin_photo'))}}" alt=""></a>
                                 </div>
                             </li>
                         @else

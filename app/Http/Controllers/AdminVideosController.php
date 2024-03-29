@@ -30,24 +30,18 @@
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Id","name"=>"id"];
-			$this->col[] = ["label"=>"Title Id","name"=>"title_id","join"=>"titles,title"];
-			$this->col[] = ["label"=>"cover photo","name"=>"title_id","join"=>"titles,movei_cover_path","image"=>true];
-            $this->col[] = [
-                "label" => "Link",
-                "name" => "link",
-               "callback_php" => '($row->link != "") ? "<a href=\\"" . $row->link . "\\" target=\\"_blank\\">" . (strlen($row->link) > 100 ? substr($row->link, 0, 100) . "..." : $row->link) . "</a>" : "<a href=\\"#\\">No link</a>"'
-            ];
-
-
-
+			$this->col[] = ["label"=>"ID","name"=>"id"];
+			$this->col[] = ["label"=>"Titile","name"=>"title_id","join"=>"titles,title"];
+			$this->col[] = ["label"=>"Cover photo","name"=>"title_id","join"=>"titles,movei_cover_path","image"=>true];
+			$this->col[] = ["label"=>"Link","name"=>"link","callback_php"=>'($row->link != "") ? "<a href=\"" . $row->link . "\" target=\"_blank\">" . (strlen($row->link) > 100 ? substr($row->link, 0, 100) . "..." : $row->link) . "</a>" : "<a href=\"#\">No link</a>"'];
 			$this->col[] = ["label"=>"Duration","name"=>"duration"];
 			$this->col[] = ["label"=>"Episode","name"=>"episode"];
+			$this->col[] = ["label"=>"Created At","name"=>"created_at","callback_php"=>'($row->created_at != "" ? "<span class=\"label label-success\">" . date("m/d/Y", strtotime($row->created_at)) . "</span>" : "<span class=\"label label-danger\">Not date</span>")'];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Select Title','name'=>'title_id','type'=>'select','validation'=>'required','width'=>'col-sm-10','datatable'=>'titles,title','datatable_format'=>'id,\' - \',title'];
+			$this->form[] = ['label'=>'Select title','name'=>'title_id','type'=>'select','validation'=>'required','width'=>'col-sm-10','datatable'=>'titles,title','datatable_format'=>'id,\' - \',title'];
 			$this->form[] = ['label'=>'Link','name'=>'link','type'=>'text','validation'=>'required|min:5','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Episode','name'=>'episode','type'=>'text','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Duration','name'=>'duration','type'=>'time','validation'=>'required','width'=>'col-sm-10'];
@@ -55,20 +49,10 @@
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = [
-			//'label' => 'Select Title',
-			//'name' => 'title_id',
-			//'type' => 'select',
-			//'validation' => 'required',
-			//'width' => 'col-sm-10',
-			//'datatable' => 'titles,title',
-			//'datatable_format' => 'id,\' - \',title',
-			//'datatable_orderby' => 'created_at DESC' // Assuming 'created_at' is the column you want to order by
-			//];
-			//
-			//$this->form[] = ['label'=>'Link','name'=>'link','type'=>'text','validation'=>'required|min:5','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Episode','name'=>'episode','type'=>'text','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Duration','name'=>'duration','type'=>'time','validation'=>'required','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>cbLang('select_title'),'name'=>'title_id','type'=>'select','validation'=>'required','width'=>'col-sm-10','datatable'=>'titles,title','datatable_format'=>'id,\' - \',title'];
+			//$this->form[] = ['label'=>cbLang('link'),'name'=>'link','type'=>'text','validation'=>'required|min:5','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>cbLang('episode'),'name'=>'episode','type'=>'text','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>cbLang('duration'),'name'=>'duration','type'=>'time','validation'=>'required','width'=>'col-sm-10'];
 			# OLD END FORM
 
 			/* 

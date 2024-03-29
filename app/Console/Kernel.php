@@ -4,7 +4,9 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\AdminController;
+use Illuminate\Http\Request;
 class Kernel extends ConsoleKernel
 {
     /**
@@ -13,8 +15,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
         'App\Console\Commands\MakeUserCountry',
+        'App\Console\Commands\ClearLogs',
     ];
 
     /**
@@ -23,10 +25,12 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
-    protected function schedule(Schedule $schedule)
-    {
-        // $schedule->command('inspire')->hourly();
-    }
+        protected function schedule(Schedule $schedule){
+            //$schedule->command('logs:clear')->hourlyAt(0);
+            $schedule->call(function () {
+                app('App\Http\Controllers\AdminController')->autoPost(new Request());
+            })->hourlyAt(0);
+        }
 
     /**
      * Register the commands for the application.

@@ -30,16 +30,16 @@
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Name","name"=>"name"];
-			$this->col[] = ["label"=>"Url","name"=>"url"];
-			$this->col[] = ["label"=>"Encoding Type","name"=>"encoding_type"];
+			$this->col[] = ["label"=>cbLang('name'),"name"=>"name"];
+			$this->col[] = ["label"=>cbLang('url'),"name"=>"url"];
+			$this->col[] = ["label"=>cbLang("encoding_type"),"name"=>"encoding_type"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Name','name'=>'name','type'=>'text','validation'=>'required|string','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
-			$this->form[] = ['label'=>'Url','name'=>'url','type'=>'text','validation'=>'required|url','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Encoding Type','name'=>'encoding_type','type'=>'select','validation'=>'required','width'=>'col-sm-5','dataenum'=>'UTF-8;EUC-K'];
+			$this->form[] = ['label'=>cbLang('name'),'name'=>'name','type'=>'text','validation'=>'required|string','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
+			$this->form[] = ['label'=>cbLang('url'),'name'=>'url','type'=>'text','validation'=>'required|url','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>cbLang('encoding_type'),'name'=>'encoding_type','type'=>'select','validation'=>'required','width'=>'col-sm-5','dataenum'=>'UTF-8;EUC-K'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM

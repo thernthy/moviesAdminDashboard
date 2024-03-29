@@ -1,7 +1,7 @@
 <div class="row">
         <div class="user-page-body-wraper">
                 <div class="user-cover-pic" 
-                    style="background-image:url('{{asset('img/movei/mv (1).jpg')}}')">
+                    style="background-image:url('{{ asset(session()->get('admin_photo')) }}')">
                     <input type="file" name="user-cover" id="cover_picker" hidden>
                 </div>
              <div class="user-profile-pic">

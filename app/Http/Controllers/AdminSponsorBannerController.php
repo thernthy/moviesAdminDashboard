@@ -6,7 +6,6 @@
 	use CRUDBooster;
 
 	class AdminSponsorBannerController extends \crocodicstudio\crudbooster\controllers\CBController {
-
 	    public function cbInit() {
 
 			# START CONFIGURATION DO NOT REMOVE THIS LINE
@@ -30,16 +29,16 @@
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Banner Path","name"=>"banner_path","image"=>true];
-			$this->col[] = ["label"=>"Ending Date","name"=>"ending_date"];
-			$this->col[] = ["label"=>"Dcr","name"=>"dcr"];
+			$this->col[] = ["label"=>cbLang("banner_path"),"name"=>"banner_path","image"=>true];
+			$this->col[] = ["label"=>cbLang("ending_date"),"name"=>"ending_date"];
+			$this->col[] = ["label"=>cbLang("dcr"),"name"=>"dcr"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Banner Path','name'=>'banner_path','type'=>'upload','validation'=>'required|min:5|max:5000','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Ending Date','name'=>'ending_date','type'=>'date','validation'=>'required|date','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Dcr','name'=>'dcr','type'=>'textarea','validation'=>'string|max:5000','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>cbLang("banner_path"),'name'=>'banner_path','type'=>'upload','validation'=>'required|min:5|max:5000','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>cbLang("ending_date"),'name'=>'ending_date','type'=>'date','validation'=>'required|date','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>cbLang("dcr"),'name'=>'dcr','type'=>'textarea','validation'=>'string|max:5000','width'=>'col-sm-10'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM

@@ -82,7 +82,7 @@
             <div id='crud-panel'>
                 <div class='panel panel-default'>
                     <div class='panel-heading'>
-                        <strong>List of Crawl Boards</strong>
+                        <strong>{{ cbLang('crawl_board') }}</strong>
                     <div class='panel-body'>
                         <div id="loading-component" style="display: none;">
                             <div class="spinner-border text-primary" role="status">
@@ -98,7 +98,7 @@
                                         @if(!$data['siteList']->isEmpty())
                                         <li>
                                             <label>
-                                                <input type="checkbox" value="YourValueHere" id="checkAll"> Check All
+                                                <input type="checkbox" value="YourValueHere" id="checkAll"> {{cbLang('check')}} {{cbLang('all')}}
                                             </label>
                                         </li>
                                         @foreach($data['siteList'] as $site)
@@ -129,7 +129,7 @@
                                                 @endforeach
                                             </select>
                                             <div class="input-group-btn">
-                                              <button type="submit" class="btn btn-sm btn-default btn-success"><i class="fa-solid fa-gears"></i>Running</button>
+                                              <button type="submit" class="btn btn-sm btn-default btn-success"><i class="fa-solid fa-gears"></i>{{ cbLang('running') }}</button>
                                             </div>
                                     </div>
                                 </div>
@@ -140,12 +140,12 @@
                             <table id="table_dashboard" class="table table-hover">
                                 <thead style="background: #548dbc; padding:10px 0;">
                                     <tr>
-                                        <th>Site name</th>
-                                        <th>Collection URL</th>
-                                        <th>Post title</th>
-                                        <th>Creation date</th>
-                                        <th>Registration status</th>
-                                        <th>delete</th>
+                                        <th>{{cbLang('site_name')}}</th>
+                                        <th>{{ cbLang('collection') }} {{ cbLang('url') }}</th>
+                                        <th>{{ cbLang('post') }} {{ cbLang('title') }}</th>
+                                        <th>{{ cbLang('creation_date') }}</th>
+                                        <th>{{cbLang('registration')}} {{ cbLang('status') }}</th>
+                                        <th>{{cbLang('text_delete')}}</th>
                                     </tr>
                                 </thead>
                                 <tbody id="content-wrapper">

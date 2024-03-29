@@ -81,6 +81,13 @@
 .movei-upersot-item.fav{
  cursor: pointer;
 }
+button.more-button{
+    transform: translateX(48px);
+    border: none;
+    outline: none;
+    background: transparent;
+    text-decoration: underline;
+}
 </style>
 @endpush
 @section('content')
@@ -117,6 +124,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
             padding-bottom:30px;
         ">
             <?php $serverCount = 1; ?>
@@ -169,6 +178,28 @@
                     </div>
                     <div class="col-sm-9 text-left">
                         <h2 class="title_page">최신/인기 {{$data['targetMovie']->title}}</h2>
+                        @php 
+                            $keyword = unserialize($data['targetMovie']->keyword_id); 
+                        @endphp
+                        @if(!empty($keyword)) <!-- Add a null check for $actionnya -->
+                            @php
+                                $token = Illuminate\Support\Str::random(40);
+                            @endphp
+                            <h5 style="
+                                display: flex;
+                                flex-wrap: wrap;
+                                align-items: center;
+                                justify-content: flex-start;">
+                                @foreach ($data['keywords'] as $key => $item)
+                                    @if(in_array($item->id, $keyword))
+                                        @php
+                                            $url = url('/searchks?tk='.$token.'&key=' . $item->id .'&tt='.$item->title);
+                                        @endphp
+                                        <a href="{{ $url }}" style="margin:5px; padding:5px 10px; border-radius: 11px; background: #e3e3e3;">#{{ $item->title }}</a>
+                                    @endif
+                                @endforeach
+                            </h5>
+                        @endif
                         <h6>
                             {{$data['targetMovie']->description}}
                         </h6>
@@ -184,8 +215,8 @@
                         @foreach($data['comments'] as $item)
                         <li>
                             <div class="profile"> 
-                                <img src="{{ asset('img/user_profile.png') }}" 
-                                alt="" width="50px" height="50px"></a>
+                                <img src="{{ ($item->photo)?asset( $item->photo ):'https://w7.pngwing.com/pngs/81/570/png-transparent-profile-logo-computer-icons-user-user-blue-heroes-logo-thumbnail.png' }}" 
+                                                                alt="" width="50px" height="50px"></a>
                             </div>
                            <div>
                                <h3>
@@ -240,6 +271,29 @@
 @endsection
 @push('scripts')
  <script>
+      // Function to hide excess comments and add a "more" button if needed
+    function handleComments({status}) {
+        var commentBox = document.querySelector('.row.user-commend > ul');
+        var comments = commentBox.children;
+        var numToShow = 6; 
+        var numHidden = comments.length - numToShow;
+        for (var i = numToShow; i < comments.length; i++) {
+            comments[i].style.display = 'none';
+        }
+        if (numHidden > 0 && status) {
+            var moreButton = document.createElement('button');
+            moreButton.textContent = 'Show More';
+            moreButton.classList.add('more-button');
+            moreButton.addEventListener('click', function() {
+                for (var i = numToShow; i < comments.length; i++) {
+                    comments[i].style.display = 'block';
+                }
+                moreButton.style.display = 'none'; 
+            });
+            commentBox.parentNode.appendChild(moreButton);
+        }
+    }
+    handleComments({status:true});
    let optionButtons = document.querySelectorAll('.opitonBnt')
    let recomentVtr = document.querySelector('.recomeded_video .card-body')
    let moviePart = document.querySelector('.video_part_list .card-body')
@@ -261,7 +315,7 @@
     event.preventDefault(); 
     var formData = {
         comment: document.getElementById("comment").value,
-        videoId: "{{$data['targetMovie']->id}}",
+        videoId: "{{$data['targetMovie']->video_id}}",
         name: "{{ session()->get('admin_name') }}"
     };
     if (!formData.name) {
@@ -299,6 +353,7 @@
                     `;
                     commentBox.insertAdjacentHTML('beforeend', html);
                 });
+                handleComments({status:false});
             } else {
                 console.error('Error:', response.message);
             }

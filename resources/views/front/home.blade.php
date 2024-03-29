@@ -26,26 +26,36 @@
     .loaded {
         opacity:1;
     }
+    .swiper-slide.text-left.animate-box > .lazyrate{
+        height:300px;
+    }
+    p>.keyword_m{
+    padding: 5px 10px;
+    border-radius: 6px;
+    color: white;
+    background: #337ab7;
+    }
 </style>
 @endpush
 @section('content')
+    @php
+        $token = Illuminate\Support\Str::random(40);
+    @endphp
     <div class="slider_wrap">
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
-                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                @foreach($data['category']['Popular-movies'] as $index => $item)
+                    <li data-target="#carousel-example-generic" data-slide-to="{{$index}}" class="{{($index==0)? 'active' : '' }}"></li>
+
+                @endforeach
             </ol>
             <div class="carousel-inner" role="listbox">
-                <div class="item active">
-                    <img src="{{ asset('img/001 (2).png') }}" class="d-block w-100">
-                </div>
-                <div class="item">
-                <img src="{{ asset('img/001 (2).png') }}" class="d-block w-100" alt="...">
-                </div>
-                <div class="item">
-                <img src="{{ asset('img/001 (3).png') }}" class="d-block w-100" alt="...">
-                </div>
+                @foreach($data['category']['Popular-movies'] as $index => $item)
+                    <div class="item {{($index==0)? 'active' : '' }} ">
+                        <img src="{{ asset($item->movei_cover_path) }}" class="d-block w-100">
+                    </div>
+                @endforeach
+                
             </div>
             <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
                 <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -73,14 +83,13 @@
     <div class="container-fuild category">
         <h3 style="text-transform: capitalize;">
             {{
-            ($category == 'Popular-movies') ? '인기 있는' :
-            (($category == 'K-drama-movies') ? 'K-드라마' :
-            (($category == 'TV-Entertainment') ? '예능/오락
-' :
-            (($category == 'movies') ? '영화 산업' :
-            (($category == 'foreign-drama') ? '외국 드라마' :
-            (($category == 'Cartoon') ? '만화|애니메이션' :
-            'OOP')))))
+                ($category == 'Popular-movies') ? '최신/인기' :
+                (($category == 'K-drama-movies') ? '한국 드라마' :
+                (($category == 'TV-Entertainment') ? 'TV/엔터테인먼트' :
+                (($category == 'movies') ? '영화' :
+                (($category == 'foreign-drama') ? '외국 드라마' :
+                (($category == 'Cartoon') ? '만화|애니메이션' :
+                'OOP')))))
             }}
             
         </h3>
@@ -101,11 +110,19 @@
         <div class="swiper-wrapper content" id="content">
              @foreach($movies as $index => $item)
                 <div class="swiper-slide text-left animate-box" onclick="toggleMovieDetails('{{ $category }}', '{{$item->title_id}}')">
-                    <img data-src="{{ asset($item->movei_cover_path)}}" 
+                    @if(Illuminate\Support\Str::startsWith($item->movei_cover_path, 'uploads/'))
+                    <img data-src="{{asset($item->movei_cover_path)}}"
                     src="{{asset('loding.gif')}}" 
                     loading="lazy"  alt="{{ $item->title }}" 
                     class="w-100 lazyrate"
                     >
+                    @else
+                    <img
+                    src="{{asset($item->movei_cover_path)}}" 
+                    loading="lazy"  alt="{{ $item->title }}" 
+                    class="w-100"
+                    >
+                    @endif
                     <!-- <a href="#">New</a> -->
                     <h6>{{ $item->title }}</h6>
                     <!--<div class="swiper-pagination"></div>-->
@@ -126,12 +143,17 @@
                 <!--<div class="reaction_icon">
                     <button class="reaction-btn reaction"><i class="fa-solid fa-heart"></i> <b>0</b></button>
                     <button class="reaction-btn"><i class="fa-solid fa-heart"></i><b>100</b></button>
-                </div>
-                <p class="key-word">
-                    <a href="">#key word</a>  <a href="">#key word</a>  <a href="">#key word</a> 
-                </p>-->
+                </div>-->
                 <h2 id="movie-{{$category}}">
                 </h2>
+                <p class="key-word" style="display: flex;
+                        flex-direction: row;
+                        gap:6px;
+                        flex-wrap: wrap;
+                        align-items: center;
+                        justify-content: center;
+                        " id="key-word-{{$category}}">
+                </p>
                 <p class="movie-dscr" id="movie-description-{{ $category}}">
                     <!-- Movie description -->
                 </p>
@@ -168,14 +190,13 @@
     $(document).ready(function() {
         // Array to keep track of failed images
         var failedImages = [];
-
         // Function to load images dynamically
         function loadImages() {
             $('.lazyrate').each(function() {
                 var $img = $(this);
                 var src = $img.data('src'); // Get data-src attribute value
+                console.log(src)
                 var tempImg = new Image(); // Create a temporary image object
-
                 // Check if the image has already failed in previous attempts
                 if (!failedImages.includes(src)) {
                     tempImg.onload = function() {
@@ -185,13 +206,14 @@
                         failedImages.push(src); // Add the failed image to the list
                     };
                     tempImg.src = src; // Start loading the image
+                } else {
+                    // If the image failed in a previous attempt, set its src to an empty string
+                    $img.attr('src', '');
                 }
             });
         }
-
         // Load images dynamically on document ready
         loadImages();
-
         // Retry loading failed images
         var retryInterval = setInterval(function() {
             // Clear the failedImages array before retrying
@@ -200,6 +222,7 @@
         }, 5000); // Retry every 5 seconds
     });
 </script>
+
 
 
 
@@ -253,6 +276,13 @@
                 var movieDescription = document.getElementById('movie-description-' + category_id);
                 var movieDetailbg = document.getElementById('movie-details-' + category_id);
                 var movieDetail = document.querySelector('.detail-wraper-' + category_id);
+                //check if has keyword respon
+                if(data.keywords){
+                    const keywords = data.keywords
+                    renderKeyword(keywords, category_id);
+                }else{
+                    var keywords_wrapper = document.getElementById('key-word-' + category_id).innerHTML="";
+                }
                 if (data.moviesDetail) {
                     movieTitle.innerHTML = data.moviesDetail.title;
                     movieDescription.innerHTML = data.moviesDetail.description;
@@ -321,6 +351,18 @@
             });
         });
     });
+    
+    //function for rendering keyword 
+    function renderKeyword(keywords, category_id) {
+        var keywords_wrapper = document.getElementById('key-word-' + category_id);
+        const token = "{{$token}}";
+        var keywordHTML = "";
+        keywords.forEach(function(key) {
+            keywordHTML += `<a href="/searchks?tk=${token}&key=${key.id}&tt=${key.title}" class="keyword_m">${key.title}</a>`;
+        });
+        // Append the generated HTML to the keywords_wrapper
+        keywords_wrapper.innerHTML = keywordHTML;
+    }
 
 
 </script>
