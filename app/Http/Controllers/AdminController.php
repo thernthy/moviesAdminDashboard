@@ -5,8 +5,167 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 class AdminController extends Controller
 {
+    public function category(Request $request)
+    {
+        $sqlQuery = null;
+        $data = '';
+        $pageRequest = "";
+        if($request->has("pageRequest")){
+            $pageRequest = $request->pageRequest;
+        }else{
+            $pageRequest = 15;
+        }
+        
+        // Determine the SQL query operator based on the presence of query parameters
+        if ($request->has('filter')) {
+            $sqlQuery = '!=';
+        } elseif ($request->has('optional')) {
+            $sqlQuery = '=';
+        } elseif ($request->has('search')) {
+            $data = DB::table('comic_tb_titles')->where('title', 'like', '%'. $request->search .'%')->paginate($pageRequest);
+            return response()->json($data);
+        } elseif ($request->has('filterBy')){
+           $query = DB::table('comic_tb_titles');
+            if ($request->filterBy === "this-month") {
+                $query->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()]);
+            } elseif ($request->filterBy === "last-month") {
+                $query->whereBetween('created_at', [Carbon::now()->subMonth()->startOfMonth(), Carbon::now()->subMonth()->endOfMonth()]);
+            } elseif ($request->filterBy === 'this-week') {
+                $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+            } elseif ($request->filterBy === 'last-week') {
+                $query->whereBetween('created_at', [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()]);
+            } elseif ($request->filterBy === 'today') {
+                $query->whereDate('created_at', Carbon::today()->toDateString());
+            } elseif ($request->filterBy === 'yesterday') {
+                $query->whereDate('created_at', Carbon::yesterday());
+            }elseif ($request->filterBy === 'new'){
+                 $query->whereDate('optional', "new");
+            }
+            else{
+                $data = array();
+                return response()->json($data);
+            }
+            $data = $query->paginate($pageRequest);
+            return response()->json($data);
+        }
+        if($sqlQuery != null){
+          $selectOn = $request->query('filter') ?? $request->query('search') ?? $request->search ?? null;
+        }
+        $data = DB::table('comic_tb_titles')->where('title', $sqlQuery, $selectOn)->paginate($pageRequest);
+        return response()->json($data);
+        
+    }
+    
+    public function banner(Request $request){
+        $req_method = [
+             "banner_method" => $request->btp,
+             "w" => $request->w,
+             "h" => $request->h
+        ];
+        $banner = DB::table("comic_tb_titles")->select("photo_cover_path", "comic_status")->where("comic_status", null)->orderBy("created_at", "desc")->get();
+        return response(compact(
+              "banner",
+              "req_method"
+            ));
+    }
+    
+    public function completed(Request $re){
+        
+        $pageRequest = "";
+        if($re->has("pageRequest")){
+            $pageRequest = $re->pageRequest;
+        }else{
+            $pageRequest = 15;
+        }
+        
+        $data = DB::table('comic_tb_titles')->where('comic_complated', '!=', null)->paginate($pageRequest);
+            
+        return response()->json($data);
+    }
+    
+    //this funciton use for get some spacefic data 
+    public function getSomething(Request $r) {
+       if($r->has('category')){
+           $Gener = DB::table('comic_category');
+           if($r->tp === '/comics'){
+               $Gener->where('category_type', 'cm');
+           }elseif($r->tp === '/'){
+               $Gener->where('category_type', null);
+           }else{
+                $Gener->where('category_type', 'notsespone data');
+           }
+           $data = $Gener->get();
+           return response()->json($data);
+       }
+       if($r->has('plate')){
+           $data = DB::table('comic_plate')->get();
+           return response()->json($data);
+       }
+       
+       if($r->has('durate')){
+           $data = DB::table('comic_durate')->get();
+           return response()->json($data);
+       }
+       
+       if($r->has('anountment')){
+           $pageR = $r->pageRequest?? $r->pageRequest ?? 15 ;
+           $data = DB::table('comic_announcement')->orderBy('created_at', 'DESC')->paginate($pageR);
+           return response()->json($data);
+       }
+       
+       
+       if($r->has("requestCategory")){
+            $category_id =  strtok($r->requestCategory, '-');
+            $data = DB::table('comic_tb_titles')->where('comic_category_id', $category_id)->paginate(15);
+            return response(compact("data","category_id"));
+       }
+       return response()->json($data, 401);
+    }
+    
+    
+    public function detail(Request $request){
+        $comicEpData = DB::table('comic_tb_titles')->join(
+            'comic_tb_ep', 'comic_tb_ep.comic_title_id', 
+            'comic_tb_titles.comic_title_id')->
+            where(
+                'comic_tb_titles.comic_title_id', 
+                 $request->id
+            )
+            ->where(
+                'comic_tb_ep.comic_status', 
+                 1
+            )
+            ->orderBy('comic_tb_ep.comic_ep', "ASC")
+            ->get();
+            
+        $targetData = $comicEpData[0];
+            
+        return response(compact(
+              "targetData",
+              "comicEpData"
+        ));
+    }
+    
+    public function viewComic(Request $request) {
+        $mp = $request->mp;                
+        $title = $request->t; 
+        $id = $request->id;
+        $ep = $request->ep;
+        $data = DB::table("comic_tb_ep")->where("comic_title_id", $request->id)->where('comic_ep', $request->ep)->first();
+        return response(compact(
+            "data",
+            "mp",
+            "ep",
+            'title',
+            "id"
+        ));
+    }
+    
+    
+    
     public function changeLanguage(Request $request)
     {
         $language = $request->input('language');
@@ -16,7 +175,7 @@ class AdminController extends Controller
     
     public function autoPost(Request $request){
         try {
-            $url = 'https://drtv66.com/';
+            $url = 'https://drtv68.com/';
             $keywords_movice = ['4','16','17'];
             $keywords_drama = ['4','20','21'];
             $keywords_ent = ['4','18','19'];
@@ -46,22 +205,22 @@ class AdminController extends Controller
             $linksM = array();
             $linksD = array();
             $linksE = array();
-            for ($i = 0; $i < (count($elements) - 1); $i++) {
-                // Find anchor elements within the current element
-                if ($i == 0) {
-                    $linksM = $elements[0]->getElementsByTagName('a');
-                } elseif ($i == 1) {
-                    $domD = new \DOMDocument('1.0', 'UTF-8'); 
-                    $urlD = "https://drtv66.com/bbs/board.php?bo_table=drama"; 
-                    $domD->loadHTMLFile($urlD); 
-                    $xpathD = new \DOMXPath($domD);   
-                    $classNameD = 'list-container'; 
-                    $elementsD = $xpathD->query("//*[contains(@class, '$classNameD')]"); 
-                    $linksD = $elementsD[0]->getElementsByTagName('a'); 
-                } elseif ($i == 2) {
-                    $linksE = $elements[2]->getElementsByTagName('a');
+                for ($i = 0; $i < (count($elements) - 1); $i++) {
+                    // Find anchor elements within the current element
+                    if ($i == 0) {
+                        $linksM = $elements[0]->getElementsByTagName('a');
+                    } elseif ($i == 1) {
+                        $domD = new \DOMDocument('1.0', 'UTF-8'); 
+                        $urlD = $url."bbs/board.php?bo_table=drama"; 
+                        $domD->loadHTMLFile($urlD); 
+                        $xpathD = new \DOMXPath($domD);   
+                        $classNameD = 'list-container'; 
+                        $elementsD = $xpathD->query("//*[contains(@class, '$classNameD')]"); 
+                        $linksD = $elementsD[0]->getElementsByTagName('a'); 
+                    } elseif ($i == 2) {
+                        $linksE = $elements[2]->getElementsByTagName('a');
+                    }
                 }
-            }
               
             // Loop through each anchor element and extract the href attribute
             for($i = 0; $i<(count($linksM)-1); $i++){ 
@@ -167,7 +326,7 @@ class AdminController extends Controller
 
                             // Convert the result array to JSON format
                             $resultJson = json_encode($resultArray);
-                array_push($arronemovie, $title[0]->textContent,"https://drtv66.com".$src[0]->getAttribute("src"),$dec_elements[1]->textContent,$resultJson);
+                array_push($arronemovie, $title[0]->textContent,$url.$src[0]->getAttribute("src"),$dec_elements[1]->textContent,$resultJson);
                  
                 array_push($arronepageM,$arronemovie);    
                 }
@@ -185,23 +344,26 @@ class AdminController extends Controller
                     $v_elements = $v_xpath->query("//*[contains(@class, '$linkclass')]"); 
                     $dateClass = "pull-right";
                     $postdate = $v_xpath->query("//*[contains(@class,'$dateClass')]");
-                    $stringimg = "https://drtv66.com/img/no_img2.png";
+                    $stringimg = $url."img/no_img2.png";
                     $img_elements = $v_xpath->query("//*[contains(@class, '$imgclass')]");
                     $dec_elements = $v_xpath->query("//*[contains(@class,'$decClass')]");
                     $title_elements = $v_xpath->query("//*[contains(@class,'$titleClass')]");
                     $src=array(); 
+                    
                     if(!str_contains($postdate[1]->textContent, '.')){ //==============if element url is dramar not drama 
-                            $finalArray = array();
-                            $v_links = $v_elements[1]->getElementsByTagName('a');  
+                       
+                        $finalArray = array();
+                            $v_links = $v_elements[0]->getElementsByTagName('a');  
                             $linkV = ""; 
                             $desV =""; 
                             if($img_elements->length <= 0){ 
                                 $src=array(); 
                             }else{ 
                                 $src = $img_elements[0]->getElementsByTagName('img'); 
-                            } 
+                            }
+                            
                             if($v_links->length <= 0){         
-                                $v_links = $dec_elements[0]->getElementsByTagName('a');
+                                $v_links = $dec_elements[1]->getElementsByTagName('a');
                                 $all_vd ="";
                                 for($j=0 ;$j<count($v_links); $j++){                
                                 if($j==0){
@@ -235,21 +397,21 @@ class AdminController extends Controller
                             for($j=0 ;$j<count($v_links); $j++)
                             {
                         
-                        if($j==0){
-                            if(preg_match('/\s/',$v_links[0]->textContent)){
-                                    $all_vd.=str_replace(' ', '', $v_links[0]->textContent)."|".$v_links[0]->getAttribute('href'); 
+                            if($j==0){
+                                if(preg_match('/\s/',$v_links[0]->textContent)){
+                                        $all_vd.=str_replace(' ', '', $v_links[0]->textContent)."|".$v_links[0]->getAttribute('href'); 
+                                    }else{
+                                    $all_vd.= $v_links[0]->textContent."|".$v_links[0]->getAttribute('href'); 
+                                        }
+                                } else if($j>0){
+                                $all_vd.=",";
+                                if(preg_match('/\s/',$v_links[$j]->textContent)){
+                                    $all_vd.=str_replace(' ', '', $v_links[$j]->textContent)."|".$v_links[$j]->getAttribute('href'); 
                                 }else{
-                                $all_vd.= $v_links[0]->textContent."|".$v_links[0]->getAttribute('href'); 
-                                    }
-                            } else if($j>0){
-                            $all_vd.=",";
-                            if(preg_match('/\s/',$v_links[$j]->textContent)){
-                                $all_vd.=str_replace(' ', '', $v_links[$j]->textContent)."|".$v_links[$j]->getAttribute('href'); 
-                            }else{
-                               $all_vd.= $v_links[$j]->textContent."|".$v_links[$j]->getAttribute('href');
+                                $all_vd.= $v_links[$j]->textContent."|".$v_links[$j]->getAttribute('href');
+                                }   
                             }
                         }
-                    }
         
                     
                     $array = explode(',',$all_vd);
@@ -269,11 +431,11 @@ class AdminController extends Controller
                         }
                           
                                  
-                            } 
+                         
                          
                             $title = $title_elements[0]->getElementsByTagName('h1'); 
                       
-                            $title_elements = $v_xpath->query("//*[contains(@class,'$titleClass')]");           
+                            //$title_elements = $v_xpath->query("//*[contains(@class,'$titleClass')]");           
                          
                             $title_v = array();   
                             $string = $title[0]->textContent; 
@@ -288,11 +450,11 @@ class AdminController extends Controller
                                 } 
                             }else{
                                 $title_v[0] = $string;
-                            } 
-                            
+                            }
                          
                            $srcImg=""; 
                             $countImg =  count($src); 
+                            
                             if($countImg ==0){ 
                                 $srcImg = $stringimg; 
                             }else{ 
@@ -312,11 +474,13 @@ class AdminController extends Controller
                                         $resultJson = json_encode($resultArray);
                                       
                           array_push($arronemovie, $title_v[0],$srcImg,$desV,$resultJson);
-                             
+                            
                           array_push($arronepageD,$arronemovie);  
-                    
+                        }
+                        
                 }
-            //print_r($arronepageD);
+                
+           
             /*************entertain */
             for($i = 0; $i<count($hrefE); $i++){ 
                 $arronemovie = array();
@@ -330,15 +494,15 @@ class AdminController extends Controller
                 $v_elements = $v_xpath->query("//*[contains(@class, '$linkclass')]"); 
                 $dateClass = "pull-right";
                 $postdate = $v_xpath->query("//*[contains(@class,'$dateClass')]");
-                $stringimg = "https://drtv66.com/img/no_img2.png";
+                $stringimg = $url."img/no_img2.png";
                 $img_elements = $v_xpath->query("//*[contains(@class, '$imgclass')]");
                 $dec_elements = $v_xpath->query("//*[contains(@class,'$decClass')]");
                 $title_elements = $v_xpath->query("//*[contains(@class,'$titleClass')]");
                 $src=array();
                 //print_r($dec_elements);
-                if(str_contains($postdate[1]->textContent, '.')){ //==============if element url is dramar not drama 
+                if(!str_contains($postdate[1]->textContent, '.')){ //==============if element url is dramar not drama 
                         $finalArray = array();
-                        $v_links = $v_elements[1]->getElementsByTagName('a');  
+                        $v_links = $v_elements[0]->getElementsByTagName('a');  
                         $linkV = ""; 
                         $desV =""; 
                         if($img_elements->length <= 0){ 
@@ -347,7 +511,7 @@ class AdminController extends Controller
                             $src = $img_elements[0]->getElementsByTagName('img'); 
                         } 
                         if($v_links->length <= 0){         
-                            $v_links = $dec_elements[0]->getElementsByTagName('a');
+                            $v_links = $dec_elements[1]->getElementsByTagName('a');
                             $all_vd ="";
                             for($j=0 ;$j<count($v_links); $j++){                
                             if($j==0){
@@ -414,7 +578,7 @@ class AdminController extends Controller
                         $desV = $dec_elements[0]->textContent;
                     }  
                             
-                        } 
+                         
                     
                         $title = $title_elements[0]->getElementsByTagName('h1'); 
                 
@@ -457,7 +621,7 @@ class AdminController extends Controller
                         array_push($arronemovie, $title_v[0],$srcImg,$desV,$resultJson);
                         
                         array_push($arronepageE,$arronemovie);  
-                
+                        }
             }
             /*******************Movie */
             if(count($arronepageM)>0){
@@ -631,6 +795,7 @@ class AdminController extends Controller
             }
             Log::info('Auto post completed successfully at: ' . now());
         }catch (\Exception $e) {
+           
             Log::error('Error occurred while executing autoPost function: ' . $e->getMessage());
             Log::error($e->getTraceAsString());
         }

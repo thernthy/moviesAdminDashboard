@@ -16,15 +16,15 @@ return [
     |
     */
 
-    'paths' => ['api/*'],
+    'paths' => ['*'],
 
-    'allowed_methods' => ['GET', 'POST', 'PUT', 'DELETE'],
+    'allowed_methods' => ['GET', 'POST', 'PUT', 'DELETE', 'HEAD', 'OPTIONS'],
 
-    'allowed_origins' => ['http://www.kotv-001.com', 'https://www.kotv-001.com'],
+    'allowed_origins' => ['*'],
 
-    'allowed_origins_patterns' => [],
+    'allowed_origins_patterns' => ['*'],
 
-    'allowed_headers' => ['Content-Type', 'Authorization'],
+    'allowed_headers' => ['Content-Type', 'Authorization', 'X-API-Key','X-CSRF-TOKEN'],
 
     'exposed_headers' => [],
 
