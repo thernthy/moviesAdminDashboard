@@ -1,6 +1,10 @@
 @extends('crudbooster::admin_template')
 @section('content')
+
 <style>
+.form-control{
+    background: transparent;
+}
 #app{
     overflow-y: hidden;
 }
@@ -11,7 +15,7 @@
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
     background-color: #3c8dbc !important;
-    border-color: #367fa9 !important;
+    border-color: #367fa    9 !important;
     color: #fff !important;
 }
 
@@ -97,10 +101,8 @@
     position: relative;
     display: block;
     padding: 0 84px 0 22px;
-    font-size: 22px;
     font-weight: 300;
     text-wrap: nowrap;
-    color: #000;
     line-height: 35px;
     border-radius: 4px;
     cursor: pointer;
@@ -180,8 +182,6 @@
     display: block;
     padding: 0 22px;
     border-bottom: 1px solid #b5b5b5;
-    font-size: 18px;
-    font-weight: 600;
     color: #b5b5b5;
     line-height: 47px;
     cursor: pointer;
@@ -219,10 +219,12 @@
             outline: none;
             flex-grow: 1;
             padding: 5px;
+            background: transparent;
         }
 
         .multi-select-container .tag {
-            background-color: #e1e1e1;
+            background-color: #f5a866;
+            color: white;
             border-radius: 3px;
             padding: 5px;
             margin: 2px;
@@ -233,6 +235,13 @@
         .tag .remove-tag {
             margin-left: 5px;
             cursor: pointer;
+            width: 20px;
+            height: 20px;
+            background: #ed9a53;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .multi-select-container > div.dropdown_artors {
@@ -259,12 +268,25 @@
         }
 
         .multi-select-container .dropdown_artors div.selected {
-            background-color: #d0eaff;
+            background-color: #fdca8a;
+            margin-top: 2px;
+            color: white;
+            padding-left: 20px;
         }
 
+
         .multi-select-container .dropdown_artors div:hover {
-            background-color: #f0f0f0;
+            background-color: #fdca8a;
         }
+
+        .multi-select-container .dropdown_artors div.selected::after {
+            content: '✓';
+            position: absolute;
+            left: 5px;
+            color: #68b068;
+            font-weight: 800;
+        }
+
 </style>
 
 <p>
@@ -297,7 +319,6 @@
                             </select>
                         </div>
                         <script>
-                            $(document).ready(function() {
                                 $(".custom-select").each(function() {
                                     var classes = $(this).attr("class"),
                                         placeholder = $(this).attr("placeholder");
@@ -336,144 +357,189 @@
                                     $(this).parents(".custom-select").removeClass("opened");
                                     $(this).parents(".custom-select").find(".custom-select-trigger").text(text);
                                 });
-                            });
                         </script>
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            @if($editData->actor !== null && $editData->actor !== 'null')
+                @php
+                    // Initialize $actors as an empty array
+                    $actors = [];
+                    // Check if $editData->actor is a string and not an array
+                    if (is_string($editData->actor)) {
+                        // Assuming $editData->actor is a JSON string, decode it to an array
+                        $decodedActors = json_decode($editData->actor, true);
+                        
+                        // Check if json_decode was successful, otherwise use explode for comma-separated values
+                        if (json_last_error() == JSON_ERROR_NONE) {
+                            $actors = $decodedActors;
+                        } else {
+                            $actors = explode(',', $editData->actor);
+                        }
+                    } elseif (is_array($editData->actor)) {
+                        // If it's already an array, just assign it to $actors
+                        $actors = $editData->actor;
+                    }
+                
+                    // Iterate through the array and echo each actor's name
+                    if (empty($actors)) {
+                        echo '<div class="form-group">
+                                <div class="col-md-offset-2 col-md-6">
+                                    <div class="callout callout-info">
+                                        <h4><i class="fa fa-exclamation-circle" style="color: red;"></i> No actors found</h4>
+                                    </div>
+                                </div>
+                            </div>';
+                    } 
+                @endphp
+                <div class="form-group">
                     <label for="multiSelectInput" class="col-sm-2 control-label">
-                            {{cbLang('select_actors')}}<span class="text-danger"
-                         title="This field is required">*</span>
+                        {{cbLang('select_actors')}}<span class="text-danger" title="This field is required">*</span>
                     </label>
                     <div class="multi-select-container col-md-6" id="multiSelectContainer">
-                            <input type="text" id="multiSelectInput" placeholder="{{cbLang('select_actors')}}..." onfocus="toggleDropdown(true)"
-                                oninput="filterOptions()">
-                            <div class="dropdown_artors" id="dropdown">
-                                <div onclick="toggleTag('Books')">Books</div>
-                                <div onclick="toggleTag('Movies, Music & Games')">Movies, Music & Games</div>
-                                <div onclick="toggleTag('Electronics & Computers')">Electronics & Computers</div>
-                                <div onclick="toggleTag('Home, Garden & Tools')">Home, Garden & Tools</div>
-                                <div onclick="toggleTag('Health & Beauty')">Health & Beauty</div>
-                                <div onclick="toggleTag('Toys, Kids & Baby')">Toys, Kids & Baby</div>
-                                <div onclick="toggleTag('Clothing & Jewelry')">Clothing & Jewelry</div>
-                                <!-- Add more options as needed -->
+                        @foreach($tbl_actors as $selected_actor)
+                            @if(in_array($selected_actor->name, $actors))
+                                <div class="tag">{{ $selected_actor->name }}<span class="remove-tag" onclick="removeTag(this)"> x</span></div>
+                            @endif
+                        @endforeach
+                        <input type="text" id="multiSelectInput" placeholder="{{cbLang('select_actors')}}..." onfocus="toggleDropdown(true)" oninput="filterOptions()">
+                        <div class="dropdown_artors" id="dropdown">
+                            @foreach($tbl_actors as $list_actor)
+                            <div onclick="toggleTag('{{ $list_actor->name }}')" class="{{ in_array($list_actor->name, $actors) ? 'selected' : '' }}">
+                                {{ $list_actor->name }}
                             </div>
-                        <input type="hidden" name="selectedTags" id="selectedTags">
+                            @endforeach
+                        </div>
+                        <div id="hiddenInputsContainer">
+                            @foreach($actors as $actor)
+                                <input type="hidden" name="selected_actors[]" value="{{ $actor }}">
+                            @endforeach
+                        </div>
                     </div>
-            </div>
-        
+                </div>
+            @else
+                <div class="form-group">
+                    <label for="multiSelectInput" class="col-sm-2 control-label">
+                        {{cbLang('select_actors')}}<span class="text-danger" title="This field is required">*</span>
+                    </label>
+                    <div class="multi-select-container col-md-6" id="multiSelectContainer">
+                        <input type="text" id="multiSelectInput" placeholder="{{cbLang('select_actors')}}..." onfocus="toggleDropdown(true)" oninput="filterOptions()">
+                        <div class="dropdown_artors" id="dropdown">
+                            @foreach($tbl_actors as $list_actor)
+                            <div onclick="toggleTag('{{ $list_actor->name }}')">
+                                {{ $list_actor->name }}
+                            </div>
+                            @endforeach
+                        </div>
+                        <div id="hiddenInputsContainer">
+                            <input type="hidden" name="selected_actors[]" value="">
+                        </div>
+                    </div>
+                </div>
+            @endif
             <script>
-                function toggleDropdown(show) {
-                    document.getElementById('dropdown').classList.toggle('open', show);
-                }
-        
-                function toggleTag(tag) {
-                    const container = document.getElementById('multiSelectContainer');
-                    const input = document.getElementById('multiSelectInput');
-                    const existingTags = Array.from(container.querySelectorAll('.tag')).map(tagEl => tagEl.textContent.trim().slice(0, -1).trim());
-                    const tagIndex = existingTags.indexOf(tag.trim());
-        
-                    console.log('Existing Tags:', existingTags);  // Debug statement
-                    console.log('Tag Index:', tagIndex);  // Debug statement
-        
-                    if (tagIndex !== -1) {
-                        // Remove the tag if it exists
-                        const tagToRemove = Array.from(container.querySelectorAll('.tag')).find(tagEl => tagEl.textContent.trim().slice(0, -1).trim() === tag.trim());
-                        if (tagToRemove) tagToRemove.remove();
-                    } else {
-                        // Add the tag if it doesn't exist
-                        const tagEl = document.createElement('div');
-                        tagEl.className = 'tag';
-                        tagEl.innerHTML = `${tag}<span class="remove-tag" onclick="removeTag(this)"> x</span>`;
-                        container.insertBefore(tagEl, input);
-                    }
-        
-                    // Update the dropdown options to reflect selection
-                    const dropdownOptions = document.getElementById('dropdown').children;
-                    for (let option of dropdownOptions) {
-                        if (option.textContent.trim() === tag.trim()) {
-                            option.classList.toggle('selected');
-                        }
-                    }
-        
-                    input.value = '';
-                    updateHiddenInput();
-                    filterOptions();
-                }
-        
-                function removeTag(element) {
-                    const tag = element.parentElement.textContent.trim().slice(0, -1).trim();
-                    element.parentElement.remove();
-                    updateDropdownSelection(tag);
-                    updateHiddenInput();
-                    filterOptions();
-                }
-        
-                function filterOptions() {
-                    const input = document.getElementById('multiSelectInput').value.toLowerCase().trim();
-                    const dropdown = document.getElementById('dropdown');
-                    const options = dropdown.getElementsByTagName('div');
-                    const existingTags = Array.from(document.getElementById('multiSelectContainer').querySelectorAll('.tag')).map(tagEl => tagEl.textContent.trim().slice(0, -1).trim());
-        
-                    for (let option of options) {
-                        option.style.display = option.textContent.toLowerCase().includes(input) ? '' : 'none';
-                        option.classList.toggle('selected', existingTags.includes(option.textContent.trim()));
-                    }
-        
-                    toggleDropdown(true);
-                }
-        
-                function updateDropdownSelection(tag) {
-                    const dropdownOptions = document.getElementById('dropdown').children;
-                    for (let option of dropdownOptions) {
-                        if (option.textContent.trim() === tag.trim()) {
-                            option.classList.remove('selected');
-                        }
-                    }
-                }
-        
-                function updateHiddenInput() {
-                    const container = document.getElementById('multiSelectContainer');
-                    const selectedTags = Array.from(container.querySelectorAll('.tag')).map(tagEl => tagEl.textContent.trim().slice(0, -1).trim());
-                    document.getElementById('selectedTags').value = selectedTags.join(',');
-                }
-        
-                document.addEventListener('click', function (event) {
-                    const container = document.getElementById('multiSelectContainer');
-                    if (!container.contains(event.target)) {
-                        toggleDropdown(false);
-                    }
-                });
-        
-                document.getElementById('tagForm').addEventListener('submit', function (event) {
-                    event.preventDefault();
-                    const formData = new FormData(this);
-                    fetch(this.action, {
-                        method: 'POST',
-                        body: formData,
-                    }).then(response => response.json())
-                        .then(data => {
-                            console.log(data);
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
-                });
-            </script>
+                            function toggleDropdown(show) {
+                                document.getElementById('dropdown').classList.toggle('open', show);
+                            }
 
+                            function toggleTag(tag) {
+                                const container = document.getElementById('multiSelectContainer');
+                                const input = document.getElementById('multiSelectInput');
+                                const existingTags = Array.from(container.querySelectorAll('.tag')).map(tagEl => tagEl.textContent.trim().slice(0, -1).trim());
+                                const tagIndex = existingTags.indexOf(tag.trim());
+
+                                if (tagIndex !== -1) {
+                                    // Remove the tag if it exists
+                                    const tagToRemove = Array.from(container.querySelectorAll('.tag')).find(tagEl => tagEl.textContent.trim().slice(0, -1).trim() === tag.trim());
+                                    if (tagToRemove) tagToRemove.remove();
+                                } else {
+                                    // Add the tag if it doesn't exist
+                                    const tagEl = document.createElement('div');
+                                    tagEl.className = 'tag';
+                                    tagEl.innerHTML = `${tag}<span class="remove-tag" onclick="removeTag(this)"> x</span>`;
+                                    container.insertBefore(tagEl, input);
+                                }
+
+                                // Update the dropdown options to reflect selection
+                                const dropdownOptions = document.getElementById('dropdown').children;
+                                for (let option of dropdownOptions) {
+                                    if (option.textContent.trim() === tag.trim()) {
+                                        option.classList.toggle('selected');
+                                    }
+                                }
+
+                                input.value = '';
+                                updateHiddenInputs();
+                                filterOptions();
+                            }
+
+                            function removeTag(element) {
+                                const tag = element.parentElement.textContent.trim().slice(0, -1).trim();
+                                element.parentElement.remove();
+                                updateDropdownSelection(tag);
+                                updateHiddenInputs();
+                                filterOptions();
+                            }
+
+                            function filterOptions() {
+                                const input = document.getElementById('multiSelectInput').value.toLowerCase().trim();
+                                const dropdown = document.getElementById('dropdown');
+                                const options = dropdown.getElementsByTagName('div');
+                                const existingTags = Array.from(document.getElementById('multiSelectContainer').querySelectorAll('.tag')).map(tagEl => tagEl.textContent.trim().slice(0, -1).trim());
+
+                                for (let option of options) {
+                                    option.style.display = option.textContent.toLowerCase().includes(input) ? '' : 'none';
+                                    option.classList.toggle('selected', existingTags.includes(option.textContent.trim()));
+                                }
+
+                                toggleDropdown(true);
+                            }
+
+                            function updateDropdownSelection(tag) {
+                                const dropdownOptions = document.getElementById('dropdown').children;
+                                for (let option of dropdownOptions) {
+                                    if (option.textContent.trim() === tag.trim()) {
+                                        option.classList.remove('selected');
+                                    }
+                                }
+                            }
+
+                            function updateHiddenInputs() {
+                                const container = document.getElementById('multiSelectContainer');
+                                const hiddenInputsContainer = document.getElementById('hiddenInputsContainer');
+                                const selectedTags = Array.from(container.querySelectorAll('.tag')).map(tagEl => tagEl.textContent.trim().slice(0, -1).trim());
+
+                                // Clear previous hidden inputs
+                                hiddenInputsContainer.innerHTML = '';
+
+                                // Add new hidden inputs for each selected tag
+                                selectedTags.forEach(tag => {
+                                    const hiddenInput = document.createElement('input');
+                                    hiddenInput.type = 'hidden';
+                                    hiddenInput.name = 'selected_actors[]';
+                                    hiddenInput.value = tag;
+                                    hiddenInputsContainer.appendChild(hiddenInput);
+                                });
+                            }
+
+                            document.addEventListener('click', function(event) {
+                                const container = document.getElementById('multiSelectContainer');
+                                if (!container.contains(event.target)) {
+                                    toggleDropdown(false);
+                                }
+                            });
+            </script>
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-6">
                     <div class="callout callout-info">
                         <h4><i class="fa fa-exclamation-circle"></i> Note:</h4>
                         <p>{{cbLang('You_can_add_new_artore_by_flowing_this_link')}} <a href="#" style="color: blue;">{{cbLang('add_actor')}}</a></p>
                     </div>
-                    <br>
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-md-offset-2 col-md-6">
-                    {{ form_textarea(cbLang('title'), "des", "textarea", 10,  "","value='$editData->des'") }}
+                    {{ form_textarea(cbLang('dcr'), "des", "textarea", "", "$editData->des") }}
                 </div>
             </div>
             @if($editData->image != null)
@@ -487,7 +553,7 @@
             </div>
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-6" id="image_url_input" style="display:none;">
-                    {{ form_input(cbLang('image_url'), "image", "text", 10,  "","required value='$editData->image'") }}
+                    {{ form_input(cbLang('image_url'), "image", "text", 10,  "","value='$editData->image'") }}
                 </div>
             </div>
             <script>
@@ -498,50 +564,32 @@
             @else
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-6">
-                    {{ form_input(cbLang('image_url'), "image", "text", 10,  "","required value='$editData->image'") }}
+                    {{ form_input(cbLang('image_url'), "image", "text", 10,  "","value='$editData->image'") }}
                 </div>
             </div>
             @endif
             
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-6">
-                    <h3>{{cbLang('episode')}}:</h3>
-                    <hr>
-                    <div class="callout epesode_container_wrapper">
+                    <h3>Video url</h3>
+                    <div class="callout callout-info epesode_container_wrapper">
                         @if($video_url->count() != 0)
                         @foreach($video_url as $episode)
                         <div class="epesode_wrapper">
-                            <div class="ep_number">
-                                <input type="number" class="form-control" min="1"
-                                name="video_url[{{ $episode->number_ep }}][episode]"
-                                    value="{{ $episode->number_ep }}">
-                            </div>
                             <div class="input_url" style="width:100%; position: relative;">
-                                <input type="text" class="form-control col-md-6"
-                                    name="video_url[{{ $episode->number_ep }}][url]" value="{{ $episode->bunny_url }}"
-                                    placeholder="{{ cbLang('url') }}">
-                                <i class="fa-solid fa-trash delete_button"
-                                    style="color: red; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                                <input type="text" class="form-control col-md-6" name="video_url"
+                                    value="{{ $episode->bunny_url }}" placeholder="{{ cbLang('url') }}">
                             </div>
                         </div>
                         @endforeach
                         @else
                         <div class="epesode_wrapper">
-                            <div class="ep_number">
-                                <input type="number" class="form-control" name="video_url[1][episode]" value="1" min="1">
-                            </div>
                             <div class="input_url" style="width:100%; position: relative;">
-                                <input type="text" class="form-control col-md-6" name="video_url[1][url]" value=""
+                                <input type="text" class="form-control col-md-6" name="video_url" value=""
                                     placeholder="{{ cbLang('url') }}">
-                                <i class="fa-solid fa-trash delete_button"
-                                    style="color: red; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
                             </div>
                         </div>
                         @endif
-
-                        <div class="add_button_wrapper" id="add_button">
-                            <i class="fa-solid fa-plus"></i>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -554,70 +602,6 @@
     </form>
 </div>
 
-<script>
-document.getElementById('add_button').addEventListener('click', function() {
-    const container = document.querySelector('.epesode_container_wrapper');
-    const newIndex = document.querySelectorAll('.epesode_wrapper').length + 1;
-    const newInput = document.createElement('div');
-    newInput.classList.add('epesode_wrapper');
-    newInput.innerHTML = `
-            <div class="ep_number">
-                <input type="number" class="form-control" name="video_url[${newIndex}][episode]" value="${newIndex}">
-            </div>
-            <div class="input_url" style="width:100%; position: relative;">
-                <input type="text" class="form-control col-md-6" name="video_url[${newIndex}][url]" value=""
-                    placeholder="{{ cbLang('url') }}">
-                <i class="fa-solid fa-trash delete_button" style="color: red; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
-            </div>`;
-    container.insertBefore(newInput, document.getElementById('add_button'));
-    addDeleteFunctionality();
-    updateEpisodeNumbers();
-});
-
-function addDeleteFunctionality() {
-    const deleteButtons = document.querySelectorAll('.delete_button');
-    deleteButtons.forEach(button => {
-        button.removeEventListener('click', handleDelete);
-        button.addEventListener('click', handleDelete);
-    });
-}
-
-function handleDelete() {
-    const episodeWrappers = document.querySelectorAll('.epesode_wrapper');
-    if (episodeWrappers.length > 1) {
-        const wrapper = this.closest('.epesode_wrapper');
-        wrapper.remove();
-        updateEpisodeNumbers();
-    } else {
-        alert('At least one episode input is required.');
-    }
-}
-
-function updateEpisodeNumbers() {
-    const episodeWrappers = document.querySelectorAll('.epesode_wrapper');
-    episodeWrappers.forEach((wrapper, index) => {
-        const epNumber = wrapper.querySelector('.ep_number input');
-        epNumber.value = index + 1;
-    });
-
-    // Show or hide the delete button for the first input
-    const firstDeleteButton = episodeWrappers[0].querySelector('.delete_button');
-    if (episodeWrappers.length < 2) {
-        if (firstDeleteButton) {
-            firstDeleteButton.style.display = 'none';
-        }
-    } else {
-        if (firstDeleteButton) {
-            firstDeleteButton.style.display = 'block';
-        }
-    }
-}
-
-// Initialize delete functionality and update episode numbers on page load
-document.addEventListener('DOMContentLoaded', function() {
-    addDeleteFunctionality();
-    updateEpisodeNumbers();
-});
 
 
 @endsection
